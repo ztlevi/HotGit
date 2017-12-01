@@ -1,0 +1,31 @@
+{
+  "name": "react_github",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "node node_modules/jest/bin/jest.js --watch"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "dependencies": {
+    "prop-types": "^15.6.0",
+    "react": "16.0.0",
+    "react-native": "0.50.4",
+    "react-native-tab-navigator": "^0.3.4",
+    "react-navigation": "^1.0.0-beta.21",
+    "expo": "^23.0.4"
+  },
+  "devDependencies": {
+    "babel-jest": "21.2.0",
+    "babel-preset-react-native": "4.0.0",
+    "react-test-renderer": "16.0.0",
+    "react-native-scripts": "1.8.1",
+    "jest-expo": "23.0.0"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  }
+}
