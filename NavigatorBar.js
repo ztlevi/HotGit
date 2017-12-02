@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React, {
+  Component
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
@@ -31,10 +33,9 @@ export default class NavigatorBar extends Component {
 
   static defaultProps = {
     statusBar: {
-      backgroundColor: 'blue',
       barStyle: 'light-content',
       hidden: false,
-      },
+    },
   }
 
   constructor(props, defaultProps) {
@@ -53,13 +54,14 @@ export default class NavigatorBar extends Component {
       </View>
     let titleView = this.props.titleView ? this.props.titleView :
       <Text style={styles.title}>{this.props.title}</Text>;
-    let content = <View style={styles.navBar}>
-      {this.props.leftButton}
-      <View style={styles.titleViewContainer}>
-        {titleView}
+    let content =
+      <View style={styles.navBar}>
+        {this.props.leftButton}
+        <View style={styles.titleViewContainer}>
+          {titleView}
+        </View>
+        {this.props.rightButton}
       </View>
-      {this.props.rightButton}
-    </View>
     return (
       <View style={[styles.container, this.props.style]}>
         {status}
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID,
-    backgroundColor: 'red',
+    backgroundColor: '#EE6363',
     flexDirection: 'row',
   },
   titleViewContainer: {

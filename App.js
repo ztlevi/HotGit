@@ -23,16 +23,18 @@ import PropTypes from 'prop-types';
 import TabNavigator from 'react-native-tab-navigator';
 import Boy from './Boy'
 import Girl from './Girl'
+import ListViewTest from './ListViewTest'
 
-import Reactnav from './Components/ReactNav';
-import ReactSecNav from './Components/ReactSecNav'
-import ReactThirdNav from './Components/ReactThiNav'
+// import Reactnav from './Components/ReactNav';
+// import ReactSecNav from './Components/ReactSecNav'
+// import ReactThirdNav from './Components/ReactThiNav'
 
 const App = StackNavigator(
   {
     // Home:{screen:Reactnav},
     // NavSec:{screen:ReactSecNav},
     // NavThird:{screen:ReactThirdNav},
+    ListViewTestPage:{screen: ListViewTest},
     BoyPage: {screen: Boy},
     GirlPage: {screen: Girl},
   }, {

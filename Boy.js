@@ -1,4 +1,6 @@
-import React, {Component} from 'react';
+import React, {
+  Component
+} from 'react';
 import {
   View,
   Text,
@@ -16,14 +18,16 @@ export default class Boy extends Component {
   }
 
   render() {
-    const {navigate} = this.props.navigation;
+    const {
+      navigate
+    } = this.props.navigation;
     let what = this.state.what === '' ? '' : '我收到了女孩回赠的' + this.state.what;
     return (
       <View style={styles.container}>
         <NavigatorBar
           title={'Boy'}
           statusBar={{
-            backgroundColor:'red'
+            backgroundColor:'#EE6363'
           }}
         />
         <Text style={styles.text}>I am boy</Text>
