@@ -24,6 +24,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import Boy from './Boy'
 import Girl from './Girl'
 import ListViewTest from './ListViewTest'
+import FetchTest from './FetchTest'
 
 // import Reactnav from './Components/ReactNav';
 // import ReactSecNav from './Components/ReactSecNav'
@@ -34,6 +35,7 @@ const App = StackNavigator(
     // Home:{screen:Reactnav},
     // NavSec:{screen:ReactSecNav},
     // NavThird:{screen:ReactThirdNav},
+    FetchPage:{screen:FetchTest},
     ListViewTestPage:{screen: ListViewTest},
     BoyPage: {screen: Boy},
     GirlPage: {screen: Girl},

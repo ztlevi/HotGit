@@ -126,6 +126,7 @@ export default class ListViewTest extends Component {
       <View style={styles.container}>
         <NavigatorBar
           title='ListViewTest'
+          statusBar={{backgroundColor:'red'}}
         />
         <ListView
           dataSource={this.state.dataSource}
