@@ -8,7 +8,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native'
-import NavigatorBar from './NavigatorBar'
+import NavigatorBar from './js/common/NavigatorBar'
 import HttpUtils from './HttpUtils'
 
 export default class Fetch extends Component {
@@ -31,19 +31,6 @@ export default class Fetch extends Component {
           result: JSON.stringify(error)
         })
       })
-    // fetch(url)
-    //   .then(response => response.json())
-    //   .then(result => {
-    //     this.setState({
-    //       result: JSON.stringify(result)
-    //     })
-    //   })
-    //   .catch(error => {
-    //     this.setState({
-    //       result: JSON.stringify(error)
-    //     })
-    //
-    //   })
   }
 
   post(url, data) {
@@ -59,25 +46,6 @@ export default class Fetch extends Component {
           result: JSON.stringify(error)
         })
       })
-    // fetch(url, {
-    //   method: 'POST',
-    //   header: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    //   .then(response => response.json())
-    //   .then(result => {
-    //     this.setState({
-    //       result: JSON.stringify(result)
-    //     })
-    //   })
-    //   .catch(error => {
-    //     this.setState({
-    //       result: JSON.stringify(error)
-    //     })
-    //   })
   }
 
   render() {
