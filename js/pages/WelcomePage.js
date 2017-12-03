@@ -15,7 +15,7 @@ export default class WelcomePage extends Component {
     const {navigate} = this.props.navigation;
     setTimeout(() => {
       navigate('homePage')
-    }, 2000);
+    }, 500);
   }
 
   componentWillUnmount() {
@@ -26,6 +26,7 @@ export default class WelcomePage extends Component {
     return <View>
       <NavigatorBar
         title={'Welcome'}
+        style={{backgroundColor:'#6495ED'}}
       />
       <Text>Welcome!</Text>
     </View>

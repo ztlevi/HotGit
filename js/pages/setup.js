@@ -4,11 +4,13 @@ import {
 } from 'react-navigation';
 import WelcomePage from './WelcomePage'
 import HomePage from './HomePage'
+import PopularPage from './PopularPage'
 
 // init
 const Root = StackNavigator({
   welcomePage: {screen: WelcomePage},
-  homePage:{screen:HomePage}
+  homePage:{screen:HomePage},
+  popularPage:{screen:PopularPage}
 }, {
   headerMode: 'none'
 });

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID,
-    backgroundColor: '#EE6363',
+    backgroundColor: '#6495ED',
     flexDirection: 'row',
   },
   titleViewContainer: {
