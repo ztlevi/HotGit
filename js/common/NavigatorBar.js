@@ -49,7 +49,7 @@ export default class NavigatorBar extends Component {
   render() {
     console.log(this.props)
     let status =
-      <View style={[styles.statusBar, this.props.statusBar]}>
+      <View style={styles.statusBar}>
         <StatusBar {...this.props.statusBar} barStyle='light-content'/>
       </View>
     let titleView = this.props.titleView ? this.props.titleView :
@@ -73,13 +73,13 @@ export default class NavigatorBar extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'gray'
+    backgroundColor: '#2196F3'
   },
   navBar: {
     justifyContent: 'space-between',
     alignItems: 'center',
     height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID,
-    backgroundColor: '#6495ED',
+    backgroundColor: '#2196F3',
     flexDirection: 'row',
   },
   titleViewContainer: {

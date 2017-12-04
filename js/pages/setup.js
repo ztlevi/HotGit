@@ -17,6 +17,7 @@ const Root = StackNavigator({
 
 export default class setup extends Component {
   render() {
+    // return <HomePage/>
     return <Root />
   }
 }
