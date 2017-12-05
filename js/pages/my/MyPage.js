@@ -10,18 +10,24 @@ export default class MyPage extends Component {
   constructor (props) {
     super(props)
   }
+
   // static navigationOptions = ({navigation}) => ({
   //   this.props = navigation.state.params;
   // });
   render () {
 
-    const {navigate} = this.props.navigation;
-    return <View>
-      {ComponentWithNavigationBar({title:'My'}, )}
+    const {navigate} = this.props.navigation
+    return <View style={styles.container}>
+      {ComponentWithNavigationBar({title: 'My'},)}
       <Text style={styles.tips}
-      onPress={()=>{
-        navigate('customKeyPage')
-      }}>Custom Tag</Text>
+            onPress={() => {
+              navigate('customKeyPage')
+            }}>Custom Tag</Text>
+
+      <Text style={styles.tips}
+            onPress={() => {
+              navigate('sortKeyPage')
+            }}>Sort Tag</Text>
     </View>
   }
 }
