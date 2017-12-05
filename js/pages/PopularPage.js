@@ -7,11 +7,11 @@ import {
   RefreshControl,
   Text,
 } from 'react-native'
-import { Container } from 'native-base'
-import NavigatorBar from '../common/NavigatorBar'
+import ComponentWithNavigationBar from '../common/NavigatorBar'
 import DataRepository from '../expand/dao/DataRepository'
 import RepositoryCell from '../common/RepositoryCell'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao'
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -19,33 +19,51 @@ const QUERY_STR = '&sort=stars'
 export default class PopularPage extends Component {
   constructor (props) {
     super(props)
+    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
     this.datarespository = new DataRepository()
     this.state = {
       result: '',
       loading: false,
+      languages: [],
     }
   }
 
+  componentDidMount () {
+    this.loadData()
+  }
+
+  loadData () {
+    this.languageDao.fetch()
+      .then(result => {
+        this.setState({
+          languages: result
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   render () {
-    return <Container style={styles.container}>
-      <NavigatorBar
-        title={'Popular'}
-      />
-      <ScrollableTabView
-        tabBarBackgroundColor="#2196F3"
-        tabBarInactiveTextColor="mintcream"
-        tabBarActiveTextColor="white"
-        tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
-        initialPage={0}
-        style={{height: 60}}
-        renderTabBar={() => <ScrollableTabBar/>}
-      >
-        <PopularTab tabLabel="Java">JAVA</PopularTab>
-        <PopularTab tabLabel="IOS">IOS</PopularTab>
-        <PopularTab tabLabel="Android">android</PopularTab>
-        <PopularTab tabLabel="JavaScript">js</PopularTab>
-      </ScrollableTabView>
-    </Container>
+    // might need to use Container because View does not work
+    let content = this.state.languages.length > 0 ? <ScrollableTabView
+      tabBarBackgroundColor="#2196F3"
+      tabBarInactiveTextColor="mintcream"
+      tabBarActiveTextColor="white"
+      tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
+      initialPage={0}
+      style={{height: 40}}
+      renderTabBar={() => <ScrollableTabBar/>}
+    >
+      {this.state.languages.map((result, i, arr) => {
+        let lan = arr[i]
+        return lan.checked ? <PopularTab key={i} tabLabel={lan.name}></PopularTab> : null
+      })}
+    </ScrollableTabView> : null
+    return <View style={styles.container}>
+      {ComponentWithNavigationBar({title: 'Popular'})}
+      {content}
+    </View>
   }
 }
 
@@ -66,14 +84,14 @@ class PopularTab extends Component {
 
   loadData () {
     this.setState({
-      isLoading:true,
+      isLoading: true,
     })
     let url = URL + this.props.tabLabel + QUERY_STR
     this.datarespository.fetchNetRepository(url)
       .then(result => {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(result.items),
-          isLoading:false,
+          isLoading: false,
         })
       })
       .catch(error => {
@@ -89,16 +107,16 @@ class PopularTab extends Component {
   }
 
   render () {
-    return (<View style={{flex:1}}>
+    return (<View style={{flex: 1}}>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(data) => this.renderRow(data)}
           refreshControl={
             <RefreshControl
               refreshing={this.state.isLoading}
-              onRefresh={()=>this.loadData()}
-              color={["#2196F3"]}
-              tintColor={"#2196F3"}
+              onRefresh={() => this.loadData()}
+              color={['#2196F3']}
+              tintColor={'#2196F3'}
               title={'Loading...'}
               titleColor={'#2196F3'}
             />

@@ -10,7 +10,37 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
+import NavigationBar from 'react-native-navbar';
 
+module.exports = ComponentWithNavigationBar;
+
+const defaultRB = {
+  title: 'Next',
+  handler: () => alert('hello!'),
+};
+const defaultLB = {
+  title: 'Next',
+  handler: () => alert('hello!'),
+};
+const defaultTitle = {
+  title: 'Hello, world',
+};
+
+function ComponentWithNavigationBar(titleConfig = defaultTitle,
+                                    leftButtonConfig=null,
+                                    rightButtonConfig=null){
+  return (
+    <View style={styles.container}>
+      <NavigationBar
+        tintColor='#2196F3'
+        statusBar={{style:'light-content', tintColor:'#2196F3'}}
+        title={{...titleConfig, tintColor:'white'}}
+        leftButton={leftButtonConfig}
+        rightButton={rightButtonConfig}
+      />
+    </View>
+  )
+}
 const NAV_BAR_HEIGHT_ANDROID = 50;
 const NAV_BAR_HEIGHT_IOS = 44;
 const STATUS_BAR_HEIGHT = 20;
@@ -20,7 +50,7 @@ const StatusBarShape = {
   hidden: PropTypes.bool,
 }
 
-export default class NavigatorBar extends Component {
+class NavigatorBar2 extends Component {
   static propTypes = {
     style: View.propTypes.style,
     title: PropTypes.string,
@@ -94,8 +124,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: 'white'
-  },
-  statusBar: {
-    height: Platform.OS === 'ios' ? STATUS_BAR_HEIGHT : 0,
   }
 })
+

@@ -15,6 +15,8 @@ import {
 
 import TabNavigator from 'react-native-tab-navigator';
 import PopularPage from './PopularPage'
+import AsyncStorageTest from '../../AsyncStorageTest'
+import MyPage from './my/MyPage'
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -34,10 +36,10 @@ export default class HomePage extends Component {
         <TabNavigator>
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_popular'}
-            selectedTitleStyle={{color: 'orange'}}
+            selectedTitleStyle={{color: '#2196F3'}}
             title="Popular"
             renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_whatshot_36pt.png')}/>}
-            renderSelectedIcon={() => <Image style={[styles.image, {tintColor: 'orange'}]}
+            renderSelectedIcon={() => <Image style={[styles.image, {tintColor: '#2196F3'}]}
                                              source={require('../../res/images/ic_whatshot_36pt.png')}/>}
             badgeText="1"
             onPress={() => this.setState({selectedTab: 'tb_popular'})}>
@@ -52,7 +54,7 @@ export default class HomePage extends Component {
                                              source={require('../../res/images/ic_all_inclusive_36pt.png')}/>}
             badgeText="1"
             onPress={() => this.setState({selectedTab: 'tb_trending'})}>
-            <View style={styles.page2}></View>
+            <AsyncStorageTest/>
           </TabNavigator.Item>
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_favorite'}
@@ -73,7 +75,7 @@ export default class HomePage extends Component {
                                              source={require('../../res/images/ic_account_circle_36pt.png')}/>}
             badgeText="1"
             onPress={() => this.setState({selectedTab: 'tb_my'})}>
-            <View style={styles.page2}></View>
+            <MyPage {...this.props}/>
           </TabNavigator.Item>
         </TabNavigator>
       </View>
@@ -85,6 +87,7 @@ export default class HomePage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom:10,
     backgroundColor: '#F5FCFF',
   },
   image: {

@@ -10,4 +10,4 @@ install with `yarn` and then `yarn start`. Scan the QR code to install the Expo 
 
 There is a basic *Popular Page* screenshot.
 
-![popular page](./screenshots/popular_page.jpg)
+<img src="./screenshots/popular_page.jpg" alt="popular page" style="width:200px;margin:auto;display:block;"/>
