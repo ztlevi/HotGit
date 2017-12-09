@@ -58,7 +58,7 @@ export default class PopularPage extends Component {
     >
       {this.state.languages.map((result, i, arr) => {
         let lan = arr[i]
-        return lan.checked ? <PopularTab key={i} tabLabel={lan.name}></PopularTab> : null
+        return lan.checked ? <PopularTab key={i} tabLabel={lan.name} {...this.props}></PopularTab> : null
       })}
     </ScrollableTabView> : null
     return <View style={styles.container}>
@@ -81,6 +81,11 @@ class PopularTab extends Component {
 
   componentDidMount () {
     this.loadData()
+  }
+
+  onSelect (item) {
+    const {navigate} = this.props.navigation
+    navigate('repositoryDetailPage', {item: item})
   }
 
   loadData () {
@@ -117,7 +122,9 @@ class PopularTab extends Component {
   }
 
   renderRow (data) {
-    return <RepositoryCell data={data}/>
+    return <RepositoryCell
+      onSelect={() => this.onSelect(data)}
+      data={data}/>
   }
 
   render () {

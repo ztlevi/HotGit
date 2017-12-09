@@ -8,12 +8,14 @@ import PopularPage from './PopularPage'
 import CustomKeyPage from './my/CustomKeyPage'
 import MyPage from './my/MyPage'
 import SortKeyPage from './my/SortKeyPage'
+import RepositoryDetail from './RepositoryDetail'
 
 // init
 const Root = StackNavigator({
   welcomePage: {screen: WelcomePage},
   homePage: {screen: HomePage},
   popularPage: {screen: PopularPage},
+  repositoryDetailPage: {screen: RepositoryDetail},
 
   // my pages
   myPage: {screen: MyPage},

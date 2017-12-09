@@ -10,7 +10,9 @@ import {
 export default class RepositoryCell extends Component {
   render () {
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity
+        onPress={() => this.props.onSelect()}
+        style={styles.container}>
         <View style={styles.cell_container}>
           <Text style={styles.title}>{this.props.data.full_name}</Text>
           <Text style={styles.description}>{this.props.data.description}</Text>
@@ -26,7 +28,7 @@ export default class RepositoryCell extends Component {
               <Text>Star:</Text>
               <Text>{this.props.data.stargazers_count}</Text>
             </View>
-            <Image style={{width: 22, height: 22, tintColor:'orange'}}
+            <Image style={{width: 22, height: 22, tintColor: 'orange'}}
                    source={require('../../res/images/ic_star_36pt.png')}/>
           </View>
         </View>
@@ -36,8 +38,8 @@ export default class RepositoryCell extends Component {
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1
+  container: {
+    flex: 1
   },
   title: {
     fontSize: 16,
@@ -48,20 +50,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 2,
     color: '#757575',
-    borderRadius:2
+    borderRadius: 2
   },
-  cell_container:{
-    backgroundColor:'white',
-    padding:10,
-    marginLeft:5,
-    marginRight:5,
-    marginVertical:3,
-    borderWidth:1,
-    borderColor:'#dddddd',
-    shadowColor:'gray',
-    shadowOffset:{width:0.5,height:0.5},
-    shadowOpacity:0.4,
-    shadowRadius:1,
-    elevation:2,
+  cell_container: {
+    backgroundColor: 'white',
+    padding: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    marginVertical: 3,
+    borderWidth: 1,
+    borderColor: '#dddddd',
+    shadowColor: 'gray',
+    shadowOffset: {width: 0.5, height: 0.5},
+    shadowOpacity: 0.4,
+    shadowRadius: 1,
+    elevation: 2,
   }
 })
