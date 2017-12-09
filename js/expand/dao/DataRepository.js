@@ -78,7 +78,6 @@ export default class DataRepository {
    * @param longTime Data timestamp
    */
   checkDate (longTime) {
-    return false
     let cDate = new Date()
     let tDate = new Date()
     tDate.setTime(longTime)

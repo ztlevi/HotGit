@@ -19,6 +19,7 @@ import PopularPage from './PopularPage'
 import AsyncStorageTest from '../../AsyncStorageTest'
 import MyPage from './my/MyPage'
 import Toast, { DURATION } from 'react-native-easy-toast'
+import WebViewTest from '../../WebViewTest'
 
 export default class HomePage extends Component {
   constructor (props) {
@@ -53,7 +54,6 @@ export default class HomePage extends Component {
             renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_whatshot_36pt.png')}/>}
             renderSelectedIcon={() => <Image style={[styles.image, {tintColor: '#2196F3'}]}
                                              source={require('../../res/images/ic_whatshot_36pt.png')}/>}
-            badgeText="1"
             onPress={() => this.setState({selectedTab: 'tb_popular'})}>
             <PopularPage/>
           </TabNavigator.Item>
@@ -65,7 +65,6 @@ export default class HomePage extends Component {
                                      source={require('../../res/images/ic_all_inclusive_36pt.png')}/>}
             renderSelectedIcon={() => <Image style={[styles.image, {tintColor: 'red'}]}
                                              source={require('../../res/images/ic_all_inclusive_36pt.png')}/>}
-            badgeText="1"
             onPress={() => this.setState({selectedTab: 'tb_trending'})}>
             <AsyncStorageTest/>
           </TabNavigator.Item>
@@ -77,7 +76,7 @@ export default class HomePage extends Component {
             renderSelectedIcon={() => <Image style={[styles.image, {tintColor: 'orange'}]}
                                              source={require('../../res/images/ic_favorite_36pt.png')}/>}
             onPress={() => this.setState({selectedTab: 'tb_favorite'})}>
-            <View style={styles.page1}></View>
+            <WebViewTest/>
           </TabNavigator.Item>
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_my'}
@@ -87,7 +86,6 @@ export default class HomePage extends Component {
                                      source={require('../../res/images/ic_account_circle_36pt.png')}/>}
             renderSelectedIcon={() => <Image style={[styles.image, {tintColor: 'red'}]}
                                              source={require('../../res/images/ic_account_circle_36pt.png')}/>}
-            badgeText="1"
             onPress={() => this.setState({selectedTab: 'tb_my'})}>
             <MyPage {...this.props}/>
           </TabNavigator.Item>

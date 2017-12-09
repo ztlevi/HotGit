@@ -37,7 +37,7 @@ export default class ArrayUtils {
     if (!(arr1 && arr2)) return false
     if (arr1.length !== arr2.length) return false
     for (let i = 0, l = arr2.length; i < l; i++) {
-      if (arr1[1] !== arr2[i]) {
+      if (arr1[i] !== arr2[i]) {
         return false
       }
     }
