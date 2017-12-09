@@ -19,6 +19,12 @@ export default class CustomKeyPage extends Component {
     super(props)
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
     this.changeValues = []
+    const {state} = this.props.navigation
+    try {
+      this.isRemoveKey = !!state.params.isRemoveKey
+    } catch (e) {
+      this.isRemoveKey = false
+    }
     this.state = {
       dataArray: []
     }
@@ -42,6 +48,7 @@ export default class CustomKeyPage extends Component {
 
   renderCheckBox (data) {
     let leftText = data.name
+    let isChecked = this.isRemoveKey ? false : data.checked
     console.log(leftText)
     console.log(typeof(leftText))
     return (
@@ -49,7 +56,7 @@ export default class CustomKeyPage extends Component {
         <Checkbox
           leftText={leftText}
           onClick={() => this.onClick(data)}
-          isChecked={data.checked}
+          isChecked={isChecked}
           checkedImage={<Image
             style={{tintColor: '#2196F3'}}
             source={require('./images/ic_check_box.png')}/>}
@@ -95,12 +102,16 @@ export default class CustomKeyPage extends Component {
       this.props.navigation.goBack()
       return
     }
+    for (let i = 0, l = this.changeValues.length; i < l; i++) {
+      ArrayUtils.remove(this.state.dataArray, this.changeValues[i])
+    }
     this.languageDao.save(this.state.dataArray)
     this.props.navigation.goBack()
   }
 
   onClick (data) {
-    data.checked = !data.checked
+    if (!this.isRemoveKey)
+      data.checked = !data.checked
     ArrayUtils.updateArray(this.changeValues, data)
   }
 
@@ -121,12 +132,14 @@ export default class CustomKeyPage extends Component {
   }
 
   render () {
+    let title = this.isRemoveKey ? 'Remove Tag' : 'Custom Tag'
+    let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save'
     let rightButton = <TouchableOpacity
       onPress={() => this.onSave()}
       style={{padding: 10}}
     >
       <View styl={{flex: 1}}>
-        <Text style={styles.title}>Save</Text>
+        <Text style={styles.title}>{rightButtonTitle}</Text>
       </View>
     </TouchableOpacity>
 
@@ -134,7 +147,7 @@ export default class CustomKeyPage extends Component {
 
     return <View style={styles.container}>
       {ComponentWithNavigationBar(
-        {title: 'Custom Tags'},
+        {title: title},
         leftButton,
         rightButton
       )}

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import {
   View,
+  Alert,
   StyleSheet,
   Text,
 } from 'react-native'
 import ComponentWithNavigationBar from '../../common/NavigatorBar'
+import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao'
 
 export default class MyPage extends Component {
   constructor (props) {
@@ -28,6 +30,23 @@ export default class MyPage extends Component {
             onPress={() => {
               navigate('sortKeyPage')
             }}>Sort Tag</Text>
+      <Text style={styles.tips}
+            onPress={() => {
+              navigate('customKeyPage', {isRemoveKey: true})
+            }}>Remove Tag</Text>
+      <Text style={styles.tips}
+            onPress={() => {
+              let languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
+              Alert.alert(
+                'Note',
+                'Do you want to reset tags?',
+                [
+                  {text: 'NO', onPress: () => {}},
+                  {text: 'YES', onPress: () => languageDao.reset()},
+                ],
+                {cancelable: false}
+              )
+            }}>Reset Tags</Text>
     </View>
   }
 }

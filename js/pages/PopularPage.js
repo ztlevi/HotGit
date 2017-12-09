@@ -5,6 +5,7 @@ import {
   ScrollView,
   ListView,
   RefreshControl,
+  DeviceEventEmitter,
   Text,
 } from 'react-native'
 import ComponentWithNavigationBar from '../common/NavigatorBar'
@@ -87,19 +88,32 @@ class PopularTab extends Component {
       isLoading: true,
     })
     let url = URL + this.props.tabLabel + QUERY_STR
-    this.datarespository.fetchNetRepository(url)
+    this.datarespository.fetchRepository(url)
       .then(result => {
+        let items = result && result.items ? result.items : result ? result : []
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(result.items),
+          dataSource: this.state.dataSource.cloneWithRows(items),
           isLoading: false,
         })
+        if (result && result.update_date && !this.datarespository.checkDate(result.update_date)) {
+          DeviceEventEmitter.emit('showToast', 'Data outdated')
+          return this.datarespository.fetchNetRepository(url)
+        } else {
+          DeviceEventEmitter.emit('showToast', 'Show cached data')
+        }
+      })
+      .then(items => {
+        if (!items || items.length === 0) return
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(items),
+        })
+        DeviceEventEmitter.emit('showToast', 'Show network data')
       })
       .catch(error => {
         this.setState({
           result: JSON.stringify(error)
         })
       })
-
   }
 
   renderRow (data) {

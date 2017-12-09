@@ -5,32 +5,44 @@
  */
 import React, {
   Component
-} from 'react';
+} from 'react'
 import {
   StyleSheet,
   Image,
   Text,
   View,
-} from 'react-native';
+  DeviceEventEmitter,
+} from 'react-native'
 
-import TabNavigator from 'react-native-tab-navigator';
+import TabNavigator from 'react-native-tab-navigator'
 import PopularPage from './PopularPage'
 import AsyncStorageTest from '../../AsyncStorageTest'
 import MyPage from './my/MyPage'
+import Toast, { DURATION } from 'react-native-easy-toast'
 
 export default class HomePage extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       selectedTab: 'tb_popular'
     }
   }
 
+  componentDidMount () {
+    this.listener = DeviceEventEmitter.addListener('showToast', (text) => {
+      this.toast.show(text, DURATION.LENGTH_LONG)
+    })
+  }
+
+  componentWillUnmount () {
+    this.listener && this.listener.remove()
+  }
+
   static navigationOptions = {
     title: 'Home Page'
-  };
+  }
 
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <TabNavigator>
@@ -49,7 +61,8 @@ export default class HomePage extends Component {
             selected={this.state.selectedTab === 'tb_trending'}
             selectedTitleStyle={{color: 'red'}}
             title="Treading"
-            renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_all_inclusive_36pt.png')}/>}
+            renderIcon={() => <Image style={styles.image}
+                                     source={require('../../res/images/ic_all_inclusive_36pt.png')}/>}
             renderSelectedIcon={() => <Image style={[styles.image, {tintColor: 'red'}]}
                                              source={require('../../res/images/ic_all_inclusive_36pt.png')}/>}
             badgeText="1"
@@ -70,7 +83,8 @@ export default class HomePage extends Component {
             selected={this.state.selectedTab === 'tb_my'}
             selectedTitleStyle={{color: 'red'}}
             title="My Account"
-            renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_account_circle_36pt.png')}/>}
+            renderIcon={() => <Image style={styles.image}
+                                     source={require('../../res/images/ic_account_circle_36pt.png')}/>}
             renderSelectedIcon={() => <Image style={[styles.image, {tintColor: 'red'}]}
                                              source={require('../../res/images/ic_account_circle_36pt.png')}/>}
             badgeText="1"
@@ -78,16 +92,16 @@ export default class HomePage extends Component {
             <MyPage {...this.props}/>
           </TabNavigator.Item>
         </TabNavigator>
+        <Toast ref={toast => this.toast = toast}/>
       </View>
 
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom:10,
     backgroundColor: '#F5FCFF',
   },
   image: {
@@ -102,4 +116,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'red',
   }
-});
+})

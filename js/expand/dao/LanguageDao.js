@@ -27,17 +27,29 @@ export default class LanguageDao {
               reject(e)
             }
           } else {
-            var data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null;
-            this.save(data);
-            resolve(data);
+            var data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null
+            this.save(data)
+            resolve(data)
           }
         }
       })
     })
   }
-  save(data) {
-    AsyncStorage.setItem(this.flag, JSON.stringify(data), (error)=>{
 
+  save (data) {
+    AsyncStorage.setItem(this.flag, JSON.stringify(data), (error, result) => {
+
+    })
+  }
+
+  reset () {
+    AsyncStorage.getItem(this.flag, (error, result) => {
+      if (error) {
+        console.log('Cannot reset!')
+      } else {
+        var data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null
+        this.save(data)
+      }
     })
   }
 }
