@@ -20,6 +20,7 @@ import AsyncStorageTest from '../../AsyncStorageTest'
 import MyPage from './my/MyPage'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import WebViewTest from '../../WebViewTest'
+import { ifIphoneX } from 'react-native-iphone-x-helper'
 
 export default class HomePage extends Component {
   constructor (props) {
@@ -100,6 +101,9 @@ export default class HomePage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    ...ifIphoneX({
+      paddingBottom: 15,
+    }),
     backgroundColor: '#F5FCFF',
   },
   image: {

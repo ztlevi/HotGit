@@ -14,7 +14,7 @@ import {
 import NavigatorBar from './js/common/NavigatorBar'
 import Toast, {DURATION} from 'react-native-easy-toast'
 
-var data = {
+let data = {
   "result": [{
     "email": "l.yzfeqoyel@vyktre.nt",
     "fullName": "张三张三张三"

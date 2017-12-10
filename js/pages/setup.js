@@ -9,6 +9,7 @@ import CustomKeyPage from './my/CustomKeyPage'
 import MyPage from './my/MyPage'
 import SortKeyPage from './my/SortKeyPage'
 import RepositoryDetail from './RepositoryDetail'
+import LoginPage from './my/LoginPage'
 
 // init
 const Root = StackNavigator({
@@ -19,6 +20,7 @@ const Root = StackNavigator({
 
   // my pages
   myPage: {screen: MyPage},
+  loginPage: {screen: LoginPage},
   customKeyPage: {screen: CustomKeyPage},
   sortKeyPage:{screen:SortKeyPage},
 }, {

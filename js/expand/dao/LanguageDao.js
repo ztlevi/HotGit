@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import keys from '../../../res/data/keys.json'
 
-export var FLAG_LANGUAGE = {
+export let FLAG_LANGUAGE = {
   flag_language: 'flag_language_language',
   flag_key: 'flag_language_key'
 }
@@ -27,7 +27,7 @@ export default class LanguageDao {
               reject(e)
             }
           } else {
-            var data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null
+            let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null
             this.save(data)
             resolve(data)
           }
@@ -47,7 +47,7 @@ export default class LanguageDao {
       if (error) {
         console.log('Cannot reset!')
       } else {
-        var data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null
+        let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : null
         this.save(data)
       }
     })
