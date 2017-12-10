@@ -13,14 +13,14 @@ import {
 import ComponentWithNavigationBar from '../common/NavigatorBar'
 import ViewUtils from '../util/ViewUtils'
 
-const URL = 'https://www.google.com'
+const TRENDING_URL = 'https://github.com/'
 export default class RepositoryDetail extends Component {
   constructor (props) {
     super(props)
     const {state} = this.props.navigation
     let item = state.params.item
-    this.url = item.html_url
-    let title = item.full_name
+    this.url = item.html_url ? item.html_url : TRENDING_URL + item.fullName
+    let title = item.full_name ? item.full_name : item.fullName
     this.state = {
       url: this.url,
       title: title,

@@ -68,8 +68,7 @@ export default class UserDao {
                 DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
               }
             })
-        }
-      )
+      })
   }
 
   logout () {
@@ -120,7 +119,8 @@ export default class UserDao {
       this.loadCurrentUser().then(() => {
         if (this.username === '' || this.username == null) {
           DeviceEventEmitter.emit('showToast', 'Please Login...')
-          reject()
+          reject(new Error('No user logged in'))
+          return
         }
       })
 
@@ -151,7 +151,8 @@ export default class UserDao {
       // if no user logged in
       this.loadCurrentUser().then(() => {
         if (this.username === '' || this.username == null) {
-          reject()
+          reject(new Error('No user logged in'))
+          return
         }
       })
       // check if repo starred
@@ -187,7 +188,8 @@ export default class UserDao {
       // if no user logged in
       this.loadCurrentUser().then(() => {
         if (this.username === '' || this.username == null) {
-          reject()
+          reject(new Error('No user logged in'))
+          return
         }
       })
 
@@ -224,7 +226,8 @@ export default class UserDao {
       // if no user logged in
       this.loadCurrentUser()
       if (this.username === '' || this.username == null) {
-        reject()
+        reject(new Error('No user logged in'))
+        return
       }
 
       // unstar a repo

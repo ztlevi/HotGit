@@ -11,6 +11,7 @@
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "dependencies": {
+    "GitHubTrending": "^3.0.0",
     "base-64": "^0.1.0",
     "expo": "^23.0.4",
     "prop-types": "^15.6.0",
@@ -20,6 +21,7 @@
     "react-native-easy-toast": "^1.0.9",
     "react-native-htmlview": "^0.12.1",
     "react-native-iphone-x-helper": "^1.0.1",
+    "react-native-modal-popover": "^0.0.3",
     "react-native-navbar": "^2.1.0",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sortable-listview": "^0.2.6",

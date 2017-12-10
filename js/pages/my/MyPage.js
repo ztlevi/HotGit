@@ -22,10 +22,12 @@ export default class MyPage extends Component {
   // });
   render () {
     let userDao = new UserDao()
+    let title = <Text style={{fontSize: 20, color: 'white', fontWeight: '400'}}>My Account</Text>
+
 
     const {navigate} = this.props.navigation
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: 'My'},)}
+      {ComponentWithNavigationBar({title: title},)}
       <View
         style={styles.row}
       >

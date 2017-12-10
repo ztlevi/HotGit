@@ -6,29 +6,42 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native'
+import HTMLView from 'react-native-htmlview'
 
-export default class RepositoryCell extends Component {
+export default class TrendingCell extends Component {
+  constructor (props) {
+    super(props)
+  }
+
   render () {
     let data = this.props.data
+    let description = '<p>' + data.description + '</p>'
 
     return (
       <TouchableOpacity
         onPress={() => this.props.onSelect()}
         style={styles.container}>
         <View style={styles.cell_container}>
-          <Text style={styles.title}>{data.full_name}</Text>
-          <Text style={styles.description}>{data.description}</Text>
+          <Text style={styles.title}>{data.fullName}</Text>
+          {/*<Text style={styles.description}>{data.description}</Text>*/}
+          <HTMLView
+            value={description}
+            onLinkPress={(url) => {}}
+            stylesheet={{
+              p: styles.description,
+              a: styles.description,
+            }}
+          />
+          <Text style={styles.description}>{this.props.data.meta}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text>Author:</Text>
-              <Image
-                style={{height: 22, width: 22}}
-                source={{uri: data.owner.avatar_url}}
-              />
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text>Star:</Text>
-              <Text>{data.stargazers_count}</Text>
+              <Text style={styles.description}>Build by:</Text>
+              {data.contributors.map((result, i, arr) => {
+                return <Image key={i}
+                              style={{height: 22, width: 22}}
+                              source={{uri: arr[i]}}
+                />
+              })}
             </View>
             <Image style={{width: 22, height: 22, tintColor: 'orange'}}
                    source={require('../../res/images/ic_star_border_black_36dp.png')}/>
@@ -67,5 +80,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 1,
     elevation: 2,
-  }
+  },
 })

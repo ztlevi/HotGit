@@ -9,7 +9,7 @@ import {
   Text,
 } from 'react-native'
 import ComponentWithNavigationBar from '../common/NavigatorBar'
-import DataRepository from '../expand/dao/DataRepository'
+import DataRepository, { FLAG_STORAGE } from '../expand/dao/DataRepository'
 import RepositoryCell from '../common/RepositoryCell'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao'
@@ -21,7 +21,6 @@ export default class PopularPage extends Component {
   constructor (props) {
     super(props)
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
-    this.datarespository = new DataRepository()
     this.state = {
       result: '',
       loading: false,
@@ -53,7 +52,6 @@ export default class PopularPage extends Component {
       tabBarActiveTextColor="white"
       tabBarUnderlineStyle={{backgroundColor: '#e7e7e7', height: 2}}
       initialPage={0}
-      style={{height: 40}}
       renderTabBar={() => <ScrollableTabBar/>}
     >
       {this.state.languages.map((result, i, arr) => {
@@ -61,8 +59,10 @@ export default class PopularPage extends Component {
         return lan.checked ? <PopularTab key={i} tabLabel={lan.name} {...this.props}></PopularTab> : null
       })}
     </ScrollableTabView> : null
+    let title = <Text style={{fontSize: 20, color: 'white', fontWeight: '400'}}>Popular</Text>
+
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: 'Popular'})}
+      {ComponentWithNavigationBar({title: title})}
       {content}
     </View>
   }
@@ -77,6 +77,7 @@ class PopularTab extends Component {
       isLoading: false,
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     }
+    // this.pageNum = 1
   }
 
   componentDidMount () {
@@ -88,11 +89,15 @@ class PopularTab extends Component {
     navigate('repositoryDetailPage', {item: item})
   }
 
+  genFetchUrl (label) {
+    return URL + label + QUERY_STR //+ '?page=' + this.pageNum
+  }
+
   loadData () {
     this.setState({
       isLoading: true,
     })
-    let url = URL + this.props.tabLabel + QUERY_STR
+    let url = this.genFetchUrl(this.props.tabLabel)
     this.datarespository.fetchRepository(url)
       .then(result => {
         let items = result && result.items ? result.items : result ? result : []
@@ -153,9 +158,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabView: {
-    // flex: 1,
-    // padding: 10,
-    // backgroundColor: 'rgba(0,0,0,0.01)',
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.01)',
   },
   tips: {
     fontSize: 29,

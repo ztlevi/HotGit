@@ -60,9 +60,17 @@
     component-type "^1.2.1"
     join-component "^1.1.0"
 
+"@types/prop-types@^15.5.2":
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.2.tgz#3c6b8dceb2906cc87fe4358e809f9d20c8d59be1"
+
 Base64@~0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/Base64/-/Base64-0.1.4.tgz#e9f6c6bef567fd635ea4162ab14dd329e74aa6de"
+
+GitHubTrending@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/GitHubTrending/-/GitHubTrending-3.0.0.tgz#554ad6ffc3feddcb367d6b170f309cbf80c54964"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -3530,6 +3538,10 @@ lodash._root@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._root/-/lodash._root-3.0.1.tgz#fba1c4524c19ee9a5f8136b4609f017cf4ded692"
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+
 lodash.escape@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/lodash.escape/-/lodash.escape-3.2.0.tgz#995ee0dc18c1b48cc92effae71a10aab5b487698"
@@ -4642,6 +4654,14 @@ react-native-iphone-x-helper@^1.0.1:
 react-native-maps@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
+
+react-native-modal-popover@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-modal-popover/-/react-native-modal-popover-0.0.3.tgz#980e1d95956549e15eda4998ec8bbea917eccb89"
+  dependencies:
+    "@types/prop-types" "^15.5.2"
+    lodash.debounce "^4.0.8"
+    prop-types "^15.6.0"
 
 react-native-navbar@^2.1.0:
   version "2.1.0"
