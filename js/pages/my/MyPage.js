@@ -10,20 +10,18 @@ import {
 import ComponentWithNavigationBar from '../../common/NavigatorBar'
 import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao'
 import DataRepository from '../../expand/dao/DataRepository'
+import FavoriteDAO from '../../expand/dao/FavoriteDAO'
 import UserDao from '../../expand/dao/UserDao'
 
 export default class MyPage extends Component {
   constructor (props) {
     super(props)
+    this.favDao = new FavoriteDAO()
   }
 
-  // static navigationOptions = ({navigation}) => ({
-  //   this.props = navigation.state.params;
-  // });
   render () {
-    let userDao = new UserDao()
     let title = <Text style={{fontSize: 20, color: 'white', fontWeight: '400'}}>My Account</Text>
-
+    let userDao = new UserDao()
 
     const {navigate} = this.props.navigation
     return <View style={styles.container}>
@@ -41,32 +39,61 @@ export default class MyPage extends Component {
               }}
         >Login</Text>
       </View>
+      {/*Custom Pages*/}
       <Text style={styles.tips}
             onPress={() => {
-              navigate('customKeyPage')
-            }}>Custom Tag</Text>
+              navigate('customKeyPage', {flag: FLAG_LANGUAGE.flag_key})
+            }}>Custom Key</Text>
+      <Text style={styles.tips}
+            onPress={() => {
+              navigate('customKeyPage', {flag: FLAG_LANGUAGE.flag_language})
+            }}>Custom Languages</Text>
 
+      {/*Sort Pages*/}
       <Text style={styles.tips}
             onPress={() => {
-              navigate('sortKeyPage')
-            }}>Sort Tag</Text>
+              navigate('sortKeyPage', {flag: FLAG_LANGUAGE.flag_language})
+            }}>Sort Key</Text>
       <Text style={styles.tips}
             onPress={() => {
-              navigate('customKeyPage', {isRemoveKey: true})
-            }}>Remove Tag</Text>
+              navigate('sortKeyPage', {flag: FLAG_LANGUAGE.flag_language})
+            }}>Sort Languages</Text>
+
+      {/*Remove Pages*/}
+      <Text style={styles.tips}
+            onPress={() => {
+              navigate('customKeyPage', {isRemoveKey: true, flag: FLAG_LANGUAGE.flag_key})
+            }}>Remove Key</Text>
+
+      {/*Reset*/}
       <Text style={styles.tips}
             onPress={() => {
               let languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
               Alert.alert(
                 'Note',
-                'Do you want to reset tags?',
+                'Do you want to reset keys?',
                 [
                   {text: 'NO', onPress: () => {}},
-                  {text: 'YES', onPress: () => languageDao.reset()},
+                  {text: 'YES', onPress: () => languageDao.resetKeys()},
                 ],
                 {cancelable: false}
               )
-            }}>Reset Tags</Text>
+            }}>Reset Default Keys</Text>
+      <Text style={styles.tips}
+            onPress={() => {
+              let languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
+              Alert.alert(
+                'Note',
+                'Do you want to reset languages?',
+                [
+                  {text: 'NO', onPress: () => {}},
+                  {text: 'YES', onPress: () => languageDao.resetLangs()},
+                ],
+                {cancelable: false}
+              )
+            }}>Reset Default Languages</Text>
+
+      {/*Star and Unstar*/}
       <Text style={styles.tips}
             onPress={() => {
               userDao.starRepo('apple/turicreate')
@@ -100,6 +127,18 @@ export default class MyPage extends Component {
                   DeviceEventEmitter.emit('showToast', 'Please Login...')
                 })
             }}>Check if starred</Text>
+
+      <Text style={styles.tips}
+            onPress={() => {
+              userDao.fetchStarredRepos()
+                .then(() => {
+                  DeviceEventEmitter.emit('showToast', 'Starred')
+                })
+                .catch(() => {
+                  DeviceEventEmitter.emit('showToast', 'Please Login...')
+                })
+            }}>Starred Repos</Text>
+
     </View>
   }
 }

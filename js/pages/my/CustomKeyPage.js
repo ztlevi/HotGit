@@ -17,7 +17,6 @@ import ArrayUtils from '../../util/ArrayUtils'
 export default class CustomKeyPage extends Component {
   constructor (props) {
     super(props)
-    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
     this.changeValues = []
     const {state} = this.props.navigation
     try {
@@ -31,6 +30,9 @@ export default class CustomKeyPage extends Component {
   }
 
   componentDidMount () {
+    const {state} = this.props.navigation
+    this.flag = state.params.flag
+    this.languageDao = new LanguageDao(this.flag)
     this.loadData()
   }
 
@@ -102,8 +104,10 @@ export default class CustomKeyPage extends Component {
       this.props.navigation.goBack()
       return
     }
-    for (let i = 0, l = this.changeValues.length; i < l; i++) {
-      ArrayUtils.remove(this.state.dataArray, this.changeValues[i])
+    if (this.isRemoveKey) {
+      for (let i = 0, l = this.changeValues.length; i < l; i++) {
+        ArrayUtils.remove(this.state.dataArray, this.changeValues[i])
+      }
     }
     this.languageDao.save(this.state.dataArray)
     this.props.navigation.goBack()
@@ -132,7 +136,8 @@ export default class CustomKeyPage extends Component {
   }
 
   render () {
-    let title = this.isRemoveKey ? 'Remove Tag' : 'Custom Tag'
+    let title = this.isRemoveKey ? 'Remove Key' : 'Custom Key'
+    title = this.flag === FLAG_LANGUAGE.flag_language ? 'Custom Languages' : title
     let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save'
     let rightButton = <TouchableOpacity
       onPress={() => this.onSave()}
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
   },
   line: {
     backgroundColor: 'darkgray',
-    height: 0.3,
+    height: 1,
   },
   item: {
     flexDirection: 'row',

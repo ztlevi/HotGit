@@ -18,7 +18,7 @@ export default class RepositoryDetail extends Component {
   constructor (props) {
     super(props)
     const {state} = this.props.navigation
-    let item = state.params.item
+    let item = state.params.projectModel.item
     this.url = item.html_url ? item.html_url : TRENDING_URL + item.fullName
     let title = item.full_name ? item.full_name : item.fullName
     this.state = {

@@ -26,7 +26,9 @@ export default class SortKeyPage extends Component {
   }
 
   componentDidMount () {
-    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
+    const {state} = this.props.navigation
+    this.flag = state.params.flag
+    this.languageDao = new LanguageDao(this.flag)
     this.loadData()
   }
 
@@ -103,8 +105,10 @@ export default class SortKeyPage extends Component {
       </View>
     </TouchableOpacity>
 
+    let title = this.flag === FLAG_LANGUAGE.flag_language ? 'Sort Languages' : 'Sort Key'
+
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: 'My'}, leftButton, rightButton)}
+      {ComponentWithNavigationBar({title: title}, leftButton, rightButton)}
       <SortableListView
         data={this.state.checkedArray}
         order={order}

@@ -8,30 +8,30 @@
   {
     "path": "unknown",
     "name": "Unknown",
-    "checked": true
+    "checked": false
   },
   {
     "path": "as3",
     "name": "ActionScript",
     "short_name": "AS",
-    "checked": true
+    "checked": false
   },
   {
     "path": "apacheconf",
     "name": "ApacheConf",
-    "checked": true
+    "checked": false
   },
   {
     "path": "nasm",
     "name": "Assembly",
     "short_name": "NASM",
-    "checked": true
+    "checked": false
   },
   {
     "path": "bat",
     "name": "Batchfile",
     "short_name": "BAT",
-    "checked": true
+    "checked": false
   },
   {
     "path": "c",
@@ -41,7 +41,7 @@
   {
     "path": "csharp",
     "name": "C#",
-    "checked": true
+    "checked": false
   },
   {
     "path": "cpp",
@@ -51,7 +51,7 @@
   {
     "path": "cmake",
     "name": "CMake",
-    "checked": true
+    "checked": false
   },
   {
     "path": "css",
@@ -119,7 +119,7 @@
   {
     "path": "go",
     "name": "Go",
-    "checked": false
+    "checked": true
   },
   {
     "path": "groovy",
@@ -150,13 +150,13 @@
   {
     "path": "java",
     "name": "Java",
-    "checked": false
+    "checked": true
   },
   {
     "path": "javascript",
     "short_name": "JS",
     "name": "JavaScript",
-    "checked": false
+    "checked": true
   },
   {
     "path": "julia",
@@ -249,7 +249,7 @@
   {
     "path": "python",
     "name": "Python",
-    "checked": false
+    "checked": true
   },
   {
     "path": "qml",
@@ -264,7 +264,7 @@
   {
     "path": "ruby",
     "name": "Ruby",
-    "checked": false
+    "checked": true
   },
   {
     "path": "rust",
@@ -294,7 +294,7 @@
   {
     "path": "swift",
     "name": "Swift",
-    "checked": false
+    "checked": true
   },
   {
     "path": "tex",
@@ -304,7 +304,7 @@
   {
     "path": "typescript",
     "name": "TypeScript",
-    "checked": false
+    "checked": true
   },
   {
     "path": "verilog",

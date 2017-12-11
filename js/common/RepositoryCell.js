@@ -8,34 +8,65 @@ import {
 } from 'react-native'
 
 export default class RepositoryCell extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      isFavorite: this.props.projectModel.isFavorite,
+      favoriteIcon: this.props.projectModel.isFavorite ? require('../../res/images/ic_star_36pt.png')
+        : require('../../res/images/ic_star_border_black_36dp.png')
+    }
+  }
+
   render () {
-    let data = this.props.data
+    let item = this.props.projectModel.item ? this.props.projectModel.item : this.props.projectModel
+    let favoriteButton = <TouchableOpacity
+      onPress={() => this.onPressFavorite()}
+    >
+      <Image
+        style={{width: 22, height: 22, tintColor: '#2196F3'}}
+        source={this.state.favoriteIcon}/>
+    </TouchableOpacity>
 
     return (
       <TouchableOpacity
         onPress={() => this.props.onSelect()}
         style={styles.container}>
         <View style={styles.cell_container}>
-          <Text style={styles.title}>{data.full_name}</Text>
-          <Text style={styles.description}>{data.description}</Text>
+          <Text style={styles.title}>{item.full_name}</Text>
+          <Text style={styles.description}>{item.description}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text>Author:</Text>
+              <Text>Author: </Text>
               <Image
                 style={{height: 22, width: 22}}
-                source={{uri: data.owner.avatar_url}}
+                source={{uri: item.owner.avatar_url}}
               />
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text>Star:</Text>
-              <Text>{data.stargazers_count}</Text>
+              <Text>Star: </Text>
+              <Text>{item.stargazers_count}</Text>
             </View>
-            <Image style={{width: 22, height: 22, tintColor: 'orange'}}
-                   source={require('../../res/images/ic_star_border_black_36dp.png')}/>
+            {favoriteButton}
           </View>
         </View>
       </TouchableOpacity>
     )
+  }
+
+  onPressFavorite () {
+    this.setFavoriteState(!this.state.isFavorite)
+    this.props.onFavorite(this.props.projectModel.item, !this.state.isFavorite)
+  }
+
+  setFavoriteState (isFavorite) {
+    this.setState({
+      isFavorite: isFavorite,
+      favoriteIcon: isFavorite ? require('../../res/images/ic_star_36pt.png') : require('../../res/images/ic_star_border_black_36dp.png')
+    })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setFavoriteState(nextProps.projectModel.isFavorite)
   }
 }
 

@@ -38,18 +38,25 @@ export default class LanguageDao {
   }
 
   save (data) {
-    AsyncStorage.setItem(this.flag, JSON.stringify(data), (error, result) => {
-
-    })
+    AsyncStorage.setItem(this.flag, JSON.stringify(data), (error, result) => { })
   }
 
-  reset () {
+  resetKeys () {
     AsyncStorage.getItem(this.flag, (error, result) => {
       if (error) {
         console.log('Cannot reset!')
       } else {
-        let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : langs
-        this.save(data)
+        AsyncStorage.setItem(FLAG_LANGUAGE.flag_key, JSON.stringify(keys), (error, result) => { })
+      }
+    })
+  }
+
+  resetLangs () {
+    AsyncStorage.getItem(this.flag, (error, result) => {
+      if (error) {
+        console.log('Cannot reset!')
+      } else {
+        AsyncStorage.setItem(FLAG_LANGUAGE.flag_language, JSON.stringify(langs), (error, result) => { })
       }
     })
   }

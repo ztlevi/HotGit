@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import {
-  AsyncStorage, DeviceEventEmitter,
+  AsyncStorage,
+  DeviceEventEmitter
 } from 'react-native'
+import keys from '../../../res/data/keys.json'
+import langs from '../../../res/data/langs.json'
 
 const base64 = require('base-64')
 const url_star = 'https://api.github.com/user/starred/'
@@ -57,17 +60,18 @@ export default class UserDao {
       [AsyncStorage.setItem('username', username, (error, result) => {}),
         AsyncStorage.setItem('password', JSON.stringify(password), (error, result) => { })])
       .then(() => {
-          this.username = username
-          this.checkAuthentication()
-            .then(response => {
-              if (response.status === 200) {
-                DeviceEventEmitter.emit('showLoginResult', 'Logged in')
-              } else {
-                AsyncStorage.removeItem('username', (error, result) => {})
-                AsyncStorage.removeItem(username, (error, result) => {})
-                DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
-              }
-            })
+        this.username = username
+        this.checkAuthentication()
+          .then(response => {
+            if (response.status === 200) {
+              AsyncStorage.setItem('username', username, (error, result) => {})
+              DeviceEventEmitter.emit('showLoginResult', 'Logged in')
+            } else {
+              AsyncStorage.removeItem('username', (error, result) => {})
+              AsyncStorage.removeItem(username, (error, result) => {})
+              DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
+            }
+          })
       })
   }
 
@@ -78,8 +82,7 @@ export default class UserDao {
     }
     this.loadCurrentUser().then(
       () => {
-        AsyncStorage.removeItem('password', (error, result) => {})
-        AsyncStorage.removeItem('username', (error, result) => {})
+        AsyncStorage.clear()
       }
     )
 
@@ -112,12 +115,11 @@ export default class UserDao {
   /**
    * fetch starred repo
    */
-  fetchStarredRepos (page) {
-    let url = url_page + page
+  fetchStarredRepos () {
     return new Promise((resolve, reject) => {
       // if no user logged in
-      this.loadCurrentUser().then(() => {
-        if (this.username === '' || this.username == null) {
+      this.loadCurrentUser().then((result) => {
+        if (result === null) {
           DeviceEventEmitter.emit('showToast', 'Please Login...')
           reject(new Error('No user logged in'))
           return
@@ -129,11 +131,36 @@ export default class UserDao {
         .then(header_token => {
           let headers = new Headers()
           headers.append('Authorization', header_token)
-          fetch(url, {
+
+          // fetch first page of starred repos
+          fetch(url_page + '1', {
             headers: headers,
           })
             .then((response) => {
-              resolve(response)
+              if (response.headers.map.link) {
+                let links = response.headers.map.link
+                let lastPage = links[0].split(',')[1]
+                let numIdx = lastPage.indexOf('=') + 1
+
+                // get the last starred repos page number
+                let lastPageNum = lastPage[numIdx]
+
+                let promises = []
+                for (let i = 2; i <= lastPageNum; i++) {
+                  promises.push(fetch(url_page + i, {
+                    headers: headers,
+                  }))
+                }
+
+                // get rest starred repo pages
+                Promise.all(promises)
+                  .then((res) => {
+                    res.splice(0, 0, response)
+                    resolve(res)
+                  })
+              } else {
+                resolve([response])
+              }
             })
             .catch(error => {
               reject(error)
@@ -252,5 +279,4 @@ export default class UserDao {
         })
     })
   }
-
 }

@@ -11,6 +11,21 @@
     "checked": true
   },
   {
+    "path": "python",
+    "name": "Python",
+    "checked": true
+  },
+  {
+    "path": "java",
+    "name": "Java",
+    "checked": true
+  },
+  {
+    "path": "cpp",
+    "name": "C++",
+    "checked": true
+  },
+  {
     "path": "react-native",
     "name": "React Native",
     "checked": true
