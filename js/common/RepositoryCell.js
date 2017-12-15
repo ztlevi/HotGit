@@ -17,6 +17,22 @@ export default class RepositoryCell extends Component {
     }
   }
 
+  onPressFavorite () {
+    this.setFavoriteState(!this.state.isFavorite)
+    this.props.onFavorite(this.props.projectModel.item, !this.state.isFavorite)
+  }
+
+  setFavoriteState (isFavorite) {
+    this.setState({
+      isFavorite: isFavorite,
+      favoriteIcon: isFavorite ? require('../../res/images/ic_star_36pt.png') : require('../../res/images/ic_star_border_black_36dp.png')
+    })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setFavoriteState(nextProps.projectModel.isFavorite)
+  }
+
   render () {
     let item = this.props.projectModel.item ? this.props.projectModel.item : this.props.projectModel
     let favoriteButton = <TouchableOpacity
@@ -51,22 +67,6 @@ export default class RepositoryCell extends Component {
         </View>
       </TouchableOpacity>
     )
-  }
-
-  onPressFavorite () {
-    this.setFavoriteState(!this.state.isFavorite)
-    this.props.onFavorite(this.props.projectModel.item, !this.state.isFavorite)
-  }
-
-  setFavoriteState (isFavorite) {
-    this.setState({
-      isFavorite: isFavorite,
-      favoriteIcon: isFavorite ? require('../../res/images/ic_star_36pt.png') : require('../../res/images/ic_star_border_black_36dp.png')
-    })
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.setFavoriteState(nextProps.projectModel.isFavorite)
   }
 }
 

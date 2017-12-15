@@ -20,7 +20,12 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao'
 import TimeSpan from '../model/TimeSpan'
 import Popover, { PopoverTouchable } from 'react-native-modal-popover'
-// import Popover from '../common/Popover'
+import ProjectModel from '../model/ProjectModel'
+import FavoriteDAO from '../expand/dao/FavoriteDAO'
+import Utils from '../util/Utils'
+
+let dataRepository = new DataRepository(FLAG_STORAGE.flag_trending)
+let favoriteDAO = new FavoriteDAO()
 
 const API_URL = 'https://github.com/trending/'
 let timeSpanTextArray = [
@@ -85,13 +90,13 @@ export default class TrendingPage extends Component {
     </ScrollableTabView> : null
 
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: this.renderTitleView()})}
+      {ComponentWithNavigationBar(this.renderTitleView())}
       {content}
     </View>
   }
 
   renderTitleView () {
-    return <View style={{width: 100, height: 30, alignContent: 'center'}}>
+    return <View style={{height: 30, alignContent: 'center'}}>
       <TouchableOpacity
         onPress={this.openPopover}
         ref={r => this.button = r}
@@ -99,7 +104,7 @@ export default class TrendingPage extends Component {
       >
         <View style={styles.title}>
           <Text
-            style={{fontSize: 20, color: 'white', fontWeight: '400', marginLeft: -30}}>Trending</Text>
+            style={styles.titleText}>Trending</Text>
           <Text
             style={{
               marginLeft: 8,
@@ -138,10 +143,10 @@ export default class TrendingPage extends Component {
   }
 
   openPopover = () => {
-    this.setState({isVisible: true})
+    this.updateState({isVisible: true})
   }
   closePopover = () => {
-    this.setState({isVisible: false})
+    this.updateState({isVisible: false})
   }
 
   onSelectTimeSpan (timeSpan) {
@@ -150,16 +155,21 @@ export default class TrendingPage extends Component {
       isVisible: false,
     })
   }
+
+  updateState (dic) {
+    if (!this) return
+    this.setState(dic)
+  }
 }
 
 class TrendingTab extends Component {
   constructor (props) {
     super(props)
-    this.datarespository = new DataRepository(FLAG_STORAGE.flag_trending)
     this.state = {
       result: '',
       isLoading: false,
-      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      favoriteKeys: [],
     }
     // this.pageNum = 1
   }
@@ -179,9 +189,9 @@ class TrendingTab extends Component {
     this.setState(dic)
   }
 
-  onSelect (item) {
+  onSelect (projectModel) {
     const {navigate} = this.props.navigation
-    navigate('repositoryDetailPage', {item: item})
+    navigate('repositoryDetailPage', {projectModel: projectModel})
   }
 
   genFetchUrl (timeSpan, category) {
@@ -193,43 +203,86 @@ class TrendingTab extends Component {
     this.loadData(this.props.timeSpan)
   }
 
+  /**
+   * favoriteIcon click callback function
+   * @param item
+   * @param isFavorite
+   */
+  onFavorite (item, isFavorite) {
+    if (isFavorite) {
+      favoriteDAO.saveFavoriteItem('id_' + item.fullName.toString(), JSON.stringify(item))
+    } else {
+      favoriteDAO.removeFavoriteItem('id_' + item.fullName.toString(), JSON.stringify(item))
+    }
+  }
+
+  getFavoriteKeys () {
+    favoriteDAO.getFavoriteKeys()
+      .then(keys => {
+        keys = keys ? keys : []
+        this.updateState({favoriteKeys: keys})
+        this.flushFavoriteState()
+      })
+      .catch(e => {
+        this.flushFavoriteState()
+      })
+  }
+
+  /**
+   * Update project item favorite status
+   */
+  flushFavoriteState () {
+    let projectModels = []
+    let items = this.items
+    for (let i = 0, len = items.length; i < len; i++) {
+      projectModels.push(new ProjectModel(items[i], Utils.checkFavorite(items[i], this.state.favoriteKeys)))
+    }
+    this.updateState({
+      isLoading: false,
+      dataSource: this.getDataSource(projectModels),
+    })
+  }
+
+  getDataSource (data) {
+    return this.state.dataSource.cloneWithRows(data)
+  }
+
   loadData (timeSpan, isRefresh) {
     this.updateState({
       isLoading: true,
     })
     let url = this.genFetchUrl(timeSpan, this.props.tabLabel)
-    this.datarespository.fetchNetRepository(url)
+    dataRepository.fetchRepository(url)
       .then(result => {
-        let items = result && result.items ? result.items : result ? result : []
-        this.updateState({
-          dataSource: this.state.dataSource.cloneWithRows(items),
-          isLoading: false,
-        })
-        if (result && result.update_date && !this.datarespository.checkDate(result.update_date)) {
+        this.items = result && result.items ? result.items : result ? result : []
+        this.getFavoriteKeys()
+        if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
           DeviceEventEmitter.emit('showToast', 'Data outdated')
-          return this.datarespository.fetchNetRepository(url)
+          return dataRepository.fetchNetRepository(url)
         } else {
           DeviceEventEmitter.emit('showToast', 'Show cached data')
         }
       })
       .then(items => {
         if (!items || items.length === 0) return
-        this.updateState({
-          dataSource: this.state.dataSource.cloneWithRows(items),
-        })
+        this.items = items
+        this.getFavoriteKeys()
         DeviceEventEmitter.emit('showToast', 'Show network data')
       })
       .catch(error => {
-        this.setState({
-          result: JSON.stringify(error)
+        console.log(error)
+        this.updateState({
+          isLoading: false
         })
       })
   }
 
-  renderRow (data) {
+  renderRow (projectModel) {
     return <TrendingCell
-      onSelect={() => this.onSelect(data)}
-      data={data}/>
+      key={projectModel.item.fullName}
+      onSelect={() => this.onSelect(projectModel)}
+      onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+      projectModel={projectModel}/>
   }
 
   render () {
@@ -281,4 +334,5 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: 'rgba(0, 0, 0, 0)'
   },
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

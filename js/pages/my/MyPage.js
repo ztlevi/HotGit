@@ -20,12 +20,12 @@ export default class MyPage extends Component {
   }
 
   render () {
-    let title = <Text style={{fontSize: 20, color: 'white', fontWeight: '400'}}>My Account</Text>
+    let title = <Text style={styles.titleText}>My Account</Text>
     let userDao = new UserDao()
 
     const {navigate} = this.props.navigation
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: title},)}
+      {ComponentWithNavigationBar(title)}
       <View
         style={styles.row}
       >
@@ -154,5 +154,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
   },
-
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

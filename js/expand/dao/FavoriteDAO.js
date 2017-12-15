@@ -32,7 +32,7 @@ export default class FavoriteDAO {
             for (let i = 0, len = responses.length; i < len; i++) {
               let repos = JSON.parse(responses[i]._bodyText)
               for (let j = 0; j < repos.length; j++) {
-                ids.push(repos[j].id.toString())
+                ids.push('id_' + repos[j].full_name.toString())
                 values.push(JSON.stringify(repos[j]))
               }
             }
@@ -53,7 +53,7 @@ export default class FavoriteDAO {
                           for (let i = 0; i < keys.length; i++) {
                             let key = keys[i]
                             // delete the key if the key represents id number
-                            if (!isNaN(key)) {
+                            if (key.substring(0, 3) === 'id_') {
                               if (!ids.includes(key)) {
                                 AsyncStorage.removeItem(key)
                               }
@@ -86,7 +86,8 @@ export default class FavoriteDAO {
       }
     })
     let item = JSON.parse(value)
-    this.userDao.starRepo(item.full_name)
+    let repo_name = item.full_name ? item.full_name : item.fullName
+    this.userDao.starRepo(repo_name)
   }
 
   /**
@@ -144,6 +145,7 @@ export default class FavoriteDAO {
       }
     })
     let item = JSON.parse(value)
-    this.userDao.unstarRepo(item.full_name)
+    let repo_name = item.full_name ? item.full_name : item.fullName
+    this.userDao.unstarRepo(repo_name)
   }
 }

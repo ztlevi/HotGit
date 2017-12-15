@@ -20,6 +20,7 @@ import Utils from '../util/Utils'
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
 let favoriteDAO = new FavoriteDAO()
+let dataRepository = new DataRepository()
 
 export default class PopularPage extends Component {
   constructor (props) {
@@ -63,10 +64,10 @@ export default class PopularPage extends Component {
         return lan.checked ? <PopularTab key={i} tabLabel={lan.name} {...this.props}></PopularTab> : null
       })}
     </ScrollableTabView> : null
-    let title = <Text style={{fontSize: 20, color: 'white', fontWeight: '400'}}>Popular</Text>
+    let title = <Text style={styles.titleText}>Popular</Text>
 
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: title})}
+      {ComponentWithNavigationBar(title)}
       {content}
     </View>
   }
@@ -75,7 +76,6 @@ export default class PopularPage extends Component {
 class PopularTab extends Component {
   constructor (props) {
     super(props)
-    this.datarespository = new DataRepository()
     this.state = {
       result: '',
       isLoading: false,
@@ -139,13 +139,13 @@ class PopularTab extends Component {
       isLoading: true,
     })
     let url = this.genFetchUrl(this.props.tabLabel)
-    this.datarespository.fetchRepository(url)
+    dataRepository.fetchRepository(url)
       .then(result => {
         this.items = result && result.items ? result.items : result ? result : []
         this.getFavoriteKeys()
-        if (result && result.update_date && !this.datarespository.checkDate(result.update_date)) {
+        if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
           DeviceEventEmitter.emit('showToast', 'Data outdated')
-          return this.datarespository.fetchNetRepository(url)
+          return dataRepository.fetchNetRepository(url)
         } else {
           DeviceEventEmitter.emit('showToast', 'Show cached data')
         }
@@ -170,16 +170,16 @@ class PopularTab extends Component {
    */
   onFavorite (item, isFavorite) {
     if (isFavorite) {
-      favoriteDAO.saveFavoriteItem(item.id.toString(), JSON.stringify(item))
+      favoriteDAO.saveFavoriteItem('id_' + item.full_name.toString(), JSON.stringify(item))
     } else {
-      favoriteDAO.removeFavoriteItem(item.id.toString(), JSON.stringify(item))
+      favoriteDAO.removeFavoriteItem('id_' + item.full_name.toString(), JSON.stringify(item))
     }
   }
 
   renderRow (projectModel) {
     return <RepositoryCell
       {...this.props}
-      key={projectModel.item.id}
+      key={projectModel.item.full_name}
       onSelect={() => this.onSelect(projectModel)}
       onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
       projectModel={projectModel}/>
@@ -218,4 +218,5 @@ const styles = StyleSheet.create({
   tips: {
     fontSize: 29,
   },
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

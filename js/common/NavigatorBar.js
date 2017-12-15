@@ -1,7 +1,7 @@
 import React, {
   Component
-} from 'react';
-import PropTypes from 'prop-types';
+} from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
@@ -9,41 +9,46 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
-} from 'react-native';
-import NavigationBar from 'react-native-navbar';
+} from 'react-native'
+import NavigationBar from 'react-native-navbar'
 
-module.exports = ComponentWithNavigationBar;
+module.exports = ComponentWithNavigationBar
 
 const defaultRB = {
   title: 'Next',
   handler: () => alert('hello!'),
-};
+}
 const defaultLB = {
   title: 'Next',
   handler: () => alert('hello!'),
-};
+}
 const defaultTitle = {
   title: 'Hello, world',
-};
+}
 
-function ComponentWithNavigationBar(titleConfig = defaultTitle,
-                                    leftButtonConfig=null,
-                                    rightButtonConfig=null){
+function ComponentWithNavigationBar (titleConfig = defaultTitle,
+                                     leftButtonConfig = null,
+                                     rightButtonConfig = null) {
   return (
     <View style={styles.container}>
+      <View style={{height:Platform.OS === 'ios' ? 5 : 15}}></View>
       <NavigationBar
         tintColor='#2196F3'
-        statusBar={{style:'light-content', tintColor:'#2196F3'}}
-        title={{...titleConfig, tintColor:'white'}}
+        statusBar={{
+          style: 'light-content',
+          tintColor: '#2196F3',
+        }}
+        title={titleConfig}
         leftButton={leftButtonConfig}
         rightButton={rightButtonConfig}
       />
     </View>
   )
 }
-const NAV_BAR_HEIGHT_ANDROID = 50;
-const NAV_BAR_HEIGHT_IOS = 44;
-const STATUS_BAR_HEIGHT = 20;
+
+const NAV_BAR_HEIGHT_ANDROID = 50
+const NAV_BAR_HEIGHT_IOS = 44
+const STATUS_BAR_HEIGHT = 20
 const StatusBarShape = {
   backgroundColor: PropTypes.string,
   barStyle: PropTypes.oneOf(['default', 'light-content', 'dark-content']),
@@ -68,22 +73,21 @@ class NavigatorBar2 extends Component {
     },
   }
 
-  constructor(props, defaultProps) {
-    super(props, defaultProps);
+  constructor (props, defaultProps) {
+    super(props, defaultProps)
     this.state = {
       title: '',
       hide: false,
     }
   }
 
-  render() {
+  render () {
     console.log(this.props)
     let status =
       <View style={styles.statusBar}>
         <StatusBar {...this.props.statusBar} barStyle='light-content'/>
       </View>
-    let titleView = this.props.titleView ? this.props.titleView :
-      <Text style={styles.title}>{this.props.title}</Text>;
+    let titleView = this.props.titleView ? this.props.titleView : <Text style={styles.title}>{this.props.title}</Text>
     let content =
       <View style={styles.navBar}>
         {this.props.leftButton}

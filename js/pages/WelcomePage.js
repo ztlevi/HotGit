@@ -18,9 +18,11 @@ export default class WelcomePage extends Component {
     this.timer && clearTimeout(this.timer)
   }
 
+
   render () {
+    let title = <Text style={styles.titleText}>Welcome Page</Text>
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: 'Welcome Page'})}
+      {ComponentWithNavigationBar(title)}
       <Text>Welcome!</Text>
     </View>
   }
@@ -29,5 +31,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor:'white',
     flex: 1
-  }
+  },
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })
