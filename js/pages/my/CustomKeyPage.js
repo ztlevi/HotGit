@@ -139,20 +139,14 @@ export default class CustomKeyPage extends Component {
     let title = this.isRemoveKey ? 'Remove Key' : 'Custom Key'
     title = this.flag === FLAG_LANGUAGE.flag_language ? 'Custom Languages' : title
     let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save'
-    let rightButton = <TouchableOpacity
-      onPress={() => this.onSave()}
-      style={{padding: 10}}
-    >
-      <View styl={{flex: 1}}>
-        <Text style={styles.title}>{rightButtonTitle}</Text>
-      </View>
-    </TouchableOpacity>
+    let rightButton = ViewUtils.getRightButton(this.onBack, rightButtonTitle)
 
+    let titleText = <Text style={styles.titleText}>{title}</Text>
     let leftButton = ViewUtils.getLeftButton(() => this.onBack())
 
     return <View style={styles.container}>
       {ComponentWithNavigationBar(
-        {title: title},
+        titleText,
         leftButton,
         rightButton
       )}
@@ -170,10 +164,6 @@ const styles = StyleSheet.create({
   tips: {
     fontSize: 29
   },
-  title: {
-    fontSize: 16,
-    color: 'white',
-  },
   line: {
     backgroundColor: 'darkgray',
     height: 1,
@@ -182,4 +172,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

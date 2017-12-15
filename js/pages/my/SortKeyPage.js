@@ -96,19 +96,14 @@ export default class SortKeyPage extends Component {
     console.log(this.state.checkedArray)
     let order = Object.keys(this.state.checkedArray)
 
-    let leftButton = ViewUtils.getLeftButton(() => this.onBack())
-    let rightButton = <TouchableOpacity
-      style={{alignItems: 'center', padding: 10}}
-      onPress={() => this.onSave()}>
-      <View style={{marginRight: 10}}>
-        <Text style={styles.title}>Save</Text>
-      </View>
-    </TouchableOpacity>
+    let leftButton = ViewUtils.getLeftButton(this.onBack)
+    let rightButton = ViewUtils.getRightButton(this.onBack, 'Save')
 
     let title = this.flag === FLAG_LANGUAGE.flag_language ? 'Sort Languages' : 'Sort Key'
+    let titleText = <Text style={styles.titleText}>{title}</Text>
 
     return <View style={styles.container}>
-      {ComponentWithNavigationBar({title: title}, leftButton, rightButton)}
+      {ComponentWithNavigationBar(titleText, leftButton, rightButton)}
       <SortableListView
         data={this.state.checkedArray}
         order={order}
@@ -166,8 +161,5 @@ const styles = StyleSheet.create({
     width: 16,
     marginRight: 10,
   },
-  title: {
-    fontSize: 20,
-    color: '#FFFFFF',
-  }
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

@@ -51,9 +51,12 @@ export default class RepositoryDetail extends Component {
 
   render () {
     let leftButton = ViewUtils.getLeftButton(() => this.goBack())
+    let titleWidth = 25
+    let titleShrinked = this.state.title.length > titleWidth ? this.state.title.substring(0, titleWidth) + '...' : this.state.title
+    let title = <Text style={styles.titleText}>{titleShrinked}</Text>
     return <View style={styles.container}>
       {ComponentWithNavigationBar(
-        {title: this.state.title},
+        title,
         leftButton,
       )}
       <WebView
@@ -82,5 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     margin: 2
-  }
+  },
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })
