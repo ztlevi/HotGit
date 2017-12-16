@@ -8,6 +8,7 @@ import langs from '../../../res/data/langs.json'
 
 const base64 = require('base-64')
 const url_star = 'https://api.github.com/user/starred/'
+const url_repo = 'https://api.github.com/repos/'
 const url_page = 'https://api.github.com/user/starred?page='
 
 export default class UserDao {
@@ -270,6 +271,42 @@ export default class UserDao {
           xhr.onreadystatechange = function () {//Call a function when the state changes.
             if (xhr.readyState === 4 && xhr.status === 204) {
               resolve()
+            }
+          }
+          xhr.send()
+        })
+        .catch(e => {
+          reject(e)
+        })
+    })
+  }
+
+  /**
+   * fetch a repo info
+   */
+  fetchRepoInfo (repo) {
+    return new Promise((resolve, reject) => {
+      // if no user logged in
+      this.loadCurrentUser().then(() => {
+        if (this.username === '' || this.username == null) {
+          reject(new Error('No user logged in'))
+          return
+        }
+      })
+
+      // fetch a repo info
+      let url = url_repo + repo
+      this.fetchAuthenticationHeader()
+        .then(header_token => {
+          let xhr = new XMLHttpRequest()
+          xhr.open('GET', url, true)
+
+          xhr.setRequestHeader('Authorization', header_token)
+          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+
+          xhr.onreadystatechange = function () {//Call a function when the state changes.
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              resolve(xhr.responseText)
             }
           }
           xhr.send()

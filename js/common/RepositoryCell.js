@@ -43,6 +43,14 @@ export default class RepositoryCell extends Component {
     })
   }
 
+  getDescription (item) {
+    let text = item.description
+    if (text && text.length > 200) {
+      text = text.substring(0, 200) + '...'
+    }
+    return text
+  }
+
   render () {
     let item = this.props.projectModel.item ? this.props.projectModel.item : this.props.projectModel
     let favoriteButton = <TouchableOpacity
@@ -59,7 +67,7 @@ export default class RepositoryCell extends Component {
         style={styles.container}>
         <View style={styles.cell_container}>
           <Text style={styles.title}>{item.full_name}</Text>
-          <Text style={styles.description}>{item.description}</Text>
+          <Text style={styles.description}>{this.getDescription(item)}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text>Author: </Text>

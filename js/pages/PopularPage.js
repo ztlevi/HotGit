@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import {
   View,
   StyleSheet,
-  ScrollView,
+  Dimensions,
   ListView,
   RefreshControl,
   DeviceEventEmitter,
   Text,
 } from 'react-native'
+
 import ComponentWithNavigationBar from '../common/NavigatorBar'
 import DataRepository, { FLAG_STORAGE } from '../expand/dao/DataRepository'
 import RepositoryCell from '../common/RepositoryCell'
@@ -61,7 +62,8 @@ export default class PopularPage extends Component {
     >
       {this.state.languages.map((result, i, arr) => {
         let lan = arr[i]
-        return lan.checked ? <PopularTab key={i} tabLabel={lan.name} {...this.props}></PopularTab> : null
+        return lan.checked ? <PopularTab key={i} tabLabel={lan.name}
+                                         {...this.props}></PopularTab> : null
       })}
     </ScrollableTabView> : null
     let title = <Text style={styles.titleText}>Popular</Text>
@@ -76,17 +78,41 @@ export default class PopularPage extends Component {
 class PopularTab extends Component {
   constructor (props) {
     super(props)
+    this.items = []
+    this.isFavorteChanged = false
     this.state = {
       result: '',
       isLoading: false,
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       favoriteKeys: []
     }
-    // this.pageNum = 1
+    this.pageNum = 0
   }
 
   componentDidMount () {
-    this.loadData()
+    this.listener = DeviceEventEmitter.addListener('favoriteChanged', () => {
+      this.isFavorteChanged = true
+    })
+    this.loadData(true, true)
+    this.load_more_listener = DeviceEventEmitter.addListener('popular_load_more', () => this.loadData(false, true))
+  }
+
+  componentWillUnmount () {
+    if (this.listener) {
+      this.listener.remove()
+    }
+    if (this.load_more_listener) {
+      this.load_more_listener.remove()
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.isFavorteChanged) {
+      this.isFavorteChanged = false
+      this.getFavoriteKeys()
+    }
+    // if (!nextProps)
+    //   this.loadData(false, false)
   }
 
   onSelect (projectModel) {
@@ -95,7 +121,7 @@ class PopularTab extends Component {
   }
 
   genFetchUrl (label) {
-    return URL + label + QUERY_STR //+ '?page=' + this.pageNum
+    return URL + label + QUERY_STR + '&order=desc'
   }
 
   getDataSource (data) {
@@ -134,25 +160,33 @@ class PopularTab extends Component {
     this.setState(dic)
   }
 
-  loadData () {
-    this.setState({
-      isLoading: true,
-    })
-    let url = this.genFetchUrl(this.props.tabLabel)
+  loadData (showLoading, loadMore) {
+    if (showLoading) {
+      this.setState({
+        isLoading: true,
+      })
+    }
+    if (loadMore) {
+      this.pageNum++
+    }
+    let url = this.genFetchUrl(this.props.tabLabel) + '&page=' + this.pageNum
     dataRepository.fetchRepository(url)
       .then(result => {
-        this.items = result && result.items ? result.items : result ? result : []
-        this.getFavoriteKeys()
+        let itemArr = result && result.items ? result.items : result ? result : []
+
         if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
           DeviceEventEmitter.emit('showToast', 'Data outdated')
+
           return dataRepository.fetchNetRepository(url)
         } else {
+          this.items.push(...itemArr)
+          this.getFavoriteKeys()
           DeviceEventEmitter.emit('showToast', 'Show cached data')
         }
       })
       .then(items => {
         if (!items || items.length === 0) return
-        this.items = items
+        this.items.push(...items)
         this.getFavoriteKeys()
         DeviceEventEmitter.emit('showToast', 'Show network data')
       })
@@ -185,15 +219,28 @@ class PopularTab extends Component {
       projectModel={projectModel}/>
   }
 
+  _onScroll (e) {
+    let windowHeight = Dimensions.get('window').height,
+      height = e.nativeEvent.contentSize.height,
+      offset = e.nativeEvent.contentOffset.y
+
+    // loadData only when scrolled to bottom
+    if (offset > 0 && windowHeight - offset < 10 && windowHeight + offset >= height) {
+      this.loadData(false, true)
+      console.log('End Scroll')
+    }
+  }
+
   render () {
     return (<View style={{flex: 1}}>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(data) => this.renderRow(data)}
+          onScroll={(e) => this._onScroll(e)}
           refreshControl={
             <RefreshControl
               refreshing={this.state.isLoading}
-              onRefresh={() => this.loadData()}
+              onRefresh={() => this.loadData(true, false)}
               color={['#2196F3']}
               tintColor={'#2196F3'}
               title={'Loading...'}
@@ -218,5 +265,11 @@ const styles = StyleSheet.create({
   tips: {
     fontSize: 29,
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'},
+  iconSection: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+
 })

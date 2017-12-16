@@ -4,14 +4,10 @@ import React, {
 import {
   View,
   Image,
-  Button,
-  TextInput,
   Text,
   StyleSheet,
   WebView,
-  DeviceEventEmitter,
 } from 'react-native'
-import { NavigationActions } from 'react-navigation'
 import ComponentWithNavigationBar from '../common/NavigatorBar'
 import ViewUtils from '../util/ViewUtils'
 import FavoriteDAO from '../expand/dao/FavoriteDAO'

@@ -11,6 +11,7 @@ import SortKeyPage from './my/SortKeyPage'
 import RepositoryDetail from './RepositoryDetail'
 import LoginPage from './my/LoginPage'
 import TrendingPage from './TrendingPage'
+import FavoritePage from './FavoritePage'
 
 // init
 const Root = StackNavigator({
@@ -18,6 +19,7 @@ const Root = StackNavigator({
   homePage: {screen: HomePage},
   popularPage: {screen: PopularPage},
   trendingPage: {screen: TrendingPage},
+  favoritePage: {screen: FavoritePage},
   repositoryDetailPage: {screen: RepositoryDetail},
 
   // my pages

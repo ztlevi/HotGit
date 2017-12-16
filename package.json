@@ -19,6 +19,7 @@
     "react-native": "0.50.4",
     "react-native-check-box": "^2.0.2",
     "react-native-easy-toast": "^1.0.9",
+    "react-native-elements": "^0.18.5",
     "react-native-htmlview": "^0.12.1",
     "react-native-iphone-x-helper": "^1.0.1",
     "react-native-modal-popover": "^0.0.3",

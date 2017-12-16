@@ -6,6 +6,8 @@ This project was bootstrapped with [Create React Native App](https://github.com/
 
 install with `yarn` and then `yarn start`. Scan the QR code to install the Expo app and run the app on your iPhone.
 
+## Detail
+For the favorite page, there is some delay for Github API. That's why I put 2 min for fetching remote starred repos. And keep fetching remote starred repos cost a lot of network traffic. Anyway, you are not able to see your new stars instantly.
 ## Screen shots
 
 There is a basic *Popular Page* screenshot.

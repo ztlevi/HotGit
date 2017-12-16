@@ -3,8 +3,6 @@ import {
   View,
   StyleSheet,
   Image,
-  ScrollView,
-  Button,
   findNodeHandle,
   NativeModules,
   TouchableOpacity,
@@ -165,23 +163,40 @@ export default class TrendingPage extends Component {
 class TrendingTab extends Component {
   constructor (props) {
     super(props)
+    this.isFavorteChanged = false
     this.state = {
       result: '',
       isLoading: false,
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       favoriteKeys: [],
     }
-    // this.pageNum = 1
+    this.pageNum = 0
   }
 
   componentDidMount () {
+    this.listener = DeviceEventEmitter.addListener('favoriteChanged', () => {
+      this.isFavorteChanged = true
+    })
     this.loadData(this.props.timeSpan, true)
+  }
+
+  componentWillUnmount () {
+    if (this.listener) {
+      this.listener.remove()
+    }
+    if (this.load_more_listener) {
+      this.load_more_listener.remove()
+    }
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.timeSpan !== this.props.timeSpan) {
-      this.loadData(nextProps.timeSpan)
+      this.loadData(nextProps.timeSpan, true)
+    } else if (this.isFavorteChanged) {
+      this.isFavorteChanged = false
+      this.getFavoriteKeys()
     }
+    this.loadData(this.props.timeSpan, false)
   }
 
   updateState (dic) {
@@ -199,17 +214,12 @@ class TrendingTab extends Component {
     return url
   }
 
-  onRefresh () {
-    this.loadData(this.props.timeSpan)
-  }
-
   /**
    * favoriteIcon click callback function
    * @param item
    * @param isFavorite
    */
   onFavorite (item, isFavorite) {
-    let projectModel = thi
     if (isFavorite) {
       favoriteDAO.saveFavoriteItem('id_' + item.fullName.toString(), JSON.stringify(item))
     } else {
@@ -248,16 +258,18 @@ class TrendingTab extends Component {
     return this.state.dataSource.cloneWithRows(data)
   }
 
-  loadData (timeSpan, isRefresh) {
-    this.updateState({
-      isLoading: true,
-    })
+  loadData (timeSpan, showLoading) {
+    if (showLoading) {
+      this.updateState({
+        isLoading: true,
+      })
+    }
     let url = this.genFetchUrl(timeSpan, this.props.tabLabel)
     dataRepository.fetchRepository(url)
       .then(result => {
         this.items = result && result.items ? result.items : result ? result : []
         this.getFavoriteKeys()
-        if (!this.items || isRefresh && result.update_date && !dataRepository.checkDate(result.update_date)) {
+        if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
           DeviceEventEmitter.emit('showToast', 'Data outdated')
           return dataRepository.fetchNetRepository(url)
         } else {
@@ -295,7 +307,7 @@ class TrendingTab extends Component {
           refreshControl={
             <RefreshControl
               refreshing={this.state.isLoading}
-              onRefresh={() => this.onRefresh()}
+              onRefresh={() => this.loadData(this.props.timeSpan, true)}
               color={['#2196F3']}
               tintColor={'#2196F3'}
               title={'Loading...'}

@@ -22,6 +22,7 @@ import Toast, { DURATION } from 'react-native-easy-toast'
 import WebViewTest from '../../WebViewTest'
 import TrendingPage from './TrendingPage'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
+import FavoritePage from './FavoritePage'
 
 export default class HomePage extends Component {
   constructor (props) {
@@ -65,7 +66,7 @@ export default class HomePage extends Component {
         <TabNavigator>
           {this._renderTab(PopularPage, 'tb_popular', 'Popular', require('../../res/images/ic_whatshot_36pt.png'))}
           {this._renderTab(TrendingPage, 'tb_trending', 'Trending', require('../../res/images/ic_all_inclusive_36pt.png'))}
-          {this._renderTab(WebViewTest, 'tb_favorite', 'Favorite', require('../../res/images/ic_favorite_36pt.png'))}
+          {this._renderTab(FavoritePage, 'tb_favorite', 'Favorite', require('../../res/images/ic_favorite_36pt.png'))}
           {this._renderTab(MyPage, '', 'Account', require('../../res/images/ic_account_circle_36pt.png'))}
         </TabNavigator>
         <Toast ref={toast => this.toast = toast}/>

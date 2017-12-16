@@ -74,7 +74,9 @@ export default class DataRepository {
 
       } else {
         fetch(url)
-          .then(response => response.json())
+          .then(response =>
+            response.json()
+          )
           .then(result => {
             if (!result) {
               reject(new Error('responseData is null'))
@@ -101,6 +103,10 @@ export default class DataRepository {
    * @param longTime Data timestamp
    */
   checkDate (longTime) {
+    // just for test
+    // always use network
+    // return false
+
     let cDate = new Date()
     let tDate = new Date()
     tDate.setTime(longTime)
