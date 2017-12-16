@@ -1,5 +1,6 @@
 import {
   AsyncStorage,
+  DeviceEventEmitter,
 } from 'react-native'
 import GitHubTrending from 'GitHubTrending'
 
@@ -10,6 +11,7 @@ export default class DataRepository {
     if (flag === FLAG_STORAGE.flag_trending)
       this.trending = new GitHubTrending()
   }
+
   fetchRepository (url) {
     return new Promise((resolve, reject) => {
       // retrieve local data
@@ -20,6 +22,7 @@ export default class DataRepository {
           } else {
             this.fetchNetRepository(url)
               .then(result => {
+                DeviceEventEmitter.emit('showToast', 'Show fetched data')
                 resolve(result)
               })
               .catch(e => {

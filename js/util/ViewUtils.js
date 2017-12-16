@@ -21,7 +21,6 @@ export default class ViewUtils {
   }
 
   static getRightButton (callBack, rightButtonTitle) {
-
     return <TouchableOpacity
       onPress={callBack}
       style={{padding: 15}}
@@ -29,6 +28,15 @@ export default class ViewUtils {
       <View styl={{flex: 1}}>
         <Text style={{fontSize: 18, color: 'white', fontWeight: '400'}}>{rightButtonTitle}</Text>
       </View>
+    </TouchableOpacity>
+  }
+
+  static getRightButtonImage (callBack, rightButtonImage) {
+    return <TouchableOpacity
+      onPress={callBack}
+      style={{padding: 15}}
+    >
+      {rightButtonImage}
     </TouchableOpacity>
   }
 }

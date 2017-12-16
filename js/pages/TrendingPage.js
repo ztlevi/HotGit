@@ -209,6 +209,7 @@ class TrendingTab extends Component {
    * @param isFavorite
    */
   onFavorite (item, isFavorite) {
+    let projectModel = thi
     if (isFavorite) {
       favoriteDAO.saveFavoriteItem('id_' + item.fullName.toString(), JSON.stringify(item))
     } else {
@@ -256,7 +257,7 @@ class TrendingTab extends Component {
       .then(result => {
         this.items = result && result.items ? result.items : result ? result : []
         this.getFavoriteKeys()
-        if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
+        if (!this.items || isRefresh && result.update_date && !dataRepository.checkDate(result.update_date)) {
           DeviceEventEmitter.emit('showToast', 'Data outdated')
           return dataRepository.fetchNetRepository(url)
         } else {
@@ -279,6 +280,7 @@ class TrendingTab extends Component {
 
   renderRow (projectModel) {
     return <TrendingCell
+      {...this.props}
       key={projectModel.item.fullName}
       onSelect={() => this.onSelect(projectModel)}
       onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}

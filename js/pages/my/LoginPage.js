@@ -34,10 +34,11 @@ export default class LoginPage extends Component {
     let userDao = new UserDao()
     const {navigate, goBack} = this.props.navigation
 
+    let titleText = <Text style={styles.titleText}>Login</Text>
     let leftButton = ViewUtils.getLeftButton(() => goBack())
     return (
       <View sytle={styles.container}>
-        {ComponentWithNavigationBar({title: 'Login'}, leftButton)}
+        {ComponentWithNavigationBar(titleText, leftButton)}
         <View style={styles.row}>
           <Text
             style={styles.tips}
@@ -88,4 +89,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
   },
+  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

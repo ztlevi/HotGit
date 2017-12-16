@@ -16,7 +16,7 @@ import UserDao from '../../expand/dao/UserDao'
 export default class MyPage extends Component {
   constructor (props) {
     super(props)
-    this.favDao = new FavoriteDAO()
+    this.favoriteDao = new FavoriteDAO()
   }
 
   render () {
@@ -139,6 +139,11 @@ export default class MyPage extends Component {
                 })
             }}>Starred Repos</Text>
 
+      <Text style={styles.tips}
+            onPress={() => {
+              this.favoriteDao.reloadStarredRepos()
+              DeviceEventEmitter.emit('showToast', 'Reloaded')
+            }}>Reload Repos</Text>
     </View>
   }
 }

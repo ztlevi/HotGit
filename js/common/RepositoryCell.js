@@ -33,6 +33,16 @@ export default class RepositoryCell extends Component {
     this.setFavoriteState(nextProps.projectModel.isFavorite)
   }
 
+  // with callback function, to re-render the star icon when finish
+  onSelect () {
+    let projectModel = this.props.projectModel
+    const {navigate} = this.props.navigation
+    navigate('repositoryDetailPage', {
+      projectModel: projectModel,
+      callback: (isFavorite) => this.setFavoriteState(isFavorite)
+    })
+  }
+
   render () {
     let item = this.props.projectModel.item ? this.props.projectModel.item : this.props.projectModel
     let favoriteButton = <TouchableOpacity
@@ -45,7 +55,7 @@ export default class RepositoryCell extends Component {
 
     return (
       <TouchableOpacity
-        onPress={() => this.props.onSelect()}
+        onPress={() => this.onSelect()}
         style={styles.container}>
         <View style={styles.cell_container}>
           <Text style={styles.title}>{item.full_name}</Text>

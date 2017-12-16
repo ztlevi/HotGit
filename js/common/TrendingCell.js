@@ -30,6 +30,16 @@ export default class TrendingCell extends Component {
     })
   }
 
+  // with callback function, to re-render the star icon when finish
+  onSelect () {
+    let projectModel = this.props.projectModel
+    const {navigate} = this.props.navigation
+    navigate('repositoryDetailPage', {
+      projectModel: projectModel,
+      callback: (isFavorite) => this.setFavoriteState(isFavorite)
+    })
+  }
+
   componentWillReceiveProps (nextProps) {
     this.setFavoriteState(nextProps.projectModel.isFavorite)
   }
@@ -48,7 +58,7 @@ export default class TrendingCell extends Component {
 
     return (
       <TouchableOpacity
-        onPress={() => this.props.onSelect()}
+        onPress={() => this.onSelect()}
         style={styles.container}>
         <View style={styles.cell_container}>
           <Text style={styles.title}>{item.fullName}</Text>

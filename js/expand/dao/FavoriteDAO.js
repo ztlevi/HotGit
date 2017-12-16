@@ -15,8 +15,9 @@ export default class FavoriteDAO {
   constructor () {
     this.userDao = new UserDao()
     this.favoriteKey = 'favorite'
+
     // reload the remote starred repos when the app start
-    this.reloadStarredRepos()
+    // this.reloadStarredRepos()
   }
 
   // fetch all user's starred repo and update

@@ -139,7 +139,7 @@ export default class CustomKeyPage extends Component {
     let title = this.isRemoveKey ? 'Remove Key' : 'Custom Key'
     title = this.flag === FLAG_LANGUAGE.flag_language ? 'Custom Languages' : title
     let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save'
-    let rightButton = ViewUtils.getRightButton(this.onBack, rightButtonTitle)
+    let rightButton = ViewUtils.getRightButton(() => this.onBack, rightButtonTitle)
 
     let titleText = <Text style={styles.titleText}>{title}</Text>
     let leftButton = ViewUtils.getLeftButton(() => this.onBack())
