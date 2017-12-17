@@ -12,6 +12,7 @@ import ComponentWithNavigationBar from '../../common/NavigatorBar'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import UserDao from '../../expand/dao/UserDao'
 import ViewUtils from '../../util/ViewUtils'
+import FavoriteDAO from '../../expand/dao/FavoriteDAO'
 
 export default class LoginPage extends Component {
   constructor (props) {
@@ -32,6 +33,7 @@ export default class LoginPage extends Component {
 
   render () {
     let userDao = new UserDao()
+    let favoriteDao = new FavoriteDAO()
     const {navigate, goBack} = this.props.navigation
 
     let titleText = <Text style={styles.titleText}>Login</Text>
@@ -60,11 +62,12 @@ export default class LoginPage extends Component {
         </View>
         <Text style={styles.tips}
               onPress={() => {
-                userDao.login(this.username, this.password)
+                userDao.login(this.username, this.password, () => goBack())
               }}>Login</Text>
         <Text style={styles.tips}
               onPress={() => {
                 userDao.logout()
+                goBack()
               }}>Logout</Text>
         <Toast ref={toast => this.toast = toast}/>
       </View>

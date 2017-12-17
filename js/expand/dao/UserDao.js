@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import keys from '../../../res/data/keys.json'
 import langs from '../../../res/data/langs.json'
+import FavoriteDAO from './FavoriteDAO'
 
 const base64 = require('base-64')
 const url_star = 'https://api.github.com/user/starred/'
@@ -37,39 +38,40 @@ export default class UserDao {
 
   fetchAuthenticationHeader () {
     return new Promise((resolve, reject) => {
-      AsyncStorage.getItem('password', (error, result) => {
+      AsyncStorage.getItem('auth_header', (error, result) => {
         if (error) {
           reject(error)
         } else {
-          if (result) {
-            try {
-              let header_token = 'Basic ' + base64.encode(this.username + ':' + JSON.parse(result))
-              resolve(header_token)
-            } catch (e) {
-              reject(e)
-            }
-          } else {
-            reject(error)
-          }
+          resolve(result)
         }
       })
     })
   }
 
-  login (username, password) {
+  login (username, password, callBack) {
+    let auth_header = 'Basic ' + base64.encode(username + ':' + password)
+    console.log(auth_header)
     Promise.all(
       [AsyncStorage.setItem('username', username, (error, result) => {}),
-        AsyncStorage.setItem('password', JSON.stringify(password), (error, result) => { })])
+        AsyncStorage.setItem('auth_header', auth_header, (error, result) => {})])
       .then(() => {
         this.username = username
         this.checkAuthentication()
           .then(response => {
             if (response.status === 200) {
               AsyncStorage.setItem('username', username, (error, result) => {})
-              DeviceEventEmitter.emit('showLoginResult', 'Logged in')
+
+              // reload starred repos when logged in
+              let favoriteDao = new FavoriteDAO()
+              favoriteDao.reloadStarredRepos()
+
+              // go back when success
+              callBack()
+
+              DeviceEventEmitter.emit('showToast', 'Logged in')
             } else {
               AsyncStorage.removeItem('username', (error, result) => {})
-              AsyncStorage.removeItem(username, (error, result) => {})
+              AsyncStorage.removeItem('auth_header', (error, result) => {})
               DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
             }
           })
@@ -78,16 +80,12 @@ export default class UserDao {
 
   logout () {
     if (this.username === '' || this.username == null) {
-      DeviceEventEmitter.emit('showLoginResult', 'No user logged in')
+      DeviceEventEmitter.emit('showToast', 'No user logged in')
       return
     }
-    this.loadCurrentUser().then(
-      () => {
-        AsyncStorage.clear()
-      }
-    )
+    this.loadCurrentUser().then(() => {AsyncStorage.clear()})
 
-    DeviceEventEmitter.emit('showLoginResult', 'Logged out')
+    DeviceEventEmitter.emit('showToast', 'Logged out')
   }
 
   /**
@@ -96,9 +94,9 @@ export default class UserDao {
   checkAuthentication () {
     return new Promise((resolve, reject) => {
       this.fetchAuthenticationHeader()
-        .then(header_token => {
+        .then(auth_header => {
           let headers = new Headers()
-          headers.append('Authorization', header_token)
+          headers.append('Authorization', auth_header)
           fetch('https://api.github.com/', {
             headers: headers,
           })
@@ -129,9 +127,9 @@ export default class UserDao {
 
       // fetch starred repos
       this.fetchAuthenticationHeader()
-        .then(header_token => {
+        .then(auth_header => {
           let headers = new Headers()
-          headers.append('Authorization', header_token)
+          headers.append('Authorization', auth_header)
 
           // fetch first page of starred repos
           fetch(url_page + '1', {
@@ -186,11 +184,11 @@ export default class UserDao {
       // check if repo starred
       let url = url_star + repo
       this.fetchAuthenticationHeader()
-        .then(header_token => {
+        .then(auth_header => {
           let xhr = new XMLHttpRequest()
           xhr.open('GET', url, true)
 
-          xhr.setRequestHeader('Authorization', header_token)
+          xhr.setRequestHeader('Authorization', auth_header)
           xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
 
           xhr.onreadystatechange = function () {//Call a function when the state changes.
@@ -224,12 +222,12 @@ export default class UserDao {
       // Star a repo
       let url = url_star + repo
       this.fetchAuthenticationHeader()
-        .then(header_token => {
+        .then(auth_header => {
           let xhr = new XMLHttpRequest()
           xhr.open('PUT', url, true)
 
           xhr.setRequestHeader('Content-Length', 0)
-          xhr.setRequestHeader('Authorization', header_token)
+          xhr.setRequestHeader('Authorization', auth_header)
           xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
 
           xhr.onreadystatechange = function () {//Call a function when the state changes.
@@ -260,12 +258,12 @@ export default class UserDao {
 
       // unstar a repo
       this.fetchAuthenticationHeader()
-        .then(header_token => {
+        .then(auth_header => {
           let xhr = new XMLHttpRequest()
           xhr.open('DELETE', url, true)
 
           xhr.setRequestHeader('Content-Length', 0)
-          xhr.setRequestHeader('Authorization', header_token)
+          xhr.setRequestHeader('Authorization', auth_header)
           xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
 
           xhr.onreadystatechange = function () {//Call a function when the state changes.
@@ -297,11 +295,11 @@ export default class UserDao {
       // fetch a repo info
       let url = url_repo + repo
       this.fetchAuthenticationHeader()
-        .then(header_token => {
+        .then(auth_header => {
           let xhr = new XMLHttpRequest()
           xhr.open('GET', url, true)
 
-          xhr.setRequestHeader('Authorization', header_token)
+          xhr.setRequestHeader('Authorization', auth_header)
           xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
 
           xhr.onreadystatechange = function () {//Call a function when the state changes.

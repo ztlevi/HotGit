@@ -97,7 +97,7 @@ export default class SortKeyPage extends Component {
     let order = Object.keys(this.state.checkedArray)
 
     let leftButton = ViewUtils.getLeftButton(() => this.onBack())
-    let rightButton = ViewUtils.getRightButton(() => this.onBack, 'Save')
+    let rightButton = ViewUtils.getRightButton(() => this.onBack(), 'Save')
 
     let title = this.flag === FLAG_LANGUAGE.flag_language ? 'Sort Language' : 'Sort Key'
     let titleText = <Text style={styles.titleText}>{title}</Text>
