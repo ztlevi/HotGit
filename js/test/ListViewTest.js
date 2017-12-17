@@ -11,7 +11,7 @@ import {
   Button,
   RefreshControl,
 } from 'react-native'
-import NavigatorBar from './js/common/NavigatorBar'
+import NavigatorBar from '../common/NavigatorBar'
 import Toast, {DURATION} from 'react-native-easy-toast'
 
 let data = {

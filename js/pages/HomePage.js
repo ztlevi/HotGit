@@ -16,10 +16,10 @@ import {
 
 import TabNavigator from 'react-native-tab-navigator'
 import PopularPage from './PopularPage'
-import AsyncStorageTest from '../../AsyncStorageTest'
+import AsyncStorageTest from '../test/AsyncStorageTest'
 import MyPage from './my/MyPage'
 import Toast, { DURATION } from 'react-native-easy-toast'
-import WebViewTest from '../../WebViewTest'
+import WebViewTest from '../test/WebViewTest'
 import TrendingPage from './TrendingPage'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import FavoritePage from './FavoritePage'

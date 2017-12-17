@@ -137,7 +137,7 @@ export default class CustomKeyPage extends Component {
 
   render () {
     let title = this.isRemoveKey ? 'Remove Key' : 'Custom Key'
-    title = this.flag === FLAG_LANGUAGE.flag_language ? 'Custom Languages' : title
+    title = this.flag === FLAG_LANGUAGE.flag_language ? 'Custom Language' : title
     let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save'
     let rightButton = ViewUtils.getRightButton(() => this.onBack, rightButtonTitle)
 

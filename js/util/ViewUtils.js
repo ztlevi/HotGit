@@ -3,6 +3,7 @@ import React, {
 } from 'react'
 import {
   StyleSheet,
+  TouchableHighlight,
   Image,
   Text,
   View,
@@ -10,6 +11,43 @@ import {
 } from 'react-native'
 
 export default class ViewUtils {
+  /**
+   * Gain Setting Page Item
+   * @param callBack click item's callback
+   * @param icon left icon
+   * @param text showing text
+   * @param tintStyle icon color
+   * @param expandableIcon right icon
+   */
+  static getSettingItem(callBack, icon, text, tintStyle, expandableIcon) {
+    return (
+      <TouchableHighlight
+        onPress={callBack}
+      >
+        <View
+          style={styles.setting_item_container}
+        >
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image
+              style={[{width: 16, height: 16, marginRight: 10}, tintStyle]}
+              resizeMode='stretch'
+              source={icon}
+            />
+            <Text>{text}</Text>
+          </View>
+          <Image source={expandableIcon ? expandableIcon : require('../../res/images/ic_keyboard_arrow_right_36pt.png')}
+                 style={[{
+                   marginRight: 10,
+                   height: 22,
+                   width: 22
+                 }, {tintColor: '#2196F3'}]}
+          />
+        </View>
+      </TouchableHighlight>
+
+    )
+  }
+
   static getLeftButton (callBack) {
     return <TouchableOpacity
       style={{padding: 12}}
@@ -40,3 +78,14 @@ export default class ViewUtils {
     </TouchableOpacity>
   }
 }
+
+const styles = StyleSheet.create({
+  setting_item_container: {
+    backgroundColor:'white',
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    padding:10,
+    height:60
+  },
+})

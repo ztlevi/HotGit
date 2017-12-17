@@ -10,7 +10,7 @@ import {
   WebView,
   DeviceEventEmitter,
 } from 'react-native'
-import ComponentWithNavigationBar from './js/common/NavigatorBar'
+import ComponentWithNavigationBar from '../common/NavigatorBar'
 
 const URL = 'https://www.google.com'
 export default class WebViewTest extends Component {

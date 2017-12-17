@@ -53,6 +53,7 @@ export default class LoginPage extends Component {
             style={styles.tips}
           >Password:</Text>
           <TextInput
+            secureTextEntry={true}
             style={styles.input}
             onChangeText={text => this.password = text}
           />

@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'react-native'
 
-import ComponentWithNavigationBar from './js/common/NavigatorBar'
+import ComponentWithNavigationBar from '../common/NavigatorBar'
 import Toast, { DURATION } from 'react-native-easy-toast'
 
 const KEY = 'text'

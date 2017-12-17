@@ -10,7 +10,7 @@ import {
   WebView,
   DeviceEventEmitter,
 } from 'react-native'
-import ComponentWithNavigationBar from './js/common/NavigatorBar'
+import ComponentWithNavigationBar from '../common/NavigatorBar'
 import GitHubTrending from 'GitHubTrending'
 
 const URL = 'https://github.com/trending/'

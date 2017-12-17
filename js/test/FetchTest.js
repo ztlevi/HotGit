@@ -8,7 +8,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native'
-import NavigatorBar from './js/common/NavigatorBar'
+import NavigatorBar from '../common/NavigatorBar'
 import HttpUtils from './HttpUtils'
 
 export default class Fetch extends Component {

@@ -4734,6 +4734,12 @@ react-native-navbar@^2.1.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-parallax-scroll-view@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.20.1.tgz#7fad3411df8632b7c99fed5d0a5c0a8f97007b38"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-safe-module@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-module/-/react-native-safe-module-1.2.0.tgz#a23824ca24edc2901913694a76646475113d570d"
