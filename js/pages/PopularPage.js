@@ -175,20 +175,16 @@ class PopularTab extends Component {
         let itemArr = result && result.items ? result.items : result ? result : []
 
         if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
-          DeviceEventEmitter.emit('showToast', 'Data outdated')
-
           return dataRepository.fetchNetRepository(url)
         } else {
           this.items.push(...itemArr)
           this.getFavoriteKeys()
-          DeviceEventEmitter.emit('showToast', 'Show cached data')
         }
       })
       .then(items => {
         if (!items || items.length === 0) return
         this.items.push(...items)
         this.getFavoriteKeys()
-        DeviceEventEmitter.emit('showToast', 'Show network data')
       })
       .catch(error => {
         this.updateState({

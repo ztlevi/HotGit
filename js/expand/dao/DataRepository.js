@@ -22,7 +22,6 @@ export default class DataRepository {
           } else {
             this.fetchNetRepository(url)
               .then(result => {
-                DeviceEventEmitter.emit('showToast', 'Show fetched data')
                 resolve(result)
               })
               .catch(e => {

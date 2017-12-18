@@ -270,17 +270,13 @@ class TrendingTab extends Component {
         this.items = result && result.items ? result.items : result ? result : []
         this.getFavoriteKeys()
         if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
-          DeviceEventEmitter.emit('showToast', 'Data outdated')
           return dataRepository.fetchNetRepository(url)
-        } else {
-          DeviceEventEmitter.emit('showToast', 'Show cached data')
         }
       })
       .then(items => {
         if (!items || items.length === 0) return
         this.items = items
         this.getFavoriteKeys()
-        DeviceEventEmitter.emit('showToast', 'Show network data')
       })
       .catch(error => {
         console.log(error)

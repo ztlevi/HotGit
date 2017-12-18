@@ -105,8 +105,8 @@ export default class MyPage extends Component {
         </TouchableHighlight>
         <View style={GlobalStyles.line}/>
 
-        {/*Trending setting*/}
-        <Text style={styles.groupTitle}>Trending setting</Text>
+        {/*Popular setting*/}
+        <Text style={styles.groupTitle}>Popular language setting</Text>
         <View style={GlobalStyles.line}/>
         {this.getItem(MORE_MENU.Custom_Language, require('./images/ic_custom_language.png'), 'Custom Language')}
         <View style={GlobalStyles.line}/>
@@ -114,8 +114,8 @@ export default class MyPage extends Component {
         {this.getItem(MORE_MENU.Sort_Language, require('./images/ic_swap_vert.png'), 'Sort Language')}
         <View style={GlobalStyles.line}/>
 
-        {/*Key setting*/}
-        <Text style={styles.groupTitle}>Key setting</Text>
+        {/*Trending Key setting*/}
+        <Text style={styles.groupTitle}>Trending page key setting</Text>
         <View style={GlobalStyles.line}/>
         {this.getItem(MORE_MENU.Custom_Key, require('./images/ic_custom_language.png'), 'Custom Key')}
         <View style={GlobalStyles.line}/>
@@ -126,7 +126,7 @@ export default class MyPage extends Component {
         {this.getItem(MORE_MENU.Remove_Key, require('./images/ic_remove.png'), 'Remove Key')}
         <View style={GlobalStyles.line}/>
 
-        {/*Key setting*/}
+        {/*More setting*/}
         <Text style={styles.groupTitle}>More</Text>
         <View style={GlobalStyles.line}/>
         {/*custom theme*/}
