@@ -13,6 +13,7 @@ import LoginPage from './my/LoginPage'
 import TrendingPage from './TrendingPage'
 import FavoritePage from './FavoritePage'
 import AboutPage from './about/AboutPage'
+import WebViewPage from './WebViewPage'
 
 // init
 const Root = StackNavigator({
@@ -30,7 +31,8 @@ const Root = StackNavigator({
   sortKeyPage:{screen:SortKeyPage},
 
   //about page
-  aboutPage: {screen: AboutPage}
+  aboutPage: {screen: AboutPage},
+  webViewPage:{screen: WebViewPage}
 }, {
   headerMode: 'none'
 })
