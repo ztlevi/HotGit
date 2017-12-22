@@ -174,7 +174,7 @@ class PopularTab extends Component {
       .then(result => {
         let itemArr = result && result.items ? result.items : result ? result : []
 
-        if (result && result.update_date && !dataRepository.checkDate(result.update_date)) {
+        if (result && result.update_date && !Utils.checkDate(result.update_date)) {
           return dataRepository.fetchNetRepository(url)
         } else {
           this.items.push(...itemArr)

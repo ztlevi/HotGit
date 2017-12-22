@@ -11,14 +11,119 @@ import {
 } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import ViewUtils from '../../util/ViewUtils'
+import FavoriteDAO from '../../expand/dao/FavoriteDAO'
+import { FLAG_STORAGE } from '../../expand/dao/DataRepository'
+import ProjectModel from '../../model/ProjectModel'
+import Utils from '../../util/Utils'
+import RepositoryCell from '../../common/RepositoryCell'
+import RepositoryUtils from '../../expand/dao/RepositoryUtils'
 
-export var FLAT_ABOUT={flag_about:'about', flag_about_me:'about_me'}
+let favoriteDAO = new FavoriteDAO()
+
+export var FLAT_ABOUT = {flag_about: 'about', flag_about_me: 'about_me'}
 
 export default class AboutCommon {
-  constructor (props, updateState, flag_about) {
-    this.props=props
-    this.updateState=updateState
-    this.flag_about=flag_about
+  constructor (props, updateState, flag_about, config) {
+    this.props = props
+    this.updateState = updateState
+    this.flag_about = flag_about
+    this.repositories = []
+    this.config = config
+    this.favoriteKeys = null
+    this.favoriteDao = new FavoriteDAO(FLAG_STORAGE.flag_popular)
+    this.repositoryUtils = new RepositoryUtils(this)
+  }
+
+  componentDidMount () {
+    if (this.flag_about === FLAT_ABOUT.flag_about) {
+      this.repositoryUtils.fetchRepository(this.config.info.currentRepoUrl)
+    } else {
+      let urls = []
+      let items = this.config.items
+      for (let i = 0, l = items.length; i < l; i++) {
+        urls.push(this.config.info.url + items[i])
+      }
+      this.repositoryUtils.fetchRepositories(urls)
+    }
+  }
+
+  /**
+   * notify data has changed
+   * @param items
+   */
+  onNotifyDataChanged (items) {
+    this.updateFavorite(items)
+  }
+
+  /**
+   * update favorite
+   * @param repositories
+   */
+  async updateFavorite (repositories) {
+    if (repositories) this.repositories = repositories
+    if (!this.repositories) return
+    if (!this.favoriteKeys) {
+      this.favoriteKeys = await this.favoriteDao.getFavoriteKeys()
+    }
+    let projectModels = []
+    for (let i = 0, len = this.repositories.length; i < len; i++) {
+      let data = this.repositories[i]
+      data = data.item ? data.item : data
+      projectModels.push({
+        isFavorite: Utils.checkFavorite(data, this.favoriteKeys ? this.favoriteKeys : []),
+        item: data.item ? data.item : data
+      })
+    }
+    this.updateState({
+      projectModels: projectModels
+    })
+  }
+
+  setFavoriteState (isFavorite) {
+    this.isFavorite = isFavorite
+    this.favoriteIcon = isFavorite ? require('../../../res/images/ic_star_36pt.png') : require('../../../res/images/ic_star_border_black_36dp.png')
+  }
+
+  onSelect (projectModel) {
+    const {navigate} = this.props.navigation
+    navigate('repositoryDetailPage', {
+      projectModel: projectModel,
+      callback: (isFavorite) => this.setFavoriteState(isFavorite)
+    })
+  }
+
+  /**
+   * favoriteIcon click callback function
+   * @param item
+   * @param isFavorite
+   */
+  onFavorite (item, isFavorite) {
+    if (isFavorite) {
+      favoriteDAO.saveFavoriteItem('id_' + item.full_name.toString(), JSON.stringify(item))
+    } else {
+      favoriteDAO.removeFavoriteItem('id_' + item.full_name.toString(), JSON.stringify(item))
+    }
+  }
+
+  /**
+   * Create project view
+   * @param projectModels
+   * @returns {*}
+   */
+  renderRepository (projectModels) {
+    if (!projectModels || projectModels.length === 0) return null
+    let views = []
+    for (let i = 0, l = projectModels.length; i < l; i++) {
+      let projectModel = projectModels[i]
+      views.push(<RepositoryCell
+        {...this.props}
+        key={projectModel.item.full_name}
+        onSelect={() => this.onSelect(projectModel)}
+        onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+        projectModel={projectModel}/>
+      )
+    }
+    return views
   }
 
   getParallaxScrollRenderConfig (params) {
@@ -145,8 +250,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   sectionTitleText: {
-    padding:8,
-    textAlign:'center',
+    padding: 8,
+    textAlign: 'center',
     color: 'white',
     fontSize: 15,
     paddingVertical: 5
