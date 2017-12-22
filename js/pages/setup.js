@@ -14,6 +14,7 @@ import TrendingPage from './TrendingPage'
 import FavoritePage from './FavoritePage'
 import AboutPage from './about/AboutPage'
 import WebViewPage from './WebViewPage'
+import AboutMePage from './about/AboutMePage'
 
 // init
 const Root = StackNavigator({
@@ -32,6 +33,7 @@ const Root = StackNavigator({
 
   //about page
   aboutPage: {screen: AboutPage},
+  aboutMePage: {screen: AboutMePage},
   webViewPage:{screen: WebViewPage}
 }, {
   headerMode: 'none'

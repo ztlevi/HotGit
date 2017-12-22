@@ -15,7 +15,7 @@ import ViewUtils from '../../util/ViewUtils'
 import { MORE_MENU } from '../../common/MoreMenu'
 import GlobalStyles from '../../../res/styles/GlobalStyles'
 import AboutCommon, {FLAT_ABOUT} from './AboutCommon'
-import config from '../../../res/data/config.json'
+import {config} from '../../../res/data/config'
 
 export default class AboutPage extends Component {
   constructor (props) {

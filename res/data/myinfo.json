@@ -1,0 +1,40 @@
+{
+  "REPOSITORY": {
+    "name":"Projects",
+    "items":{}
+  },
+  "BLOG": {
+    "name": "Homepage",
+    "items": {
+      "PERSONAL_BLOG": {
+        "title": "Blog",
+        "url": "https://ztlevi.github.io"
+      },
+      "LINKEDIN": {
+        "title": "Linkedin",
+        "url": "https://www.linkedin.com/in/ztlevi/"
+      },
+      "GITHUB": {
+        "title": "GitHub",
+        "url": "https://github.com/ztlevi/"
+      }
+    }
+  },
+  "CONTACT": {
+    "name": "Contact",
+    "items": {
+      "Email": {
+        "title": "Email",
+        "account": "ztlevi1993@gmail.com"
+      },
+      "TWITTER": {
+        "title": "Twitter",
+        "account": "@ztlevi"
+      },
+      "FACEBOOK": {
+        "title": "Facebook",
+        "account": "ztlevi"
+      }
+    }
+  }
+}

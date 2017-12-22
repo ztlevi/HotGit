@@ -56,6 +56,7 @@ export default class MyPage extends Component {
       case MORE_MENU.Custom_Theme:
         break
       case MORE_MENU.About_Author:
+        TargetComponent = 'aboutMePage'
         break
       case MORE_MENU.About:
         TargetComponent = 'aboutPage'
