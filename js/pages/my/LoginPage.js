@@ -1,24 +1,41 @@
 import React, { Component } from 'react'
 import {
-  View,
+  Dimensions,
   Image,
-  Alert,
+  ListView,
+  PixelRatio,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
   DeviceEventEmitter,
+  Linking,
+  View,
 } from 'react-native'
-import ComponentWithNavigationBar from '../../common/NavigatorBar'
-import Toast, { DURATION } from 'react-native-easy-toast'
-import UserDao from '../../expand/dao/UserDao'
+import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import ViewUtils from '../../util/ViewUtils'
+import Toast, { DURATION } from 'react-native-easy-toast'
+import { MORE_MENU } from '../../common/MoreMenu'
+import GlobalStyles from '../../../res/styles/GlobalStyles'
+import AboutCommon, { FLAT_ABOUT } from '../about/AboutCommon'
+import UserDao from '../../expand/dao/UserDao'
 import FavoriteDAO from '../../expand/dao/FavoriteDAO'
+import { Button } from 'react-native-elements'
+
+let userDao = new UserDao()
 
 export default class LoginPage extends Component {
   constructor (props) {
     super(props)
+    const {state} = this.props.navigation
+    this.user = state.params.user
     this.username = 'ztlevitest'
     this.password = 'helloTest1'
+    this.aboutCommon = new AboutCommon(props, (dic) => this.updateState(dic), FLAT_ABOUT.flag_user)
+  }
+
+  updateState (dic) {
+    this.setState(dic)
   }
 
   componentDidMount () {
@@ -32,15 +49,22 @@ export default class LoginPage extends Component {
   }
 
   render () {
-    let userDao = new UserDao()
     let favoriteDao = new FavoriteDAO()
-    const {navigate, goBack} = this.props.navigation
+    const {state, goBack} = this.props.navigation
 
-    let titleText = <Text style={styles.titleText}>Login</Text>
-    let leftButton = ViewUtils.getLeftButton(() => goBack())
-    return (
-      <View sytle={styles.container}>
-        {ComponentWithNavigationBar(titleText, leftButton)}
+    let user = this.user
+    let content
+    if (user) {
+      content = <View style={styles.row}>
+        <Text style={styles.tips}
+              onPress={() => {
+                userDao.logout()
+                goBack()
+                state.params.logoutUser()
+              }}>Logout</Text>
+      </View>
+    } else {
+      content = <View>
         <View style={styles.row}>
           <Text
             style={styles.tips}
@@ -60,17 +84,39 @@ export default class LoginPage extends Component {
             onChangeText={text => this.password = text}
           />
         </View>
-        <Text style={styles.tips}
-              onPress={() => {
-                userDao.login(this.username, this.password, () => goBack())
-              }}>Login</Text>
-        <Text style={styles.tips}
-              onPress={() => {
-                userDao.logout()
+        <View style={styles.row}>
+          <Button
+            onPress={() => {
+              userDao.login(this.username, this.password, () => {
+                // use the callback function to load the user on
+                // Account page when login failed
                 goBack()
-              }}>Logout</Text>
+                state.params.loadUser()
+              })
+            }}
+            buttonStyle={styles.button}
+            backgroundColor='#2196F3'
+            title='Login'/>
+          <Button
+            onPress={() => {
+              userDao.logout()
+              goBack()
+              state.params.logoutUser()
+            }}
+            buttonStyle={styles.button}
+            backgroundColor='#2196F3'
+            title='Logout'/>
+        </View>
         <Toast ref={toast => this.toast = toast}/>
       </View>
+    }
+
+    return this.aboutCommon.render(content, {
+        'name': user ? user : 'Please login',
+        // 'description': 'This is a Github Mobile App built with React Native. This app aims to help developers keep tracking on Github\'s popular repositories.',
+        'avatar': require('../../../res/avatar/author.jpg'),
+        'backgroundImg': require('../../../res/avatar/background.jpg')
+      }
     )
   }
 }
@@ -80,7 +126,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   tips: {
-    fontSize: 29
+    fontSize: 20,
+    width: 100
   },
   input: {
     height: 40,
@@ -91,7 +138,11 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-around',
     margin: 10,
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
+  button :{
+    width: 120,
+    borderRadius:3
+  }
 })

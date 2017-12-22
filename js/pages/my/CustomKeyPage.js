@@ -51,8 +51,6 @@ export default class CustomKeyPage extends Component {
   renderCheckBox (data) {
     let leftText = data.name
     let isChecked = this.isRemoveKey ? false : data.checked
-    console.log(leftText)
-    console.log(typeof(leftText))
     return (
       <View style={{flex: 1, padding: 10}}>
         <Checkbox

@@ -93,7 +93,6 @@ export default class SortKeyPage extends Component {
 
   render () {
     const {navigate} = this.props.navigation
-    console.log(this.state.checkedArray)
     let order = Object.keys(this.state.checkedArray)
 
     let leftButton = ViewUtils.getLeftButton(() => this.onBack())

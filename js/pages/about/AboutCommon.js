@@ -20,7 +20,7 @@ import RepositoryUtils from '../../expand/dao/RepositoryUtils'
 
 let favoriteDAO = new FavoriteDAO()
 
-export var FLAT_ABOUT = {flag_about: 'about', flag_about_me: 'about_me'}
+export var FLAT_ABOUT = {flag_about: 'about', flag_about_me: 'about_me', flag_user:'user'}
 
 export default class AboutCommon {
   constructor (props, updateState, flag_about, config) {

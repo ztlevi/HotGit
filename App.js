@@ -5,14 +5,6 @@
  */
 import React, {
   Component
-} from 'react';
-import {
-  AppRegistry,
-  Button,
-  StyleSheet,
-  Image,
-  Text,
-  View,
 } from 'react-native';
 
 import setup from './js/pages/setup'

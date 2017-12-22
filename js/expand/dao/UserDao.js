@@ -27,13 +27,12 @@ export default class UserDao {
           this.username = result
           resolve(result)
         } else {
-          console.log(error)
+          resolve(null)
         }
       }).catch(error => {
         reject(error)
       })
     })
-
   }
 
   fetchAuthenticationHeader () {
@@ -50,7 +49,6 @@ export default class UserDao {
 
   login (username, password, callBack) {
     let auth_header = 'Basic ' + base64.encode(username + ':' + password)
-    console.log(auth_header)
     Promise.all(
       [AsyncStorage.setItem('username', username, (error, result) => {}),
         AsyncStorage.setItem('auth_header', auth_header, (error, result) => {})])
@@ -74,6 +72,11 @@ export default class UserDao {
               AsyncStorage.removeItem('auth_header', (error, result) => {})
               DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
             }
+          })
+          .catch(e => {
+            AsyncStorage.removeItem('username', (error, result) => {})
+            AsyncStorage.removeItem('auth_header', (error, result) => {})
+            DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
           })
       })
   }
