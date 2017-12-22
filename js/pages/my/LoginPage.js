@@ -32,39 +32,55 @@ export default class LoginPage extends Component {
     this.username = 'ztlevitest'
     this.password = 'helloTest1'
     this.aboutCommon = new AboutCommon(props, (dic) => this.updateState(dic), FLAT_ABOUT.flag_user)
+    this.state={
+      description:''
+    }
   }
 
   updateState (dic) {
     this.setState(dic)
   }
 
-  componentDidMount () {
-    this.listener = DeviceEventEmitter.addListener('showLoginResult', (text) => {
-      this.toast.show(text, DURATION.LENGTH_LONG)
-    })
+  onLogin (response) {
+    if (response) {
+      this.setState({
+        description : response
+      })
+    } else {
+      this.setState({
+        description : ''
+      })
+      const {state, goBack} = this.props.navigation
+      // use the callback function to load the user on
+      // Account page when login failed
+      goBack()
+      state.params.loadUser()
+    }
   }
 
-  componentWillUnmount () {
-    this.listener && this.listener.remove()
+  onLogout () {
+    const {state, goBack} = this.props.navigation
+    goBack()
+    state.params.logoutUser()
   }
 
   render () {
     let favoriteDao = new FavoriteDAO()
-    const {state, goBack} = this.props.navigation
 
     let user = this.user
     let content
     if (user) {
       content = <View style={styles.row}>
-        <Text style={styles.tips}
-              onPress={() => {
-                userDao.logout()
-                goBack()
-                state.params.logoutUser()
-              }}>Logout</Text>
+        <Button
+          onPress={() => {
+            userDao.logout(() => this.onLogout())
+          }}
+          buttonStyle={styles.button}
+          backgroundColor='#2196F3'
+          title='Logout'/>
       </View>
     } else {
-      content = <View>
+      content = <View style={{flex: 1}}>
         <View style={styles.row}>
           <Text
             style={styles.tips}
@@ -87,33 +103,25 @@ export default class LoginPage extends Component {
         <View style={styles.row}>
           <Button
             onPress={() => {
-              userDao.login(this.username, this.password, () => {
-                // use the callback function to load the user on
-                // Account page when login failed
-                goBack()
-                state.params.loadUser()
-              })
+              userDao.login(this.username, this.password, (response) => this.onLogin(response))
             }}
             buttonStyle={styles.button}
             backgroundColor='#2196F3'
             title='Login'/>
           <Button
             onPress={() => {
-              userDao.logout()
-              goBack()
-              state.params.logoutUser()
+              userDao.logout(() => this.onLogout())
             }}
             buttonStyle={styles.button}
             backgroundColor='#2196F3'
             title='Logout'/>
         </View>
-        <Toast ref={toast => this.toast = toast}/>
       </View>
     }
 
     return this.aboutCommon.render(content, {
         'name': user ? user : 'Please login',
-        // 'description': 'This is a Github Mobile App built with React Native. This app aims to help developers keep tracking on Github\'s popular repositories.',
+        'description': this.state.description ? this.state.description : '',
         'avatar': require('../../../res/avatar/author.jpg'),
         'backgroundImg': require('../../../res/avatar/background.jpg')
       }
@@ -141,8 +149,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     margin: 10,
   },
-  button :{
+  button: {
     width: 120,
-    borderRadius:3
+    borderRadius: 3
   }
 })

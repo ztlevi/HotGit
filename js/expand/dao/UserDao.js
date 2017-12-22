@@ -14,104 +14,85 @@ const url_page = 'https://api.github.com/user/starred?page='
 
 export default class UserDao {
   constructor () {
-    this.loadCurrentUser()
-      .then((result) => {
-        this.username = result
-      })
+
   }
 
-  loadCurrentUser () {
-    return new Promise((resolve, reject) => {
-      AsyncStorage.getItem('username', (error, result) => {
-        if (result) {
-          this.username = result
-          resolve(result)
-        } else {
-          resolve(null)
-        }
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async loadCurrentUser () {
+    try {
+      return await AsyncStorage.getItem('username')
+    } catch (error) {
+      console.log(error)
+      return null
+    }
   }
 
-  fetchAuthenticationHeader () {
-    return new Promise((resolve, reject) => {
-      AsyncStorage.getItem('auth_header', (error, result) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(result)
-        }
-      })
-    })
+  async fetchAuthenticationHeader () {
+    try {
+      return await AsyncStorage.getItem('auth_header')
+    } catch (error) {
+      console.log(error)
+      return null
+    }
   }
 
-  login (username, password, callBack) {
+  async login (username, password, callBack) {
+    await AsyncStorage.setItem('username', username)
     let auth_header = 'Basic ' + base64.encode(username + ':' + password)
-    Promise.all(
-      [AsyncStorage.setItem('username', username, (error, result) => {}),
-        AsyncStorage.setItem('auth_header', auth_header, (error, result) => {})])
-      .then(() => {
-        this.username = username
-        this.checkAuthentication()
-          .then(response => {
-            if (response.status === 200) {
-              AsyncStorage.setItem('username', username, (error, result) => {})
+    await AsyncStorage.setItem('auth_header', auth_header)
 
-              // reload starred repos when logged in
-              let favoriteDao = new FavoriteDAO()
-              favoriteDao.reloadStarredRepos()
+    let response = await this.checkAuthentication()
+    if (response) {
+      if (response.status === 200) {
+        // reload starred repos when logged in
+        let favoriteDao = new FavoriteDAO()
+        favoriteDao.reloadStarredRepos()
 
-              // go back when success
-              callBack()
+        // go back when success
+        callBack()
 
-              DeviceEventEmitter.emit('showToast', 'Logged in')
-            } else {
-              AsyncStorage.removeItem('username', (error, result) => {})
-              AsyncStorage.removeItem('auth_header', (error, result) => {})
-              DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
-            }
-          })
-          .catch(e => {
-            AsyncStorage.removeItem('username', (error, result) => {})
-            AsyncStorage.removeItem('auth_header', (error, result) => {})
-            DeviceEventEmitter.emit('showLoginResult', 'Username and password does not match. Authentication failed.')
-          })
-      })
+        DeviceEventEmitter.emit('showToast', 'Logged in')
+      } else {
+        await AsyncStorage.removeItem('username')
+        await AsyncStorage.removeItem('auth_header')
+        callBack('Username and password does not match. Authentication failed.')
+        DeviceEventEmitter.emit('showLoginToast', 'Username and password does not match. Authentication failed.')
+      }
+    } else {
+      await AsyncStorage.removeItem('username')
+      await AsyncStorage.removeItem('auth_header')
+      callBack('Failed to connect server. Please check the network.')
+      DeviceEventEmitter.emit('showLoginToast', 'Failed to connect server. Please check the network.')
+    }
   }
 
-  logout () {
-    if (this.username === '' || this.username == null) {
+  async logout (callback) {
+    let user = await this.loadCurrentUser()
+    if (user === null) {
       DeviceEventEmitter.emit('showToast', 'No user logged in')
+      callback()
       return
     }
-    this.loadCurrentUser().then(() => {AsyncStorage.clear()})
-
+    await AsyncStorage.clear()
+    callback()
     DeviceEventEmitter.emit('showToast', 'Logged out')
   }
 
   /**
    * Check if authenticated
    */
-  checkAuthentication () {
-    return new Promise((resolve, reject) => {
-      this.fetchAuthenticationHeader()
-        .then(auth_header => {
-          let headers = new Headers()
-          headers.append('Authorization', auth_header)
-          fetch('https://api.github.com/', {
-            headers: headers,
-          })
-            .then((response) => {
-              resolve(response)
-            })
-            .catch(error => {
-              reject(error)
-            })
-        })
-    })
-
+  async checkAuthentication () {
+    let headers = new Headers()
+    let auth_header = await this.fetchAuthenticationHeader()
+    headers.append('Authorization', auth_header)
+    let response
+    try {
+      response = await fetch('https://api.github.com/', {
+        headers: headers,
+      })
+    } catch (err) {
+      response = null
+    }
+    return response
   }
 
   /**
