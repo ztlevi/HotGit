@@ -32,8 +32,8 @@ export default class LoginPage extends Component {
     this.username = 'ztlevitest'
     this.password = 'helloTest1'
     this.aboutCommon = new AboutCommon(props, (dic) => this.updateState(dic), FLAT_ABOUT.flag_user)
-    this.state={
-      description:''
+    this.state = {
+      description: ''
     }
   }
 
@@ -44,11 +44,11 @@ export default class LoginPage extends Component {
   onLogin (response) {
     if (response) {
       this.setState({
-        description : response
+        description: response
       })
     } else {
       this.setState({
-        description : ''
+        description: ''
       })
       const {state, goBack} = this.props.navigation
       // use the callback function to load the user on
@@ -81,33 +81,25 @@ export default class LoginPage extends Component {
       </View>
     } else {
       content = <View style={{flex: 1}}>
+        <View style={GlobalStyles.line}/>
         <View style={styles.row}>
-          <Text
-            style={styles.tips}
-          >Username:</Text>
           <TextInput
             style={styles.input}
+            placeholder=" Please input your username"
             onChangeText={text => this.username = text}
           />
         </View>
-        <View style={styles.row}>
-          <Text
-            style={styles.tips}
-          >Password:</Text>
+        <View style={GlobalStyles.line}/>
+        <View style={[styles.row]}>
           <TextInput
             secureTextEntry={true}
+            placeholder=' Please input your password'
             style={styles.input}
             onChangeText={text => this.password = text}
           />
         </View>
-        <View style={styles.row}>
-          <Button
-            onPress={() => {
-              userDao.login(this.username, this.password, (response) => this.onLogin(response))
-            }}
-            buttonStyle={styles.button}
-            backgroundColor='#2196F3'
-            title='Login'/>
+        <View style={GlobalStyles.line}/>
+        <View style={[styles.row, {paddingTop:10}]}>
           <Button
             onPress={() => {
               userDao.logout(() => this.onLogout())
@@ -115,6 +107,13 @@ export default class LoginPage extends Component {
             buttonStyle={styles.button}
             backgroundColor='#2196F3'
             title='Logout'/>
+          <Button
+            onPress={() => {
+              userDao.login(this.username, this.password, (response) => this.onLogin(response))
+            }}
+            buttonStyle={styles.button}
+            backgroundColor='#2196F3'
+            title='Login'/>
         </View>
       </View>
     }
@@ -123,7 +122,7 @@ export default class LoginPage extends Component {
         'name': user ? user : 'Please login',
         'description': this.state.description ? this.state.description : '',
         'avatar': require('../../../res/avatar/author.jpg'),
-        'backgroundImg': require('../../../res/avatar/background.jpg')
+        'backgroundImg': user ? '' : ''
       }
     )
   }
@@ -138,10 +137,8 @@ const styles = StyleSheet.create({
     width: 100
   },
   input: {
-    height: 40,
+    height: 30,
     flex: 1,
-    borderWidth: 1,
-    margin: 2
   },
   row: {
     flexDirection: 'row',

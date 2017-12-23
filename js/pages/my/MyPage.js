@@ -121,7 +121,7 @@ export default class MyPage extends Component {
                 color='#2196F3'
                 containerStyle={{marginRight:10}}
               />
-              <Text style={{fontSize:20}}>{this.state.user ? this.state.user : 'User login'}</Text>
+              <Text style={{fontSize:20}}>{this.state.user ? this.state.user : 'Account Login'}</Text>
             </View>
             <Icon
               name='keyboard-arrow-right'

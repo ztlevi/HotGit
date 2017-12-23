@@ -35,11 +35,6 @@ export default class ViewUtils {
               size={20}
               containerStyle={{marginRight:10}}
             />
-            {/*<Image*/}
-              {/*style={[{width: 16, height: 16, marginRight: 10}, tintStyle]}*/}
-              {/*resizeMode='stretch'*/}
-              {/*source={icon}*/}
-            {/*/>*/}
             <Text>{text}</Text>
           </View>
           <Icon
