@@ -46,7 +46,7 @@ export default class AboutMePage extends Component {
    * @param isShow
    */
   getClickIcon (isShow) {
-    return isShow ? require('../../../res/images/ic_keyboard_arrow_up_36pt.png') : require('../../../res/images/ic_keyboard_arrow_down_36pt.png')
+    return isShow ? 'keyboard-arrow-up' : 'keyboard-arrow-down'
   }
 
   onClick (tab) {
@@ -83,7 +83,7 @@ export default class AboutMePage extends Component {
       let title = isShowAccount ? dic[i].title + ': ' + dic[i].account : dic[i].title
       views.push(
         <View key={i}>
-          {ViewUtils.getSettingItem(() => this.onClick(dic[i]), null, title, {tintColor: '#2196F3'})}
+          {ViewUtils.getSettingItem(() => this.onClick(dic[i]), null, title, '#2196F3')}
           <View style={GlobalStyles.line}/>
         </View>
       )
@@ -93,15 +93,15 @@ export default class AboutMePage extends Component {
 
   render () {
     let content = <View>
-      {ViewUtils.getSettingItem(() => this.onClick(FLAG.BLOG), require('../../../res/images/ic_computer.png'), FLAG.BLOG.name, {tintColor: '#2196F3'}, this.getClickIcon(this.state.showBlog))}
+      {ViewUtils.getSettingItem(() => this.onClick(FLAG.BLOG), 'computer', FLAG.BLOG.name, '#2196F3', this.getClickIcon(this.state.showBlog))}
       <View style={GlobalStyles.line}/>
       {this.state.showBlog ? this.renderItems(FLAG.BLOG.items) : null}
 
-      {ViewUtils.getSettingItem(() => this.onClick(FLAG.REPOSITORY), require('../../../res/images/ic_code_36pt.png'), FLAG.REPOSITORY.name, {tintColor: '#2196F3'}, this.getClickIcon(this.state.showRepository))}
+      {ViewUtils.getSettingItem(() => this.onClick(FLAG.REPOSITORY), 'code', FLAG.REPOSITORY.name, '#2196F3', this.getClickIcon(this.state.showRepository))}
       <View style={GlobalStyles.line}/>
       {this.state.showRepository ? this.aboutCommon.renderRepository(FLAG.REPOSITORY.items, true) : null}
 
-      {ViewUtils.getSettingItem(() => this.onClick(FLAG.CONTACT), require('../../../res/images/ic_contacts_36pt.png'), FLAG.CONTACT.name, {tintColor: '#2196F3'}, this.getClickIcon(this.state.showContact))}
+      {ViewUtils.getSettingItem(() => this.onClick(FLAG.CONTACT), 'contacts', FLAG.CONTACT.name, '#2196F3', this.getClickIcon(this.state.showContact))}
       <View style={GlobalStyles.line}/>
       {this.state.showContact ? this.renderItems(FLAG.CONTACT.items, true) : null}
     </View>

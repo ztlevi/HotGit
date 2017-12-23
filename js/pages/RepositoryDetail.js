@@ -11,6 +11,8 @@ import {
 import ComponentWithNavigationBar from '../common/NavigatorBar'
 import ViewUtils from '../util/ViewUtils'
 import FavoriteDAO from '../expand/dao/FavoriteDAO'
+import {Icon} from 'react-native-elements'
+import GlobalStyles from '../../res/styles/GlobalStyles'
 
 favoriteDAO = new FavoriteDAO()
 
@@ -28,7 +30,6 @@ export default class RepositoryDetail extends Component {
       title: title,
       canGoBack: false,
       isFavorite: this.projectModel.isFavorite,
-      favoriteIcon: this.projectModel.isFavorite ? require('../../res/images/ic_star.png') : require('../../res/images/ic_star_navbar.png')
     }
   }
 
@@ -58,7 +59,6 @@ export default class RepositoryDetail extends Component {
   setFavoriteState (isFavorite) {
     this.setState({
       isFavorite: isFavorite,
-      favoriteIcon: isFavorite ? require('../../res/images/ic_star.png') : require('../../res/images/ic_star_navbar.png')
     })
   }
 
@@ -78,14 +78,19 @@ export default class RepositoryDetail extends Component {
   render () {
     let leftButton = ViewUtils.getLeftButton(() => this.goBack())
 
-    let rightButtonImage = <Image
-      style={{width: 20, height: 20, marginRight: 10}}
-      source={this.state.favoriteIcon}
+    // let rightButtonImage = <Image
+    //   style={{width: 20, height: 20, marginRight: 10}}
+    //   source={this.state.favoriteIcon}
+    // />
+    let rightButtonIcon = <Icon
+      name = 'star'
+      color={this.state.isFavorite ? 'orange' : 'white'}
+      style={{width:26, height:26}}
     />
-    let rightButton = ViewUtils.getRightButtonImage(() => this.onRightButtonClick(), rightButtonImage)
+    let rightButton = ViewUtils.getRightButtonImage(() => this.onRightButtonClick(), rightButtonIcon)
     let titleWidth = 22
     let titleShrinked = this.state.title.length > titleWidth ? this.state.title.substring(0, titleWidth) + '...' : this.state.title
-    let title = <Text style={styles.titleText}>{titleShrinked}</Text>
+    let title = <Text style={GlobalStyles.titleText}>{titleShrinked}</Text>
     return <View style={styles.container}>
       {ComponentWithNavigationBar(
         title,
@@ -119,5 +124,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 2
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

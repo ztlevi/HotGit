@@ -21,6 +21,8 @@ import Popover, { PopoverTouchable } from 'react-native-modal-popover'
 import ProjectModel from '../model/ProjectModel'
 import FavoriteDAO from '../expand/dao/FavoriteDAO'
 import Utils from '../util/Utils'
+import GlobalStyles from '../../res/styles/GlobalStyles'
+import {Icon} from 'react-native-elements'
 
 let dataRepository = new DataRepository(FLAG_STORAGE.flag_trending)
 let favoriteDAO = new FavoriteDAO()
@@ -102,7 +104,7 @@ export default class TrendingPage extends Component {
       >
         <View style={styles.title}>
           <Text
-            style={styles.titleText}>Trending</Text>
+            style={GlobalStyles.titleText}>Trending</Text>
           <Text
             style={{
               marginLeft: 8,
@@ -110,9 +112,12 @@ export default class TrendingPage extends Component {
               color: 'white',
               fontWeight: '400'
             }}>{this.state.timeSpan.showText}</Text>
-          <Image
-            style={{width: 22, height: 22, marginLeft: 5, tintColor: 'white'}}
-            source={require('../../res/images/ic_keyboard_arrow_down_36pt.png')}/>
+          <Icon
+            name='keyboard-arrow-down'
+            size={22}
+            color='white'
+            containerStyle={{marginRight:5}}
+          />
         </View>
       </TouchableOpacity>
       <Popover
@@ -344,5 +349,4 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: 'rgba(0, 0, 0, 0)'
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

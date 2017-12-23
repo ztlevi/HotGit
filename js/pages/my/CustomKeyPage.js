@@ -13,6 +13,8 @@ import ComponentWithNavigationBar from '../../common/NavigatorBar'
 import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao'
 import Checkbox from 'react-native-check-box'
 import ArrayUtils from '../../util/ArrayUtils'
+import GlobalStyles from '../../../res/styles/GlobalStyles'
+import {Icon} from 'react-native-elements'
 
 export default class CustomKeyPage extends Component {
   constructor (props) {
@@ -57,12 +59,18 @@ export default class CustomKeyPage extends Component {
           leftText={leftText}
           onClick={() => this.onClick(data)}
           isChecked={isChecked}
-          checkedImage={<Image
-            style={{tintColor: '#2196F3'}}
-            source={require('./images/ic_check_box.png')}/>}
-          unCheckedImage={<Image
-            style={{tintColor: '#2196F3'}}
-            source={require('./images/ic_check_box_outline_blank.png')}/>}
+          checkedImage={
+            <Icon
+              color='#2196F3'
+              name='check-box'
+            />
+          }
+          unCheckedImage={
+            <Icon
+              color='#2196F3'
+              name='check-box-outline-blank'
+            />
+}
         />
       </View>
     )
@@ -139,7 +147,7 @@ export default class CustomKeyPage extends Component {
     let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save'
     let rightButton = ViewUtils.getRightButton(() => this.onBack(), rightButtonTitle)
 
-    let titleText = <Text style={styles.titleText}>{title}</Text>
+    let titleText = <Text style={GlobalStyles.titleText}>{title}</Text>
     let leftButton = ViewUtils.getLeftButton(() => this.onBack())
 
     return <View style={styles.container}>
@@ -170,5 +178,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

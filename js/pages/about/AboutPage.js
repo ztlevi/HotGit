@@ -65,11 +65,11 @@ export default class AboutPage extends Component {
   render () {
     let content = <View>
       {this.aboutCommon.renderRepository(this.state.projectModels)}
-      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Website), require('../../../res/images/ic_computer.png'), MORE_MENU.Website, {tintColor:'#2196F3'})}
+      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Website), 'computer', MORE_MENU.Website, '#2196F3')}
       <View style={GlobalStyles.line}/>
-      {ViewUtils.getSettingItem(() => this.onClick(MORE_MENU.About_Author), require('../my/images/ic_insert_emoticon.png'), MORE_MENU.About_Author, {tintColor:'#2196F3'})}
+      {ViewUtils.getSettingItem(() => this.onClick(MORE_MENU.About_Author), 'mood', MORE_MENU.About_Author, '#2196F3')}
       <View style={GlobalStyles.line}/>
-      {ViewUtils.getSettingItem(() => this.onClick(MORE_MENU.Feedback), require('../../../res/images/ic_feedback.png'), MORE_MENU.Feedback, {tintColor:'#2196F3'})}
+      {ViewUtils.getSettingItem(() => this.onClick(MORE_MENU.Feedback), 'feedback', MORE_MENU.Feedback, '#2196F3')}
     </View>
     return this.aboutCommon.render(content, {
       'name': 'Github Popular',

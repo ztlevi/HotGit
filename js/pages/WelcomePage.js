@@ -5,6 +5,7 @@ import {
   Text,
 } from 'react-native'
 import ComponentWithNavigationBar from '../common/NavigatorBar'
+import GlobalStyles from '../../res/styles/GlobalStyles'
 
 export default class WelcomePage extends Component {
   componentDidMount () {
@@ -20,7 +21,7 @@ export default class WelcomePage extends Component {
 
 
   render () {
-    let title = <Text style={styles.titleText}>Welcome Page</Text>
+    let title = <Text style={GlobalStyles.titleText}>Welcome Page</Text>
     return <View style={styles.container}>
       {ComponentWithNavigationBar(title)}
       <Text>Welcome!</Text>
@@ -32,5 +33,4 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     flex: 1
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

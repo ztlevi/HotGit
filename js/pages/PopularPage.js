@@ -17,6 +17,7 @@ import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao'
 import ProjectModel from '../model/ProjectModel'
 import FavoriteDAO from '../expand/dao/FavoriteDAO'
 import Utils from '../util/Utils'
+import GlobalStyles from '../../res/styles/GlobalStyles'
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars'
@@ -66,7 +67,7 @@ export default class PopularPage extends Component {
                                          {...this.props}></PopularTab> : null
       })}
     </ScrollableTabView> : null
-    let title = <Text style={styles.titleText}>Popular</Text>
+    let title = <Text style={GlobalStyles.titleText}>Popular</Text>
 
     return <View style={styles.container}>
       {ComponentWithNavigationBar(title)}
@@ -261,11 +262,9 @@ const styles = StyleSheet.create({
   tips: {
     fontSize: 29,
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'},
   iconSection: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   }
-
 })

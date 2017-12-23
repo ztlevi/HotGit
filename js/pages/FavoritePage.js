@@ -13,6 +13,7 @@ import ProjectModel from '../model/ProjectModel'
 import ArrayUtils from '../util/ArrayUtils'
 import FavoriteDAO from '../expand/dao/FavoriteDAO'
 import TrendingCell from '../common/TrendingCell'
+import GlobalStyles from '../../res/styles/GlobalStyles'
 
 let favoriteDAO = new FavoriteDAO()
 
@@ -27,7 +28,7 @@ export default class FavoritePage extends Component {
 
   render () {
     let content = <FavoriteTab {...this.props}></FavoriteTab>
-    let title = <Text style={styles.titleText}>Favorite</Text>
+    let title = <Text style={GlobalStyles.titleText}>Favorite</Text>
 
     return <View style={styles.container}>
       {ComponentWithNavigationBar(title)}
@@ -168,5 +169,4 @@ const styles = StyleSheet.create({
   tips: {
     fontSize: 29,
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

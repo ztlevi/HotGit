@@ -82,7 +82,7 @@ export default class AboutCommon {
 
   setFavoriteState (isFavorite) {
     this.isFavorite = isFavorite
-    this.favoriteIcon = isFavorite ? require('../../../res/images/ic_star_36pt.png') : require('../../../res/images/ic_star_border_black_36dp.png')
+    this.favoriteIcon = isFavorite ? 'star' : 'star-border'
   }
 
   onSelect (projectModel) {

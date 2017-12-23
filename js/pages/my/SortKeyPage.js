@@ -13,6 +13,8 @@ import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao'
 import ArrayUtils from '../../util/ArrayUtils'
 import SortableListView from 'react-native-sortable-listview'
 import ViewUtils from '../../util/ViewUtils'
+import GlobalStyles from '../../../res/styles/GlobalStyles'
+import {Icon} from 'react-native-elements'
 
 export default class SortKeyPage extends Component {
   constructor (props) {
@@ -99,7 +101,7 @@ export default class SortKeyPage extends Component {
     let rightButton = ViewUtils.getRightButton(() => this.onBack(), 'Save')
 
     let title = this.flag === FLAG_LANGUAGE.flag_language ? 'Sort Language' : 'Sort Key'
-    let titleText = <Text style={styles.titleText}>{title}</Text>
+    let titleText = <Text style={GlobalStyles.titleText}>{title}</Text>
 
     return <View style={styles.container}>
       {ComponentWithNavigationBar(titleText, leftButton, rightButton)}
@@ -127,8 +129,12 @@ class SortCell extends Component {
         {...this.props.sortHandlers}
       >
         <View style={styles.row}>
-          <Image source={require('./images/ic_reorder_36pt.png')}
-                 style={styles.image}/>
+          <Icon
+            name='reorder'
+            size={16}
+            color='#2196f3'
+            containerStyle={{marginRight:10}}
+          />
           <Text style={{fontWeight: 'bold'}}>{this.props.data.name}</Text>
         </View>
       </TouchableHighlight>
@@ -154,11 +160,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  image: {
-    tintColor: '#2196F3',
-    height: 16,
-    width: 16,
-    marginRight: 10,
-  },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import HTMLView from 'react-native-htmlview'
+import {Icon} from 'react-native-elements'
 
 export default class TrendingCell extends Component {
   constructor (props) {
     super(props)
     this.state = {
       isFavorite: this.props.projectModel.isFavorite,
-      favoriteIcon: this.props.projectModel.isFavorite ? require('../../res/images/ic_star_36pt.png')
-        : require('../../res/images/ic_star_border_black_36dp.png')
+      favoriteIcon: this.props.projectModel.isFavorite ? 'star' : 'star-border'
     }
   }
 
@@ -27,7 +27,7 @@ export default class TrendingCell extends Component {
   setFavoriteState (isFavorite) {
     this.setState({
       isFavorite: isFavorite,
-      favoriteIcon: isFavorite ? require('../../res/images/ic_star_36pt.png') : require('../../res/images/ic_star_border_black_36dp.png')
+      favoriteIcon: isFavorite ? 'star' : 'star-border'
     })
   }
 
@@ -51,9 +51,11 @@ export default class TrendingCell extends Component {
     let favoriteButton = <TouchableOpacity
       onPress={() => this.onPressFavorite()}
     >
-      <Image
-        style={{width: 22, height: 22, tintColor: '#2196F3'}}
-        source={this.state.favoriteIcon}/>
+      <Icon
+        name={this.state.favoriteIcon}
+        color='#2196F3'
+        style={{width: 22, height: 22}}
+      />
     </TouchableOpacity>
     let description = '<p>' + item.description + '</p>'
 

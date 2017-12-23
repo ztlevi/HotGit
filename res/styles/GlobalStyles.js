@@ -16,6 +16,7 @@ module.exports={
   titleText: {
     fontSize: 20,
     color: 'white',
-    fontWeight: '400'
+    fontWeight: '400',
+    marginBottom:2.5
   }
 }

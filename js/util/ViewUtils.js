@@ -9,6 +9,7 @@ import {
   View,
   TouchableOpacity
 } from 'react-native'
+import {Icon} from 'react-native-elements'
 
 export default class ViewUtils {
   /**
@@ -19,7 +20,7 @@ export default class ViewUtils {
    * @param tintStyle icon color
    * @param expandableIcon right icon
    */
-  static getSettingItem(callBack, icon, text, tintStyle, expandableIcon) {
+  static getSettingItem(callBack, icon, text, tintColor, expandableIcon) {
     return (
       <TouchableHighlight
         onPress={callBack}
@@ -28,19 +29,24 @@ export default class ViewUtils {
           style={styles.setting_item_container}
         >
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
-              style={[{width: 16, height: 16, marginRight: 10}, tintStyle]}
-              resizeMode='stretch'
-              source={icon}
+            <Icon
+              name={icon}
+              color={tintColor}
+              size={20}
+              containerStyle={{marginRight:10}}
             />
+            {/*<Image*/}
+              {/*style={[{width: 16, height: 16, marginRight: 10}, tintStyle]}*/}
+              {/*resizeMode='stretch'*/}
+              {/*source={icon}*/}
+            {/*/>*/}
             <Text>{text}</Text>
           </View>
-          <Image source={expandableIcon ? expandableIcon : require('../../res/images/ic_keyboard_arrow_right_36pt.png')}
-                 style={[{
-                   marginRight: 10,
-                   height: 22,
-                   width: 22
-                 }, {tintColor: '#2196F3'}]}
+          <Icon
+            name={expandableIcon ? 'keyboard-arrow-down' :'keyboard-arrow-right'}
+            color='#2196F3'
+            size={20}
+            containerStyle={{marginRight:10}}
           />
         </View>
       </TouchableHighlight>
@@ -50,17 +56,20 @@ export default class ViewUtils {
 
   static getLeftButton (callBack) {
     return <TouchableOpacity
-      style={{padding: 13}}
+      style={{padding:15}}
       onPress={callBack}
     >
-      <Image style={{width: 26, height: 26, tintColor: 'white'}}
-             source={require('../../res/images/ic_keyboard_arrow_left_36pt.png')}></Image>
+      <Icon
+        name='keyboard-arrow-left'
+        color='white'
+        style={{width:26, height:26}}
+      />
     </TouchableOpacity>
   }
 
   static getRightButton (callBack, rightButtonTitle) {
     return <TouchableOpacity
-      style={{padding: 14.5}}
+      style={{padding: 12.5}}
       onPress={callBack}
     >
       <View styl={{flex: 1}}>
@@ -69,12 +78,12 @@ export default class ViewUtils {
     </TouchableOpacity>
   }
 
-  static getRightButtonImage (callBack, rightButtonImage) {
+  static getRightButtonImage (callBack, rightButtonIcon) {
     return <TouchableOpacity
       onPress={callBack}
       style={{padding: 15}}
     >
-      {rightButtonImage}
+      {rightButtonIcon}
     </TouchableOpacity>
   }
 }

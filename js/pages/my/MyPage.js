@@ -19,6 +19,7 @@ import GlobalStyles from '../../../res/styles/GlobalStyles'
 import ViewUtils from '../../util/ViewUtils'
 import CustomKeyPage from './CustomKeyPage'
 import SortKeyPage from './SortKeyPage'
+import {Icon} from 'react-native-elements'
 
 export default class MyPage extends Component {
   constructor (props) {
@@ -95,12 +96,12 @@ export default class MyPage extends Component {
 
   getItem (tag, icon, text) {
     return (
-      ViewUtils.getSettingItem(() => this.onClick(tag), icon, text, {tintColor: '#2196F3'}, null)
+      ViewUtils.getSettingItem(() => this.onClick(tag), icon, text,  '#2196F3', null)
     )
   }
 
   render () {
-    let title = <Text style={styles.titleText}>My Account</Text>
+    let title = <Text style={GlobalStyles.titleText}>My Account</Text>
     let userDao = new UserDao()
 
     const {navigate} = this.props.navigation
@@ -114,18 +115,19 @@ export default class MyPage extends Component {
             style={[styles.row, {height: 90}]}
           >
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                style={{width: 40, height: 40, marginRight: 10, tintColor: '#2196F3'}}
-                source={require('../../../res/images/ic_whatshot_36pt.png')}
+              <Icon
+                name='whatshot'
+                size={40}
+                color='#2196F3'
+                containerStyle={{marginRight:10}}
               />
               <Text style={{fontSize:20}}>{this.state.user ? this.state.user : 'User login'}</Text>
             </View>
-            <Image source={require('../../../res/images/ic_keyboard_arrow_right_36pt.png')}
-                   style={[{
-                     marginRight: 10,
-                     height: 22,
-                     width: 22
-                   }, {tintColor: '#2196F3'}]}
+            <Icon
+              name='keyboard-arrow-right'
+              size={22}
+              containerStyle={{marginRight:10}}
+              color='#2196F3'
             />
           </View>
         </TouchableHighlight>
@@ -134,34 +136,34 @@ export default class MyPage extends Component {
         {/*Popular setting*/}
         <Text style={styles.groupTitle}>Popular language setting</Text>
         <View style={GlobalStyles.line}/>
-        {this.getItem(MORE_MENU.Custom_Language, require('./images/ic_custom_language.png'), 'Custom Language')}
+        {this.getItem(MORE_MENU.Custom_Language, 'list', 'Custom Language')}
         <View style={GlobalStyles.line}/>
         {/*Languate Sort*/}
-        {this.getItem(MORE_MENU.Sort_Language, require('./images/ic_swap_vert.png'), 'Sort Language')}
+        {this.getItem(MORE_MENU.Sort_Language, 'sort', 'Sort Language')}
         <View style={GlobalStyles.line}/>
 
         {/*Trending Key setting*/}
         <Text style={styles.groupTitle}>Trending page key setting</Text>
         <View style={GlobalStyles.line}/>
-        {this.getItem(MORE_MENU.Custom_Key, require('./images/ic_custom_language.png'), 'Custom Key')}
+        {this.getItem(MORE_MENU.Custom_Key, 'list', 'Custom Key')}
         <View style={GlobalStyles.line}/>
         {/*Key Sort*/}
-        {this.getItem(MORE_MENU.Sort_Language, require('./images/ic_swap_vert.png'), 'Sort Language')}
+        {this.getItem(MORE_MENU.Sort_Language, 'sort', 'Sort Language')}
         <View style={GlobalStyles.line}/>
         {/*Key remove*/}
-        {this.getItem(MORE_MENU.Remove_Key, require('./images/ic_remove.png'), 'Remove Key')}
+        {this.getItem(MORE_MENU.Remove_Key, 'remove', 'Remove Key')}
         <View style={GlobalStyles.line}/>
 
         {/*More setting*/}
         <Text style={styles.groupTitle}>More</Text>
         <View style={GlobalStyles.line}/>
         {/*custom theme*/}
-        {this.getItem(MORE_MENU.Custom_Theme, require('./images/ic_custom_theme.png'), 'Custom Theme')}
+        {this.getItem(MORE_MENU.Custom_Theme, 'palette', 'Custom Theme')}
         <View style={GlobalStyles.line}/>
         {/*About Author*/}
-        {this.getItem(MORE_MENU.About, require('./images/ic_view_quilt.png'), 'About')}
+        {this.getItem(MORE_MENU.About, 'dashboard', 'About')}
         <View style={GlobalStyles.line}/>
-        {this.getItem(MORE_MENU.About_Author, require('./images/ic_insert_emoticon.png'), 'About Author')}
+        {this.getItem(MORE_MENU.About_Author, 'mood', 'About Author')}
         <View style={GlobalStyles.line}/>
 
       </ScrollView>
@@ -296,5 +298,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'gray'
   },
-  titleText: {fontSize: 20, color: 'white', fontWeight: '400'}
 })

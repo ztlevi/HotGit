@@ -23,6 +23,7 @@ import WebViewTest from '../test/WebViewTest'
 import TrendingPage from './TrendingPage'
 import { ifIphoneX } from 'react-native-iphone-x-helper'
 import FavoritePage from './FavoritePage'
+import {Icon} from 'react-native-elements'
 
 export default class HomePage extends Component {
   constructor (props) {
@@ -51,23 +52,32 @@ export default class HomePage extends Component {
       selected={this.state.selectedTab === selectTab}
       selectedTitleStyle={{color: '#2196F3'}}
       title={title}
-      renderIcon={() => <Image style={styles.image} source={renderIcon}/>}
-      renderSelectedIcon={() => <Image style={[styles.image, {tintColor: '#2196F3'}]}
-                                       source={renderIcon}/>}
-      onPress={() => this.setState({selectedTab: selectTab})}>
-      {/*pass the props to the next Component*/}
-      <Component {...this.props}/>
-    </TabNavigator.Item>
+      renderIcon={() =>
+        <Icon
+          name={renderIcon}
+          color='black'
+        />
+      }
+      renderSelectedIcon={() =>
+        <Icon
+          name= {renderIcon}
+          color='#2196F3'
+        />
+      }
+  onPress={() => this.setState({selectedTab: selectTab})}>
+  {/*pass the props to the next Component*/}
+    <Component {...this.props}/>
+  </TabNavigator.Item>
   }
 
   render () {
     return (
       <View style={styles.container}>
         <TabNavigator>
-          {this._renderTab(PopularPage, 'tb_popular', 'Popular', require('../../res/images/ic_whatshot_36pt.png'))}
-          {this._renderTab(TrendingPage, 'tb_trending', 'Trending', require('../../res/images/ic_all_inclusive_36pt.png'))}
-          {this._renderTab(FavoritePage, 'tb_favorite', 'Favorite', require('../../res/images/ic_favorite_36pt.png'))}
-          {this._renderTab(MyPage, '', 'Account', require('../../res/images/ic_account_circle_36pt.png'))}
+          {this._renderTab(PopularPage, 'tb_popular', 'Popular', 'whatshot')}
+          {this._renderTab(TrendingPage, 'tb_trending', 'Trending', 'polymer')}
+          {this._renderTab(FavoritePage, 'tb_favorite', 'Favorite', 'favorite')}
+          {this._renderTab(MyPage, '', 'Account', 'account-circle')}
         </TabNavigator>
         <Toast ref={toast => this.toast = toast}/>
       </View>
