@@ -19,7 +19,7 @@ import GlobalStyles from '../../../res/styles/GlobalStyles'
 import ViewUtils from '../../util/ViewUtils'
 import CustomKeyPage from './CustomKeyPage'
 import SortKeyPage from './SortKeyPage'
-import {Icon} from 'react-native-elements'
+import { Icon } from 'react-native-elements'
 
 export default class MyPage extends Component {
   constructor (props) {
@@ -27,15 +27,15 @@ export default class MyPage extends Component {
     this.favoriteDao = new FavoriteDAO()
     this.userDao = new UserDao()
     this.state = {
-      user: ''
+      user: null
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.loadUser()
   }
 
-  loadUser() {
+  loadUser () {
     this.userDao.loadCurrentUser()
       .then(result => {
         this.setState({
@@ -43,9 +43,10 @@ export default class MyPage extends Component {
         })
       })
   }
-  logoutUser() {
+
+  logoutUser () {
     this.setState({
-      user:null
+      user: null
     })
   }
 
@@ -76,7 +77,7 @@ export default class MyPage extends Component {
       case MORE_MENU.Login:
         TargetComponent = 'loginPage'
         params.user = this.state.user
-        params.loadUser = ()=>this.loadUser()
+        params.loadUser = () => this.loadUser()
         params.logoutUser = () => this.logoutUser()
         break
       case MORE_MENU.Custom_Theme:
@@ -96,7 +97,7 @@ export default class MyPage extends Component {
 
   getItem (tag, icon, text) {
     return (
-      ViewUtils.getSettingItem(() => this.onClick(tag), icon, text,  '#2196F3', null)
+      ViewUtils.getSettingItem(() => this.onClick(tag), icon, text, '#2196F3', null)
     )
   }
 
@@ -108,50 +109,52 @@ export default class MyPage extends Component {
     return <View style={GlobalStyles.root_container}>
       {ComponentWithNavigationBar(title)}
       <ScrollView>
-        <TouchableHighlight
-          onPress={() => this.onClick(MORE_MENU.Login)}
-        >
-          <View
-            style={[styles.row, {height: 90}]}
-          >
+        <TouchableHighlight onPress={() => this.onClick(MORE_MENU.Login)}>
+          <View style={[styles.row, {height: 90}]}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Icon
-                name='whatshot'
-                size={40}
-                color='#2196F3'
-                containerStyle={{marginRight:10}}
-              />
-              <Text style={{fontSize:20}}>{this.state.user ? this.state.user : 'Account Login'}</Text>
+              {this.state.user ? <Image
+                  style={{width:40, height:40, marginRight:10}}
+                  // source={require('../../../res/avatar/user.jpg')}
+                />
+                : <Icon
+                  name='whatshot'
+                  size={40}
+                  color='#2196F3'
+                  containerStyle={{marginRight: 10}}
+                />
+              }
+              <Text
+                style={{fontSize: 20}}>{this.state.user ? this.state.user : 'Account Login'}</Text>
             </View>
             <Icon
               name='keyboard-arrow-right'
               size={22}
-              containerStyle={{marginRight:10}}
+              containerStyle={{marginRight: 10}}
               color='#2196F3'
             />
           </View>
         </TouchableHighlight>
         <View style={GlobalStyles.line}/>
 
+        {/*Trending Key setting*/}
+        <Text style={styles.groupTitle}>Popular tab key setting</Text>
+        <View style={GlobalStyles.line}/>
+        {this.getItem(MORE_MENU.Custom_Key, 'list', 'Custom Key')}
+        <View style={GlobalStyles.line}/>
+        {/*Key Sort*/}
+        {this.getItem(MORE_MENU.Sort_Key, 'sort', 'Sort Key')}
+        <View style={GlobalStyles.line}/>
+        {/*Key remove*/}
+        {this.getItem(MORE_MENU.Remove_Key, 'remove', 'Remove Key')}
+        <View style={GlobalStyles.line}/>
+
         {/*Popular setting*/}
-        <Text style={styles.groupTitle}>Popular language setting</Text>
+        <Text style={styles.groupTitle}>Trending tab language setting</Text>
         <View style={GlobalStyles.line}/>
         {this.getItem(MORE_MENU.Custom_Language, 'list', 'Custom Language')}
         <View style={GlobalStyles.line}/>
         {/*Languate Sort*/}
         {this.getItem(MORE_MENU.Sort_Language, 'sort', 'Sort Language')}
-        <View style={GlobalStyles.line}/>
-
-        {/*Trending Key setting*/}
-        <Text style={styles.groupTitle}>Trending page key setting</Text>
-        <View style={GlobalStyles.line}/>
-        {this.getItem(MORE_MENU.Custom_Key, 'list', 'Custom Key')}
-        <View style={GlobalStyles.line}/>
-        {/*Key Sort*/}
-        {this.getItem(MORE_MENU.Sort_Language, 'sort', 'Sort Language')}
-        <View style={GlobalStyles.line}/>
-        {/*Key remove*/}
-        {this.getItem(MORE_MENU.Remove_Key, 'remove', 'Remove Key')}
         <View style={GlobalStyles.line}/>
 
         {/*More setting*/}

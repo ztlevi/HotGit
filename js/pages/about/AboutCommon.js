@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from "react";
 import {
   Dimensions,
   Image,
@@ -8,43 +8,49 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View,
-} from 'react-native'
-import ParallaxScrollView from 'react-native-parallax-scroll-view'
-import ViewUtils from '../../util/ViewUtils'
-import FavoriteDAO from '../../expand/dao/FavoriteDAO'
-import { FLAG_STORAGE } from '../../expand/dao/DataRepository'
-import ProjectModel from '../../model/ProjectModel'
-import Utils from '../../util/Utils'
-import RepositoryCell from '../../common/RepositoryCell'
-import RepositoryUtils from '../../expand/dao/RepositoryUtils'
+  View
+} from "react-native";
+import ParallaxScrollView from "react-native-parallax-scroll-view";
+import ViewUtils from "../../util/ViewUtils";
+import FavoriteDAO from "../../expand/dao/FavoriteDAO";
+import {FLAG_STORAGE} from "../../expand/dao/DataRepository";
+import ProjectModel from "../../model/ProjectModel";
+import Utils from "../../util/Utils";
+import RepositoryCell from "../../common/RepositoryCell";
+import RepositoryUtils from "../../expand/dao/RepositoryUtils";
 
-let favoriteDAO = new FavoriteDAO()
+let favoriteDAO = new FavoriteDAO();
 
-export var FLAT_ABOUT = {flag_about: 'about', flag_about_me: 'about_me', flag_user: 'user'}
+let images = ["https://avatars0.githubusercontent.com/u/34407843?v=4"];
+
+export var FLAT_ABOUT = {
+  flag_about: "about",
+  flag_about_me: "about_me",
+  flag_user: "user"
+};
 
 export default class AboutCommon {
-  constructor (props, updateState, flag_about, config) {
-    this.props = props
-    this.updateState = updateState
-    this.flag_about = flag_about
-    this.repositories = []
-    this.config = config
-    this.favoriteKeys = null
-    this.favoriteDao = new FavoriteDAO(FLAG_STORAGE.flag_popular)
-    this.repositoryUtils = new RepositoryUtils(this)
+  constructor(props, updateState, flag_about, config) {
+    this.props = props;
+    this.updateState = updateState;
+    this.flag_about = flag_about;
+    this.repositories = [];
+    this.config = config;
+    this.favoriteKeys = null;
+    this.favoriteDao = new FavoriteDAO(FLAG_STORAGE.flag_popular);
+    this.repositoryUtils = new RepositoryUtils(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.flag_about === FLAT_ABOUT.flag_about) {
-      this.repositoryUtils.fetchRepository(this.config.info.currentRepoUrl)
+      this.repositoryUtils.fetchRepository(this.config.info.currentRepoUrl);
     } else {
-      let urls = []
-      let items = this.config.items
+      let urls = [];
+      let items = this.config.items;
       for (let i = 0, l = items.length; i < l; i++) {
-        urls.push(this.config.info.url + items[i])
+        urls.push(this.config.info.url + items[i]);
       }
-      this.repositoryUtils.fetchRepositories(urls)
+      this.repositoryUtils.fetchRepositories(urls);
     }
   }
 
@@ -52,45 +58,48 @@ export default class AboutCommon {
    * notify data has changed
    * @param items
    */
-  onNotifyDataChanged (items) {
-    this.updateFavorite(items)
+  onNotifyDataChanged(items) {
+    this.updateFavorite(items);
   }
 
   /**
    * update favorite
    * @param repositories
    */
-  async updateFavorite (repositories) {
-    if (repositories) this.repositories = repositories
-    if (!this.repositories) return
+  async updateFavorite(repositories) {
+    if (repositories) this.repositories = repositories;
+    if (!this.repositories) return;
     if (!this.favoriteKeys) {
-      this.favoriteKeys = await this.favoriteDao.getFavoriteKeys()
+      this.favoriteKeys = await this.favoriteDao.getFavoriteKeys();
     }
-    let projectModels = []
+    let projectModels = [];
     for (let i = 0, len = this.repositories.length; i < len; i++) {
-      let data = this.repositories[i]
-      data = data.item ? data.item : data
+      let data = this.repositories[i];
+      data = data.item ? data.item : data;
       projectModels.push({
-        isFavorite: Utils.checkFavorite(data, this.favoriteKeys ? this.favoriteKeys : []),
+        isFavorite: Utils.checkFavorite(
+          data,
+          this.favoriteKeys ? this.favoriteKeys : []
+        ),
         item: data.item ? data.item : data
-      })
+      });
     }
     this.updateState({
       projectModels: projectModels
-    })
+    });
   }
 
-  setFavoriteState (isFavorite) {
-    this.isFavorite = isFavorite
-    this.favoriteIcon = isFavorite ? 'star' : 'star-border'
+  setFavoriteState(isFavorite) {
+    this.isFavorite = isFavorite;
+    this.favoriteIcon = isFavorite ? "star" : "star-border";
   }
 
-  onSelect (projectModel) {
-    const {navigate} = this.props.navigation
-    navigate('repositoryDetailPage', {
+  onSelect(projectModel) {
+    const {navigate} = this.props.navigation;
+    navigate("repositoryDetailPage", {
       projectModel: projectModel,
-      callback: (isFavorite) => this.setFavoriteState(isFavorite)
-    })
+      callback: isFavorite => this.setFavoriteState(isFavorite)
+    });
   }
 
   /**
@@ -98,11 +107,17 @@ export default class AboutCommon {
    * @param item
    * @param isFavorite
    */
-  onFavorite (item, isFavorite) {
+  onFavorite(item, isFavorite) {
     if (isFavorite) {
-      favoriteDAO.saveFavoriteItem('id_' + item.full_name.toString(), JSON.stringify(item))
+      favoriteDAO.saveFavoriteItem(
+        "id_" + item.full_name.toString(),
+        JSON.stringify(item)
+      );
     } else {
-      favoriteDAO.removeFavoriteItem('id_' + item.full_name.toString(), JSON.stringify(item))
+      favoriteDAO.removeFavoriteItem(
+        "id_" + item.full_name.toString(),
+        JSON.stringify(item)
+      );
     }
   }
 
@@ -111,69 +126,69 @@ export default class AboutCommon {
    * @param projectModels
    * @returns {*}
    */
-  renderRepository (projectModels) {
-    if (!projectModels || projectModels.length === 0) return null
-    let views = []
+  renderRepository(projectModels) {
+    if (!projectModels || projectModels.length === 0) return null;
+    let views = [];
     for (let i = 0, l = projectModels.length; i < l; i++) {
-      let projectModel = projectModels[i]
-      views.push(<RepositoryCell
-        {...this.props}
-        key={projectModel.item.full_name}
-        onSelect={() => this.onSelect(projectModel)}
-        onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
-        projectModel={projectModel}/>
-      )
+      let projectModel = projectModels[i];
+      views.push(
+        <RepositoryCell
+          {...this.props}
+          key={projectModel.item.full_name}
+          onSelect={() => this.onSelect(projectModel)}
+          onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+          projectModel={projectModel}
+        />
+      );
     }
-    return views
+    return views;
   }
 
-  getParallaxScrollRenderConfig (params) {
-    let config = {}
+  getParallaxScrollRenderConfig(params) {
+    let config = {};
     config.renderBackground = () => (
       <View key="background">
         <Image
           style={{width: window.width, height: PARALLAX_HEADER_HEIGHT}}
           source={params.backgroundImg}
         />
-        <View style={{
-          position: 'absolute',
-          top: 0,
-          width: window.width,
-          backgroundColor: 'rgba(0,0,0,.4)',
-          height: PARALLAX_HEADER_HEIGHT
-        }}/>
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            width: window.width,
+            backgroundColor: "rgba(0,0,0,.4)",
+            height: PARALLAX_HEADER_HEIGHT
+          }}
+        />
       </View>
-    )
+    );
     config.renderForeground = () => (
       <View key="parallax-header" style={styles.parallaxHeader}>
-        <Image style={[styles.avatar, {width: AVATAR_SIZE, height: AVATAR_SIZE}]}
-               source={params.avatar}/>
-        <Text style={styles.sectionSpeakerText}>
-          {params.name}
-        </Text>
-        <Text style={styles.sectionTitleText}>
-          {params.description}
-        </Text>
+        {/*<Image style={[styles.avatar, {width: AVATAR_SIZE, height: AVATAR_SIZE}]}*/}
+        {/*source={params.avatar}/>*/}
+        <Text style={styles.sectionSpeakerText}>{params.name}</Text>
+        <Text style={styles.sectionTitleText}>{params.description}</Text>
       </View>
-    )
+    );
 
     config.renderStickyHeader = () => (
       <View key="sticky-header" style={styles.stickySection}>
         <Text style={styles.stickySectionText}>{params.name}</Text>
       </View>
-    )
+    );
 
     config.renderFixedHeader = () => (
       <View key="fixed-header" style={styles.fixedSection}>
         {ViewUtils.getLeftButton(() => this.props.navigation.goBack())}
       </View>
-    )
+    );
 
-    return config
+    return config;
   }
 
-  render (contentView, params) {
-    let renderConfig = this.getParallaxScrollRenderConfig(params)
+  render(contentView, params) {
+    let renderConfig = this.getParallaxScrollRenderConfig(params);
     return (
       <ParallaxScrollView
         headerBackgroundColor="#333"
@@ -185,24 +200,24 @@ export default class AboutCommon {
       >
         {contentView}
       </ParallaxScrollView>
-    )
+    );
   }
 }
 
-const window = Dimensions.get('window')
+const window = Dimensions.get("window");
 
-const AVATAR_SIZE = 120
-const ROW_HEIGHT = 60
-const PARALLAX_HEADER_HEIGHT = 350
-const STICKY_HEADER_HEIGHT = 70
+const AVATAR_SIZE = 120;
+const ROW_HEIGHT = 60;
+const PARALLAX_HEADER_HEIGHT = 350;
+const STICKY_HEADER_HEIGHT = 70;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black'
+    backgroundColor: "black"
   },
   background: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     width: window.width,
@@ -211,34 +226,34 @@ const styles = StyleSheet.create({
   stickySection: {
     height: STICKY_HEADER_HEIGHT,
     paddingTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   stickySectionText: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
     margin: 10
   },
   fixedSection: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 10,
     right: 10,
     left: 0,
     top: 0,
     paddingRight: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingTop: 32,
-    justifyContent: 'space-between',
+    justifyContent: "space-between"
   },
   fixedSectionText: {
-    color: '#999',
+    color: "#999",
     fontSize: 20
   },
   parallaxHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
     paddingTop: 100
   },
   avatar: {
@@ -246,27 +261,27 @@ const styles = StyleSheet.create({
     borderRadius: AVATAR_SIZE / 2
   },
   sectionSpeakerText: {
-    color: 'white',
+    color: "white",
     fontSize: 24,
     paddingVertical: 5
   },
   sectionTitleText: {
     padding: 8,
-    textAlign: 'center',
-    color: 'white',
+    textAlign: "center",
+    color: "white",
     fontSize: 15,
     paddingVertical: 5
   },
   row: {
-    overflow: 'hidden',
+    overflow: "hidden",
     paddingHorizontal: 10,
     height: ROW_HEIGHT,
-    backgroundColor: 'white',
-    borderColor: '#ccc',
+    backgroundColor: "white",
+    borderColor: "#ccc",
     borderBottomWidth: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   rowText: {
     fontSize: 20
   }
-})
+});

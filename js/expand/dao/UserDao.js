@@ -11,6 +11,7 @@ const base64 = require('base-64')
 const url_star = 'https://api.github.com/user/starred/'
 const url_repo = 'https://api.github.com/repos/'
 const url_page = 'https://api.github.com/user/starred?page='
+const url_user = 'https://api.github.com/user'
 
 export default class UserDao {
   constructor () {
@@ -35,7 +36,7 @@ export default class UserDao {
     }
   }
 
-  async login (username, password, callBack) {
+  async login (username, password, callback) {
     await AsyncStorage.setItem('username', username)
     let auth_header = 'Basic ' + base64.encode(username + ':' + password)
     await AsyncStorage.setItem('auth_header', auth_header)
@@ -47,20 +48,23 @@ export default class UserDao {
         let favoriteDao = new FavoriteDAO()
         favoriteDao.reloadStarredRepos()
 
+        // save user's avatar
+        await this.fetchUserInfo()
+
         // go back when success
-        callBack()
+        callback()
 
         DeviceEventEmitter.emit('showToast', 'Logged in')
       } else {
         await AsyncStorage.removeItem('username')
         await AsyncStorage.removeItem('auth_header')
-        callBack('Username and password does not match. Authentication failed.')
+        callback('Username and password does not match. Authentication failed.')
         DeviceEventEmitter.emit('showLoginToast', 'Username and password does not match. Authentication failed.')
       }
     } else {
       await AsyncStorage.removeItem('username')
       await AsyncStorage.removeItem('auth_header')
-      callBack('Failed to connect server. Please check the network.')
+      callback('Failed to connect server. Please check the network.')
       DeviceEventEmitter.emit('showLoginToast', 'Failed to connect server. Please check the network.')
     }
   }
@@ -297,5 +301,40 @@ export default class UserDao {
           reject(e)
         })
     })
+  }
+
+  /**
+   * Fetch user's info
+   */
+  async fetchUserInfo () {
+    let user
+    try {
+      user = await this.loadCurrentUser()
+    } catch (err) {
+      console.log(err)
+    }
+    let auth_header
+    try {
+      auth_header = await this.fetchAuthenticationHeader()
+    } catch (err) {
+      console.log(err)
+    }
+
+    let url = url_user
+    /* the good old XMLHttpRequest */
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.setRequestHeader('Authorization', auth_header)
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+
+    xhr.onload = _ => {
+      let response = JSON.parse(xhr.responseText)
+      fetch(response.avatar_url)
+        .then(()=>{
+          //write avatar image
+          // avatar folder user.jpg
+        })
+    }
+    xhr.send()
   }
 }
