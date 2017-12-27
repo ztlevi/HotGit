@@ -7,7 +7,11 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "test": "node node_modules/jest/bin/jest.js --watch",
+    "prettier": "prettier --write \"**/*.js\"",
+    "eslint": "eslint .",
+    "stylelint": "stylelint src/**/*.js",
+    "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "dependencies": {

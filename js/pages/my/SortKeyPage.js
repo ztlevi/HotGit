@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   View,
   Image,
@@ -7,120 +7,129 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Text,
-} from 'react-native'
-import ComponentWithNavigationBar from '../../common/NavigatorBar'
-import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao'
-import ArrayUtils from '../../util/ArrayUtils'
-import SortableListView from 'react-native-sortable-listview'
-import ViewUtils from '../../util/ViewUtils'
-import GlobalStyles from '../../../res/styles/GlobalStyles'
-import {Icon} from 'react-native-elements'
+} from 'react-native';
+import ComponentWithNavigationBar from '../../common/NavigatorBar';
+import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao';
+import ArrayUtils from '../../util/ArrayUtils';
+import SortableListView from 'react-native-sortable-listview';
+import ViewUtils from '../../util/ViewUtils';
+import GlobalStyles from '../../../res/styles/GlobalStyles';
+import { Icon } from 'react-native-elements';
 
 export default class SortKeyPage extends Component {
-  constructor (props) {
-    super(props)
-    this.dataArray = []
-    this.sortResultArray = []
-    this.originalCheckedArray = []
+  constructor(props) {
+    super(props);
+    this.dataArray = [];
+    this.sortResultArray = [];
+    this.originalCheckedArray = [];
     this.state = {
-      checkedArray: []
-    }
+      checkedArray: [],
+    };
   }
 
-  componentDidMount () {
-    const {state} = this.props.navigation
-    this.flag = state.params.flag
-    this.languageDao = new LanguageDao(this.flag)
-    this.loadData()
+  componentDidMount() {
+    const { state } = this.props.navigation;
+    this.flag = state.params.flag;
+    this.languageDao = new LanguageDao(this.flag);
+    this.loadData();
   }
 
-  loadData () {
-    this.languageDao.fetch()
+  loadData() {
+    this.languageDao
+      .fetch()
       .then(result => {
-        this.getCheckedItems(result)
+        this.getCheckedItems(result);
       })
-      .catch(error => {
-
-      })
+      .catch(error => {});
   }
 
-  getCheckedItems (result) {
-    this.dataArray = result
-    let checkedArray = []
+  getCheckedItems(result) {
+    this.dataArray = result;
+    let checkedArray = [];
     for (let i = 0, len = result.length; i < len; i++) {
-      let data = result[i]
-      if (data.checked) checkedArray.push(data)
+      let data = result[i];
+      if (data.checked) checkedArray.push(data);
     }
     this.setState({
       checkedArray: checkedArray,
-    })
-    this.originalCheckedArray = ArrayUtils.clone(checkedArray)
+    });
+    this.originalCheckedArray = ArrayUtils.clone(checkedArray);
   }
 
-  onBack () {
-    if (ArrayUtils.isEqual(this.originalCheckedArray, this.state.checkedArray)) {
-      this.props.navigation.goBack()
-      return
+  onBack() {
+    if (
+      ArrayUtils.isEqual(this.originalCheckedArray, this.state.checkedArray)
+    ) {
+      this.props.navigation.goBack();
+      return;
     }
     Alert.alert(
       'Note',
       'Do you want to save modification?',
       [
-        {text: 'NO', onPress: () => this.props.navigation.goBack()},
-        {text: 'YES', onPress: () => this.onSave(true)},
+        { text: 'NO', onPress: () => this.props.navigation.goBack() },
+        { text: 'YES', onPress: () => this.onSave(true) },
       ],
-      {cancelable: false}
-    )
-
+      { cancelable: false }
+    );
   }
 
-  onSave (idChecked) {
-    if (!idChecked && ArrayUtils.isEqual(this.originalCheckedArray, this.state.checkedArray)) {
-      this.props.navigation.goBack()
-      return
+  onSave(idChecked) {
+    if (
+      !idChecked &&
+      ArrayUtils.isEqual(this.originalCheckedArray, this.state.checkedArray)
+    ) {
+      this.props.navigation.goBack();
+      return;
     }
-    this.getSortResult()
-    this.languageDao.save(this.sortResultArray)
-    this.props.navigation.goBack()
+    this.getSortResult();
+    this.languageDao.save(this.sortResultArray);
+    this.props.navigation.goBack();
   }
 
-  getSortResult () {
-    this.sortResultArray = ArrayUtils.clone(this.dataArray)
+  getSortResult() {
+    this.sortResultArray = ArrayUtils.clone(this.dataArray);
     for (let i = 0, l = this.originalCheckedArray.length; i < l; i++) {
-      let item = this.originalCheckedArray[i]
-      let index = this.dataArray.indexOf(item)
-      this.sortResultArray.splice(index, 1, this.state.checkedArray[i])
+      let item = this.originalCheckedArray[i];
+      let index = this.dataArray.indexOf(item);
+      this.sortResultArray.splice(index, 1, this.state.checkedArray[i]);
     }
   }
 
-  render () {
-    const {navigate} = this.props.navigation
-    let order = Object.keys(this.state.checkedArray)
+  render() {
+    const { navigate } = this.props.navigation;
+    let order = Object.keys(this.state.checkedArray);
 
-    let leftButton = ViewUtils.getLeftButton(() => this.onBack())
-    let rightButton = ViewUtils.getRightButton(() => this.onBack(), 'Save')
+    let leftButton = ViewUtils.getLeftButton(() => this.onBack());
+    let rightButton = ViewUtils.getRightButton(() => this.onBack(), 'Save');
 
-    let title = this.flag === FLAG_LANGUAGE.flag_language ? 'Sort Language' : 'Sort Key'
-    let titleText = <Text style={GlobalStyles.titleText}>{title}</Text>
+    let title =
+      this.flag === FLAG_LANGUAGE.flag_language ? 'Sort Language' : 'Sort Key';
+    let titleText = <Text style={GlobalStyles.titleText}>{title}</Text>;
 
-    return <View style={styles.container}>
-      {ComponentWithNavigationBar(titleText, leftButton, rightButton)}
-      <SortableListView
-        data={this.state.checkedArray}
-        order={order}
-        onRowMoved={e => {
-          this.state.checkedArray.splice(e.to, 0, this.state.checkedArray.splice(e.from, 1)[0])
-          this.forceUpdate()
-        }}
-        renderRow={row => <SortCell data={row}/>}
-      >
-      </SortableListView>
-    </View>
+    return (
+      <View style={styles.container}>
+        {ComponentWithNavigationBar(titleText, leftButton, rightButton)}
+        <SortableListView
+          data={this.state.checkedArray}
+          order={order}
+          onRowMoved={e => {
+            this.state.checkedArray.splice(
+              e.to,
+              0,
+              this.state.checkedArray.splice(e.from, 1)[0]
+            );
+            this.forceUpdate();
+          }}
+          renderRow={row => <SortCell data={row} />}
+        />
+      </View>
+    );
   }
 }
 
 class SortCell extends Component {
-  render () {
+  render() {
     return (
       <TouchableHighlight
         underlayColor={'#eee'}
@@ -130,34 +139,33 @@ class SortCell extends Component {
       >
         <View style={styles.row}>
           <Icon
-            name='reorder'
+            name="reorder"
             size={16}
-            color='#2196f3'
-            containerStyle={{marginRight:10}}
+            color="#2196f3"
+            containerStyle={{ marginRight: 10 }}
           />
-          <Text style={{fontWeight: 'bold'}}>{this.props.data.name}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{this.props.data.name}</Text>
         </View>
       </TouchableHighlight>
-    )
-
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   tips: {
-    fontSize: 29
+    fontSize: 29,
   },
   item: {
     padding: 15,
     backgroundColor: '#F8F8F8',
     borderBottomWidth: 1,
-    borderColor: '#eee'
+    borderColor: '#eee',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-})
+});

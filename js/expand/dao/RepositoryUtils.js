@@ -1,14 +1,12 @@
-import {
-  AsyncStorage
-} from 'react-native'
-import DataRepository, { FLAG_STORAGE } from './DataRepository'
-import Utils from '../../util/Utils'
+import { AsyncStorage } from 'react-native';
+import DataRepository, { FLAG_STORAGE } from './DataRepository';
+import Utils from '../../util/Utils';
 
-let itemMap = new Map()
+let itemMap = new Map();
 export default class RepositoryUtils {
-  constructor (aboutCommon) {
-    this.aboutCommon = aboutCommon
-    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_my)
+  constructor(aboutCommon) {
+    this.aboutCommon = aboutCommon;
+    this.dataRepository = new DataRepository(FLAG_STORAGE.flag_my);
   }
 
   /**
@@ -16,46 +14,46 @@ export default class RepositoryUtils {
    * @param k
    * @param v
    */
-  updateData (k, v) {
-    itemMap.set(k, v)
-    let arr = []
+  updateData(k, v) {
+    itemMap.set(k, v);
+    let arr = [];
     for (let value of itemMap.values()) {
-      arr.push(value)
+      arr.push(value);
     }
-    this.aboutCommon.onNotifyDataChanged(arr)
+    this.aboutCommon.onNotifyDataChanged(arr);
   }
 
   /**
    * Fetch data on given url
    * @param url
    */
-  fetchRepository (url) {
-    this.dataRepository.fetchRepository(url)
+  fetchRepository(url) {
+    this.dataRepository
+      .fetchRepository(url)
       .then(result => {
         if (result) {
-          this.updateData(url, result)
+          this.updateData(url, result);
           if (!Utils.checkDate(result.update_date)) {
-            return this.dataRepository.fetchNetRepository(url)
+            return this.dataRepository.fetchNetRepository(url);
           }
         }
       })
-      .then((item) => {
+      .then(item => {
         if (item) {
-          this.updateData(url, item)
+          this.updateData(url, item);
         }
       })
-      .catch(e => {
-      })
+      .catch(e => {});
   }
 
   /**
    * Batch fetching data on given urls
    * @param urls
    */
-  fetchRepositories (urls) {
+  fetchRepositories(urls) {
     for (let i = 0, l = urls.length; i < l; i++) {
-      let url = urls[i]
-      this.fetchRepository(url)
+      let url = urls[i];
+      this.fetchRepository(url);
     }
   }
 }

@@ -1,63 +1,73 @@
-import React, { Component } from 'react'
-import {
-  AsyncStorage,
-} from 'react-native'
-import keys from '../../../res/data/keys.json'
-import langs from '../../../res/data/langs.json'
+import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
+import keys from '../../../res/data/keys.json';
+import langs from '../../../res/data/langs.json';
 
 export let FLAG_LANGUAGE = {
   flag_language: 'flag_language_language',
-  flag_key: 'flag_language_key'
-}
+  flag_key: 'flag_language_key',
+};
 
 export default class LanguageDao {
-  constructor (flag) {
-    this.flag = flag
+  constructor(flag) {
+    this.flag = flag;
   }
 
-  fetch () {
+  fetch() {
     return new Promise((resolve, reject) => {
       AsyncStorage.getItem(this.flag, (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
           if (result) {
             try {
-              resolve(JSON.parse(result))
+              resolve(JSON.parse(result));
             } catch (e) {
-              reject(e)
+              reject(e);
             }
           } else {
-            let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : langs
-            this.save(data)
-            resolve(data)
+            let data = this.flag === FLAG_LANGUAGE.flag_key ? keys : langs;
+            this.save(data);
+            resolve(data);
           }
         }
-      })
-    })
+      });
+    });
   }
 
-  save (data) {
-    AsyncStorage.setItem(this.flag, JSON.stringify(data), (error, result) => { })
+  save(data) {
+    AsyncStorage.setItem(
+      this.flag,
+      JSON.stringify(data),
+      (error, result) => {}
+    );
   }
 
-  resetKeys () {
+  resetKeys() {
     AsyncStorage.getItem(this.flag, (error, result) => {
       if (error) {
-        console.log('Cannot reset!')
+        console.log('Cannot reset!');
       } else {
-        AsyncStorage.setItem(FLAG_LANGUAGE.flag_key, JSON.stringify(keys), (error, result) => { })
+        AsyncStorage.setItem(
+          FLAG_LANGUAGE.flag_key,
+          JSON.stringify(keys),
+          (error, result) => {}
+        );
       }
-    })
+    });
   }
 
-  resetLangs () {
+  resetLangs() {
     AsyncStorage.getItem(this.flag, (error, result) => {
       if (error) {
-        console.log('Cannot reset!')
+        console.log('Cannot reset!');
       } else {
-        AsyncStorage.setItem(FLAG_LANGUAGE.flag_language, JSON.stringify(langs), (error, result) => { })
+        AsyncStorage.setItem(
+          FLAG_LANGUAGE.flag_language,
+          JSON.stringify(langs),
+          (error, result) => {}
+        );
       }
-    })
+    });
   }
 }

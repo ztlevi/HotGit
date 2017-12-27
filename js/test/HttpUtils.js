@@ -8,8 +8,8 @@ export default class HttpUtils {
         })
         .catch(error => {
           reject(error);
-        })
-    })
+        });
+    });
   }
 
   static post(url, data) {
@@ -17,10 +17,10 @@ export default class HttpUtils {
       fetch(url, {
         method: 'POST',
         header: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       })
         .then(response => response.json())
         .then(result => {
@@ -28,7 +28,7 @@ export default class HttpUtils {
         })
         .catch(error => {
           reject(error);
-        })
-    })
+        });
+    });
   }
 }

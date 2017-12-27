@@ -12,9 +12,17 @@
 .env.test.local
 .env.production.local
 
+# editors
 .idea/*
 .vscode/*
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# eslint cache
+.eslintcache
+
+coverage
+
+*.psd

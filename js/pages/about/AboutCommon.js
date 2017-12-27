@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import {
   Dimensions,
   Image,
@@ -8,24 +8,24 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
-} from "react-native";
-import ParallaxScrollView from "react-native-parallax-scroll-view";
-import ViewUtils from "../../util/ViewUtils";
-import FavoriteDAO from "../../expand/dao/FavoriteDAO";
-import {FLAG_STORAGE} from "../../expand/dao/DataRepository";
-import ProjectModel from "../../model/ProjectModel";
-import Utils from "../../util/Utils";
-import RepositoryCell from "../../common/RepositoryCell";
-import RepositoryUtils from "../../expand/dao/RepositoryUtils";
-import { Icon } from 'react-native-elements'
+  View,
+} from 'react-native';
+import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import ViewUtils from '../../util/ViewUtils';
+import FavoriteDAO from '../../expand/dao/FavoriteDAO';
+import { FLAG_STORAGE } from '../../expand/dao/DataRepository';
+import ProjectModel from '../../model/ProjectModel';
+import Utils from '../../util/Utils';
+import RepositoryCell from '../../common/RepositoryCell';
+import RepositoryUtils from '../../expand/dao/RepositoryUtils';
+import { Icon } from 'react-native-elements';
 
 let favoriteDAO = new FavoriteDAO();
 
 export var FLAT_ABOUT = {
-  flag_about: "about",
-  flag_about_me: "about_me",
-  flag_user: "user"
+  flag_about: 'about',
+  flag_about_me: 'about_me',
+  flag_user: 'user',
 };
 
 export default class AboutCommon {
@@ -80,24 +80,24 @@ export default class AboutCommon {
           data,
           this.favoriteKeys ? this.favoriteKeys : []
         ),
-        item: data.item ? data.item : data
+        item: data.item ? data.item : data,
       });
     }
     this.updateState({
-      projectModels: projectModels
+      projectModels: projectModels,
     });
   }
 
   setFavoriteState(isFavorite) {
     this.isFavorite = isFavorite;
-    this.favoriteIcon = isFavorite ? "star" : "star-border";
+    this.favoriteIcon = isFavorite ? 'star' : 'star-border';
   }
 
   onSelect(projectModel) {
-    const {navigate} = this.props.navigation;
-    navigate("repositoryDetailPage", {
+    const { navigate } = this.props.navigation;
+    navigate('repositoryDetailPage', {
       projectModel: projectModel,
-      callback: isFavorite => this.setFavoriteState(isFavorite)
+      callback: isFavorite => this.setFavoriteState(isFavorite),
     });
   }
 
@@ -109,12 +109,12 @@ export default class AboutCommon {
   onFavorite(item, isFavorite) {
     if (isFavorite) {
       favoriteDAO.saveFavoriteItem(
-        "id_" + item.full_name.toString(),
+        'id_' + item.full_name.toString(),
         JSON.stringify(item)
       );
     } else {
       favoriteDAO.removeFavoriteItem(
-        "id_" + item.full_name.toString(),
+        'id_' + item.full_name.toString(),
         JSON.stringify(item)
       );
     }
@@ -148,30 +148,30 @@ export default class AboutCommon {
     config.renderBackground = () => (
       <View key="background">
         <Image
-          style={{width: window.width, height: PARALLAX_HEADER_HEIGHT}}
+          style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT }}
           source={params.backgroundImg}
         />
         <View
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             width: window.width,
-            backgroundColor: "rgba(0,0,0,.4)",
-            height: PARALLAX_HEADER_HEIGHT
+            backgroundColor: 'rgba(0,0,0,.4)',
+            height: PARALLAX_HEADER_HEIGHT,
           }}
         />
       </View>
     );
     config.renderForeground = () => (
       <View key="parallax-header" style={styles.parallaxHeader}>
-        {params.avatar ? <Image style={[styles.avatar, {width: AVATAR_SIZE, height: AVATAR_SIZE}]}
-                                source={{uri: params.avatar}}/>
-          : <Icon
-            name='account-circle'
-            size={AVATAR_SIZE}
-            color='white'
+        {params.avatar ? (
+          <Image
+            style={[styles.avatar, { width: AVATAR_SIZE, height: AVATAR_SIZE }]}
+            source={{ uri: params.avatar }}
           />
-        }
+        ) : (
+          <Icon name="account-circle" size={AVATAR_SIZE} color="white" />
+        )}
         <Text style={styles.sectionSpeakerText}>{params.name}</Text>
         <Text style={styles.sectionTitleText}>{params.description}</Text>
       </View>
@@ -209,7 +209,7 @@ export default class AboutCommon {
   }
 }
 
-const window = Dimensions.get("window");
+const window = Dimensions.get('window');
 
 const AVATAR_SIZE = 120;
 const ROW_HEIGHT = 60;
@@ -219,74 +219,74 @@ const STICKY_HEADER_HEIGHT = 70;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black"
+    backgroundColor: 'black',
   },
   background: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     width: window.width,
-    height: PARALLAX_HEADER_HEIGHT
+    height: PARALLAX_HEADER_HEIGHT,
   },
   stickySection: {
     height: STICKY_HEADER_HEIGHT,
     paddingTop: 20,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   stickySectionText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
-    margin: 10
+    margin: 10,
   },
   fixedSection: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 10,
     right: 10,
     left: 0,
     top: 0,
     paddingRight: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingTop: 32,
-    justifyContent: "space-between"
+    justifyContent: 'space-between',
   },
   fixedSectionText: {
-    color: "#999",
-    fontSize: 20
+    color: '#999',
+    fontSize: 20,
   },
   parallaxHeader: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
-    flexDirection: "column",
-    paddingTop: 100
+    flexDirection: 'column',
+    paddingTop: 100,
   },
   avatar: {
     marginBottom: 10,
-    borderRadius: AVATAR_SIZE / 2
+    borderRadius: AVATAR_SIZE / 2,
   },
   sectionSpeakerText: {
-    color: "white",
+    color: 'white',
     fontSize: 24,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   sectionTitleText: {
     padding: 8,
-    textAlign: "center",
-    color: "white",
+    textAlign: 'center',
+    color: 'white',
     fontSize: 15,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   row: {
-    overflow: "hidden",
+    overflow: 'hidden',
     paddingHorizontal: 10,
     height: ROW_HEIGHT,
-    backgroundColor: "white",
-    borderColor: "#ccc",
+    backgroundColor: 'white',
+    borderColor: '#ccc',
     borderBottomWidth: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   rowText: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });

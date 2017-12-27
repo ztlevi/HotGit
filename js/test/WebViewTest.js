@@ -1,6 +1,4 @@
-import React, {
-  Component
-} from 'react'
+import React, { Component } from 'react';
 import {
   View,
   Button,
@@ -9,67 +7,65 @@ import {
   StyleSheet,
   WebView,
   DeviceEventEmitter,
-} from 'react-native'
-import ComponentWithNavigationBar from '../common/NavigatorBar'
+} from 'react-native';
+import ComponentWithNavigationBar from '../common/NavigatorBar';
 
-const URL = 'https://www.google.com'
+const URL = 'https://www.google.com';
 export default class WebViewTest extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       url: URL,
       title: '',
       canGoBack: false,
-    }
+    };
   }
 
-  goBack () {
+  goBack() {
     if (this.state.canGoBack) {
-      this.webView.goBack()
+      this.webView.goBack();
     } else {
-      DeviceEventEmitter.emit('showToast', 'Cannot go back')
+      DeviceEventEmitter.emit('showToast', 'Cannot go back');
     }
   }
 
-  go () {
+  go() {
     this.setState({
-      url: this.text
-    })
+      url: this.text,
+    });
   }
 
-  onNavigationStateChange (e) {
+  onNavigationStateChange(e) {
     this.setState({
       canGoBack: e.canGoBack,
       title: e.title,
-    })
+    });
   }
 
-  render () {
-    return <View style={styles.container}>
-      {ComponentWithNavigationBar(
-        {title: 'Web view usage'},
-      )}
-      <View style={styles.row}>
-        <Text
-          style={styles.tips}
-          onPress={() => this.goBack()}
-        >Return</Text>
-        <TextInput
-          style={styles.input}
-          defaultValue={URL}
-          onChangeText={text => this.text = text}
+  render() {
+    return (
+      <View style={styles.container}>
+        {ComponentWithNavigationBar({ title: 'Web view usage' })}
+        <View style={styles.row}>
+          <Text style={styles.tips} onPress={() => this.goBack()}>
+            Return
+          </Text>
+          <TextInput
+            style={styles.input}
+            defaultValue={URL}
+            onChangeText={text => (this.text = text)}
+          />
+          <Text style={styles.tips} onPress={() => this.go()}>
+            Go
+          </Text>
+        </View>
+        <WebView
+          ref={webView => (this.webView = webView)}
+          source={{ uri: this.state.url }}
+          onNavigationStateChange={e => this.onNavigationStateChange(e)}
         />
-        <Text
-          style={styles.tips}
-          onPress={() => this.go()}
-        >Go</Text>
       </View>
-      <WebView
-        ref={webView => this.webView = webView}
-        source={{uri: this.state.url}}
-        onNavigationStateChange={(e) => this.onNavigationStateChange(e)}
-      />
-    </View>
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -88,6 +84,6 @@ const styles = StyleSheet.create({
     height: 40,
     flex: 1,
     borderWidth: 1,
-    margin: 2
-  }
-})
+    margin: 2,
+  },
+});
