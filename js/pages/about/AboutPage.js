@@ -74,7 +74,7 @@ export default class AboutPage extends Component {
     return this.aboutCommon.render(content, {
       'name': 'Github Popular',
       'description': 'This is a Github Mobile App built with React Native. This app aims to help developers keep tracking on Github\'s popular repositories.',
-      'avatar': require('../../../res/avatar/author.jpg'),
+      'avatar': 'https://avatars2.githubusercontent.com/u/16655096?s=460&v=4',
       'backgroundImg': require('../../../res/avatar/background.jpg')
     })
   }

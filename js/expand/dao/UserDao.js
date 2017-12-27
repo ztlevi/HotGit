@@ -27,6 +27,17 @@ export default class UserDao {
     }
   }
 
+  async loadUserAvatar () {
+    try {
+      let a = await AsyncStorage.getItem('user_avatar')
+      console.log(a)
+      return a
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  }
+
   async fetchAuthenticationHeader () {
     try {
       return await AsyncStorage.getItem('auth_header')
@@ -41,32 +52,44 @@ export default class UserDao {
     let auth_header = 'Basic ' + base64.encode(username + ':' + password)
     await AsyncStorage.setItem('auth_header', auth_header)
 
-    let response = await this.checkAuthentication()
-    if (response) {
-      if (response.status === 200) {
-        // reload starred repos when logged in
-        let favoriteDao = new FavoriteDAO()
-        favoriteDao.reloadStarredRepos()
+    this.checkAuthentication()
+      .catch(error => {
+        console.log(error)
+        AsyncStorage.removeItem('username')
+        AsyncStorage.removeItem('auth_header')
+      })
+      .then(response => {
+        if (response) {
+          if (response.status === 200) {
+            // fetch user's avatar
+            // do the following process when fetchUserInfo finish
+            this.fetchUserInfo()
+              .then(() => {
+                // reload starred repos when logged in
+                let favoriteDao = new FavoriteDAO()
+                favoriteDao.reloadStarredRepos()
 
-        // save user's avatar
-        await this.fetchUserInfo()
-
-        // go back when success
-        callback()
-
-        DeviceEventEmitter.emit('showToast', 'Logged in')
-      } else {
-        await AsyncStorage.removeItem('username')
-        await AsyncStorage.removeItem('auth_header')
-        callback('Username and password does not match. Authentication failed.')
-        DeviceEventEmitter.emit('showLoginToast', 'Username and password does not match. Authentication failed.')
-      }
-    } else {
-      await AsyncStorage.removeItem('username')
-      await AsyncStorage.removeItem('auth_header')
-      callback('Failed to connect server. Please check the network.')
-      DeviceEventEmitter.emit('showLoginToast', 'Failed to connect server. Please check the network.')
-    }
+                // go back when success
+                callback()
+                DeviceEventEmitter.emit('showToast', 'Logged in')
+              })
+              .catch(err => {
+                DeviceEventEmitter.emit('showToast', 'Cannot fetch user\'s avatar')
+                console.log(err)
+              })
+          } else {
+            AsyncStorage.removeItem('username')
+            AsyncStorage.removeItem('auth_header')
+            callback('Username and password does not match. Authentication failed.')
+            DeviceEventEmitter.emit('showLoginToast', 'Username and password does not match. Authentication failed.')
+          }
+        } else {
+          AsyncStorage.removeItem('username')
+          AsyncStorage.removeItem('auth_header')
+          callback('Failed to connect server. Please check the network.')
+          DeviceEventEmitter.emit('showLoginToast', 'Failed to connect server. Please check the network.')
+        }
+      })
   }
 
   async logout (callback) {
@@ -84,19 +107,22 @@ export default class UserDao {
   /**
    * Check if authenticated
    */
-  async checkAuthentication () {
-    let headers = new Headers()
-    let auth_header = await this.fetchAuthenticationHeader()
-    headers.append('Authorization', auth_header)
-    let response
-    try {
-      response = await fetch('https://api.github.com/', {
-        headers: headers,
-      })
-    } catch (err) {
-      response = null
-    }
-    return response
+  checkAuthentication () {
+    return new Promise((resolve, reject) => {
+      let headers = new Headers()
+      this.fetchAuthenticationHeader()
+        .then((auth_header) => {
+            headers.append('Authorization', auth_header)
+            fetch('https://api.github.com/', {headers: headers,})
+              .then(resp => {
+                resolve(resp)
+              })
+              .catch(err => {
+                reject(err)
+              })
+          }
+        )
+    })
   }
 
   /**
@@ -306,35 +332,40 @@ export default class UserDao {
   /**
    * Fetch user's info
    */
-  async fetchUserInfo () {
-    let user
-    try {
-      user = await this.loadCurrentUser()
-    } catch (err) {
-      console.log(err)
-    }
-    let auth_header
-    try {
-      auth_header = await this.fetchAuthenticationHeader()
-    } catch (err) {
-      console.log(err)
-    }
+  fetchUserInfo () {
+    return new Promise((resolve, reject) => {
+      Promise.all([this.loadCurrentUser(), this.fetchAuthenticationHeader()])
+        .then(result => {
+          let user = result[0]
+          let auth_header = result[1]
+          let url = url_user
 
-    let url = url_user
-    /* the good old XMLHttpRequest */
-    let xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.setRequestHeader('Authorization', auth_header)
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+          function makeRequest (method, url, done) {
+            var xhr = new XMLHttpRequest()
+            xhr.open(method, url)
+            xhr.setRequestHeader('Authorization', auth_header)
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+            xhr.onload = function () {
+              done(null, xhr.responseText)
+            }
+            xhr.onerror = function () {
+              done(xhr.response)
+            }
+            xhr.send()
+          }
 
-    xhr.onload = _ => {
-      let response = JSON.parse(xhr.responseText)
-      fetch(response.avatar_url)
-        .then(()=>{
-          //write avatar image
-          // avatar folder user.jpg
+          makeRequest('GET', url, function (err, responseText) {
+            if (err) { throw err }
+            let response = JSON.parse(responseText)
+            AsyncStorage.setItem('user_avatar', response.avatar_url)
+              .then(() => {
+                resolve()
+              })
+              .catch(e => {
+                reject(e)
+              })
+          })
         })
-    }
-    xhr.send()
+    })
   }
 }

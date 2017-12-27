@@ -13,7 +13,7 @@ export const config = {
   "author": {
     "name": "Ting Zhou",
     "description": "I'm a full-stack developer",
-    "avatar": require("../avatar/author.jpg"),
+    'avatar': 'https://avatars2.githubusercontent.com/u/16655096?s=460&v=4',
     "backgroundImg": require("../avatar/background.jpg"),
     "url": "http://www.devio.org/"
   }

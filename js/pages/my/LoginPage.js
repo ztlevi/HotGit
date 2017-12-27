@@ -29,6 +29,7 @@ export default class LoginPage extends Component {
     super(props);
     const {state} = this.props.navigation;
     this.user = state.params.user;
+    this.avatar_url = state.params.avatar_url
     this.username = "ztlevitest";
     this.password = "helloTest1";
     this.aboutCommon = new AboutCommon(
@@ -75,7 +76,7 @@ export default class LoginPage extends Component {
     let content;
     if (user) {
       content = (
-        <View style={styles.row}>
+        <View style={[styles.row, {paddingTop: 10}]}>
           <Button
             onPress={() => {
               userDao.logout(() => this.onLogout());
@@ -134,9 +135,8 @@ export default class LoginPage extends Component {
     return this.aboutCommon.render(content, {
       name: user ? user : "Please login",
       description: this.state.description ? this.state.description : "",
-      avatar: user
-        ? require("../../../res/avatar/user.jpg")
-        : require("../../../res/avatar/author.jpg")
+      avatar: user ? this.avatar_url : null,
+      backgroundImg: require('../../../res/avatar/user_background.jpg')
     });
   }
 }

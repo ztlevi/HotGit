@@ -18,10 +18,9 @@ import ProjectModel from "../../model/ProjectModel";
 import Utils from "../../util/Utils";
 import RepositoryCell from "../../common/RepositoryCell";
 import RepositoryUtils from "../../expand/dao/RepositoryUtils";
+import { Icon } from 'react-native-elements'
 
 let favoriteDAO = new FavoriteDAO();
-
-let images = ["https://avatars0.githubusercontent.com/u/34407843?v=4"];
 
 export var FLAT_ABOUT = {
   flag_about: "about",
@@ -165,8 +164,14 @@ export default class AboutCommon {
     );
     config.renderForeground = () => (
       <View key="parallax-header" style={styles.parallaxHeader}>
-        {/*<Image style={[styles.avatar, {width: AVATAR_SIZE, height: AVATAR_SIZE}]}*/}
-        {/*source={params.avatar}/>*/}
+        {params.avatar ? <Image style={[styles.avatar, {width: AVATAR_SIZE, height: AVATAR_SIZE}]}
+                                source={{uri: params.avatar}}/>
+          : <Icon
+            name='account-circle'
+            size={AVATAR_SIZE}
+            color='white'
+          />
+        }
         <Text style={styles.sectionSpeakerText}>{params.name}</Text>
         <Text style={styles.sectionTitleText}>{params.description}</Text>
       </View>

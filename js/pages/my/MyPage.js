@@ -27,7 +27,8 @@ export default class MyPage extends Component {
     this.favoriteDao = new FavoriteDAO()
     this.userDao = new UserDao()
     this.state = {
-      user: null
+      user: null,
+      avatar_url: null
     }
   }
 
@@ -42,11 +43,18 @@ export default class MyPage extends Component {
           user: result
         })
       })
+    this.userDao.loadUserAvatar()
+      .then(result => {
+        this.setState({
+          user_avatar: result
+        })
+      })
   }
 
   logoutUser () {
     this.setState({
-      user: null
+      user: null,
+      user_avatar: null
     })
   }
 
@@ -77,6 +85,7 @@ export default class MyPage extends Component {
       case MORE_MENU.Login:
         TargetComponent = 'loginPage'
         params.user = this.state.user
+        params.avatar_url = this.state.user_avatar
         params.loadUser = () => this.loadUser()
         params.logoutUser = () => this.logoutUser()
         break
@@ -112,17 +121,12 @@ export default class MyPage extends Component {
         <TouchableHighlight onPress={() => this.onClick(MORE_MENU.Login)}>
           <View style={[styles.row, {height: 90}]}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {this.state.user ? <Image
-                  style={{width:40, height:40, marginRight:10}}
-                  // source={require('../../../res/avatar/user.jpg')}
-                />
-                : <Icon
-                  name='whatshot'
-                  size={40}
-                  color='#2196F3'
-                  containerStyle={{marginRight: 10}}
-                />
-              }
+              <Icon
+                name='account-circle'
+                size={40}
+                color='#2196F3'
+                containerStyle={{marginRight: 10}}
+              />
               <Text
                 style={{fontSize: 20}}>{this.state.user ? this.state.user : 'Account Login'}</Text>
             </View>
