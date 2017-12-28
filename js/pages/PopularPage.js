@@ -26,6 +26,24 @@ const QUERY_STR = '&sort=stars';
 let favoriteDAO = new FavoriteDAO();
 let dataRepository = new DataRepository();
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tabView: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.01)',
+  },
+  tips: {
+    fontSize: 29,
+  },
+  iconSection: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 export default class PopularPage extends Component {
   constructor(props) {
     super(props);
@@ -151,7 +169,7 @@ class PopularTab extends Component {
         this.updateState({ favoriteKeys: keys });
         this.flushFavoriteState();
       })
-      .catch(e => {
+      .catch(() => {
         this.flushFavoriteState();
       });
   }
@@ -289,22 +307,3 @@ class PopularTab extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tabView: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.01)',
-  },
-  tips: {
-    fontSize: 29,
-  },
-  iconSection: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  Image,
-  ListView,
-  PixelRatio,
-  Platform,
-  StyleSheet,
-  Text,
-  Linking,
-  View,
-} from 'react-native';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import { Linking, View } from 'react-native';
 import ViewUtils from '../../util/ViewUtils';
 import { MORE_MENU } from '../../common/MoreMenu';
 import GlobalStyles from '../../../res/styles/GlobalStyles';

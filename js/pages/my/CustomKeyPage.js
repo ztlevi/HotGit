@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Text,
-  Alert,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, Text, Alert } from 'react-native';
 import ViewUtils from '../../util/ViewUtils';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
 import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao';
@@ -15,6 +7,24 @@ import Checkbox from 'react-native-check-box';
 import ArrayUtils from '../../util/ArrayUtils';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  tips: {
+    fontSize: 29,
+  },
+  line: {
+    backgroundColor: 'darkgray',
+    height: 1,
+  },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
 
 export default class CustomKeyPage extends Component {
   constructor(props) {
@@ -156,20 +166,3 @@ export default class CustomKeyPage extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  tips: {
-    fontSize: 29,
-  },
-  line: {
-    backgroundColor: 'darkgray',
-    height: 1,
-  },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});

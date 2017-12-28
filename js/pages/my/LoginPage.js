@@ -1,28 +1,35 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  Image,
-  ListView,
-  PixelRatio,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  DeviceEventEmitter,
-  Linking,
-  View,
-} from 'react-native';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import ViewUtils from '../../util/ViewUtils';
-import Toast, { DURATION } from 'react-native-easy-toast';
-import { MORE_MENU } from '../../common/MoreMenu';
+import { StyleSheet, TextInput, View } from 'react-native';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import AboutCommon, { FLAT_ABOUT } from '../about/AboutCommon';
 import UserDao from '../../expand/dao/UserDao';
-import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import { Button } from 'react-native-elements';
 
 let userDao = new UserDao();
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tips: {
+    fontSize: 20,
+    width: 100,
+  },
+  input: {
+    height: 30,
+    flex: 1,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    margin: 10,
+  },
+  button: {
+    width: 120,
+    borderRadius: 3,
+  },
+});
 
 export default class LoginPage extends Component {
   constructor(props) {
@@ -70,8 +77,6 @@ export default class LoginPage extends Component {
   }
 
   render() {
-    let favoriteDao = new FavoriteDAO();
-
     let user = this.user;
     let content;
     if (user) {
@@ -140,27 +145,3 @@ export default class LoginPage extends Component {
     });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tips: {
-    fontSize: 20,
-    width: 100,
-  },
-  input: {
-    height: 30,
-    flex: 1,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    margin: 10,
-  },
-  button: {
-    width: 120,
-    borderRadius: 3,
-  },
-});

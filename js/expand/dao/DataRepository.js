@@ -1,4 +1,4 @@
-import { AsyncStorage, DeviceEventEmitter } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import GitHubTrending from 'GitHubTrending';
 
 export let FLAG_STORAGE = {
@@ -26,7 +26,7 @@ export default class DataRepository {
                 resolve(result);
               })
               .catch(e => {
-                resolve(e);
+                reject(e);
               });
           }
         })
@@ -36,7 +36,7 @@ export default class DataRepository {
               resolve(result);
             })
             .catch(e => {
-              resolve(e);
+              reject(e);
             });
         });
     });

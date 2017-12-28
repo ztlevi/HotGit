@@ -4,24 +4,38 @@
  * @flow
  */
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  DeviceEventEmitter,
-} from 'react-native';
+import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
 
 import TabNavigator from 'react-native-tab-navigator';
 import PopularPage from './PopularPage';
-import AsyncStorageTest from '../test/AsyncStorageTest';
 import MyPage from './my/MyPage';
 import Toast, { DURATION } from 'react-native-easy-toast';
-import WebViewTest from '../test/WebViewTest';
 import TrendingPage from './TrendingPage';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import FavoritePage from './FavoritePage';
 import { Icon } from 'react-native-elements';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    ...ifIphoneX({
+      paddingBottom: 15,
+    }),
+    backgroundColor: '#F5FCFF',
+  },
+  image: {
+    height: 22,
+    width: 22,
+  },
+  page1: {
+    flex: 1,
+    backgroundColor: 'orange',
+  },
+  page2: {
+    flex: 1,
+    backgroundColor: 'red',
+  },
+});
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -75,25 +89,3 @@ export default class HomePage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    ...ifIphoneX({
-      paddingBottom: 15,
-    }),
-    backgroundColor: '#F5FCFF',
-  },
-  image: {
-    height: 22,
-    width: 22,
-  },
-  page1: {
-    flex: 1,
-    backgroundColor: 'orange',
-  },
-  page2: {
-    flex: 1,
-    backgroundColor: 'red',
-  },
-});

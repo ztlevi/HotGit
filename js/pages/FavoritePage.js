@@ -17,6 +17,20 @@ import GlobalStyles from '../../res/styles/GlobalStyles';
 
 let favoriteDAO = new FavoriteDAO();
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tabView: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.01)',
+  },
+  tips: {
+    fontSize: 29,
+  },
+});
+
 export default class FavoritePage extends Component {
   constructor(props) {
     super(props);
@@ -172,17 +186,3 @@ class FavoriteTab extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tabView: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.01)',
-  },
-  tips: {
-    fontSize: 29,
-  },
-});

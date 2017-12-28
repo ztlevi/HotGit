@@ -4,6 +4,13 @@ import ComponentWithNavigationBar from '../common/NavigatorBar';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import { Avatar } from 'react-native-elements';
 
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+});
+
 export default class WelcomePage extends Component {
   componentDidMount() {
     const { navigate } = this.props.navigation;
@@ -38,9 +45,3 @@ export default class WelcomePage extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-  },
-});

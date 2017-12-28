@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {
   View,
-  Image,
   Alert,
   StyleSheet,
-  TouchableOpacity,
   TouchableHighlight,
   Text,
 } from 'react-native';
@@ -15,6 +13,25 @@ import SortableListView from 'react-native-sortable-listview';
 import ViewUtils from '../../util/ViewUtils';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tips: {
+    fontSize: 29,
+  },
+  item: {
+    padding: 15,
+    backgroundColor: '#F8F8F8',
+    borderBottomWidth: 1,
+    borderColor: '#eee',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
 
 export default class SortKeyPage extends Component {
   constructor(props) {
@@ -40,7 +57,9 @@ export default class SortKeyPage extends Component {
       .then(result => {
         this.getCheckedItems(result);
       })
-      .catch(error => {});
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   getCheckedItems(result) {
@@ -97,7 +116,6 @@ export default class SortKeyPage extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     let order = Object.keys(this.state.checkedArray);
 
     let leftButton = ViewUtils.getLeftButton(() => this.onBack());
@@ -150,22 +168,3 @@ class SortCell extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tips: {
-    fontSize: 29,
-  },
-  item: {
-    padding: 15,
-    backgroundColor: '#F8F8F8',
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});

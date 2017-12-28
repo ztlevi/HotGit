@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, StyleSheet, WebView } from 'react-native';
+import { View, Text, StyleSheet, WebView } from 'react-native';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import ViewUtils from '../util/ViewUtils';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
@@ -9,6 +9,27 @@ import GlobalStyles from '../../res/styles/GlobalStyles';
 favoriteDAO = new FavoriteDAO();
 
 const TRENDING_URL = 'https://github.com/';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tips: {
+    fontSize: 20,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 10,
+  },
+  input: {
+    height: 40,
+    flex: 1,
+    borderWidth: 1,
+    margin: 2,
+  },
+});
+
 export default class RepositoryDetail extends Component {
   constructor(props) {
     super(props);
@@ -104,22 +125,3 @@ export default class RepositoryDetail extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tips: {
-    fontSize: 20,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 10,
-  },
-  input: {
-    height: 40,
-    flex: 1,
-    borderWidth: 1,
-    margin: 2,
-  },
-});

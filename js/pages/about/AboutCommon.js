@@ -1,20 +1,9 @@
-import React, { Component } from 'react';
-import {
-  Dimensions,
-  Image,
-  DeviceEventEmitter,
-  ListView,
-  PixelRatio,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React from 'react';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ViewUtils from '../../util/ViewUtils';
 import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import { FLAG_STORAGE } from '../../expand/dao/DataRepository';
-import ProjectModel from '../../model/ProjectModel';
 import Utils from '../../util/Utils';
 import RepositoryCell from '../../common/RepositoryCell';
 import RepositoryUtils from '../../expand/dao/RepositoryUtils';
@@ -28,6 +17,87 @@ export var FLAT_ABOUT = {
   flag_user: 'user',
 };
 
+const window = Dimensions.get('window');
+
+const AVATAR_SIZE = 120;
+const ROW_HEIGHT = 60;
+const PARALLAX_HEADER_HEIGHT = 350;
+const STICKY_HEADER_HEIGHT = 70;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: window.width,
+    height: PARALLAX_HEADER_HEIGHT,
+  },
+  stickySection: {
+    height: STICKY_HEADER_HEIGHT,
+    paddingTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stickySectionText: {
+    color: 'white',
+    fontSize: 20,
+    margin: 10,
+  },
+  fixedSection: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    left: 0,
+    top: 0,
+    paddingRight: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 32,
+    justifyContent: 'space-between',
+  },
+  fixedSectionText: {
+    color: '#999',
+    fontSize: 20,
+  },
+  parallaxHeader: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    paddingTop: 100,
+  },
+  avatar: {
+    marginBottom: 10,
+    borderRadius: AVATAR_SIZE / 2,
+  },
+  sectionSpeakerText: {
+    color: 'white',
+    fontSize: 24,
+    paddingVertical: 5,
+  },
+  sectionTitleText: {
+    padding: 8,
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 15,
+    paddingVertical: 5,
+  },
+  row: {
+    overflow: 'hidden',
+    paddingHorizontal: 10,
+    height: ROW_HEIGHT,
+    backgroundColor: 'white',
+    borderColor: '#ccc',
+    borderBottomWidth: 1,
+    justifyContent: 'center',
+  },
+  rowText: {
+    fontSize: 20,
+  },
+});
 export default class AboutCommon {
   constructor(props, updateState, flag_about, config) {
     this.props = props;
@@ -208,85 +278,3 @@ export default class AboutCommon {
     );
   }
 }
-
-const window = Dimensions.get('window');
-
-const AVATAR_SIZE = 120;
-const ROW_HEIGHT = 60;
-const PARALLAX_HEADER_HEIGHT = 350;
-const STICKY_HEADER_HEIGHT = 70;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: window.width,
-    height: PARALLAX_HEADER_HEIGHT,
-  },
-  stickySection: {
-    height: STICKY_HEADER_HEIGHT,
-    paddingTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  stickySectionText: {
-    color: 'white',
-    fontSize: 20,
-    margin: 10,
-  },
-  fixedSection: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-    left: 0,
-    top: 0,
-    paddingRight: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 32,
-    justifyContent: 'space-between',
-  },
-  fixedSectionText: {
-    color: '#999',
-    fontSize: 20,
-  },
-  parallaxHeader: {
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'column',
-    paddingTop: 100,
-  },
-  avatar: {
-    marginBottom: 10,
-    borderRadius: AVATAR_SIZE / 2,
-  },
-  sectionSpeakerText: {
-    color: 'white',
-    fontSize: 24,
-    paddingVertical: 5,
-  },
-  sectionTitleText: {
-    padding: 8,
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 15,
-    paddingVertical: 5,
-  },
-  row: {
-    overflow: 'hidden',
-    paddingHorizontal: 10,
-    height: ROW_HEIGHT,
-    backgroundColor: 'white',
-    borderColor: '#ccc',
-    borderBottomWidth: 1,
-    justifyContent: 'center',
-  },
-  rowText: {
-    fontSize: 20,
-  },
-});

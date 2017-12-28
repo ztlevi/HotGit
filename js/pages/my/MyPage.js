@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
 import {
   View,
-  Image,
-  Alert,
   TouchableHighlight,
   StyleSheet,
   ScrollView,
   Text,
-  DeviceEventEmitter,
 } from 'react-native';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
 import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao';
-import DataRepository from '../../expand/dao/DataRepository';
 import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import UserDao from '../../expand/dao/UserDao';
 import { MORE_MENU } from '../../common/MoreMenu';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import ViewUtils from '../../util/ViewUtils';
-import CustomKeyPage from './CustomKeyPage';
-import SortKeyPage from './SortKeyPage';
 import { Icon } from 'react-native-elements';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tips: {
+    fontSize: 29,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    height: 60,
+    backgroundColor: 'white',
+  },
+  groupTitle: {
+    marginLeft: 10,
+    marginTop: 10,
+    marginBottom: 5,
+    fontSize: 12,
+    color: 'gray',
+  },
+});
 
 export default class MyPage extends Component {
   constructor(props) {
@@ -115,9 +133,7 @@ export default class MyPage extends Component {
 
   render() {
     let title = <Text style={GlobalStyles.titleText}>My Account</Text>;
-    let userDao = new UserDao();
 
-    const { navigate } = this.props.navigation;
     return (
       <View style={GlobalStyles.root_container}>
         {ComponentWithNavigationBar(title)}
@@ -288,26 +304,3 @@ export default class MyPage extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tips: {
-    fontSize: 29,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    height: 60,
-    backgroundColor: 'white',
-  },
-  groupTitle: {
-    marginLeft: 10,
-    marginTop: 10,
-    marginBottom: 5,
-    fontSize: 12,
-    color: 'gray',
-  },
-});

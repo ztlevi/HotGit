@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Button,
-  TextInput,
-  Text,
-  StyleSheet,
-  WebView,
-  DeviceEventEmitter,
-} from 'react-native';
+import { View, Text, WebView } from 'react-native';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import ViewUtils from '../util/ViewUtils';

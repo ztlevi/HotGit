@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  Image,
-  ListView,
-  PixelRatio,
-  Platform,
-  StyleSheet,
-  Text,
-  Linking,
-  View,
-  Clipboard,
-} from 'react-native';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import { StyleSheet, View, Clipboard } from 'react-native';
 import ViewUtils from '../../util/ViewUtils';
-import { MORE_MENU } from '../../common/MoreMenu';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import AboutCommon, { FLAT_ABOUT } from './AboutCommon';
 import { config } from '../../../res/data/config';
 import FLAG from '../../../res/data/myinfo.json';
-import Toast, { DURATION } from 'react-native-easy-toast';
+import Toast from 'react-native-easy-toast';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default class AboutMePage extends Component {
   constructor(props) {
@@ -151,9 +144,3 @@ export default class AboutMePage extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

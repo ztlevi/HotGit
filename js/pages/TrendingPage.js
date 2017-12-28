@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
-  Image,
+  Dimensions,
   findNodeHandle,
   NativeModules,
   TouchableOpacity,
   ListView,
+  Platform,
   RefreshControl,
   DeviceEventEmitter,
   Text,
@@ -35,6 +36,36 @@ let timeSpanTextArray = [
   new TimeSpan('Weekly', 'since=weekly'),
   new TimeSpan('Monthly', 'since=monthly'),
 ];
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tabView: {
+    // flex: 1,
+    // padding: 10,
+    // backgroundColor: 'rgba(0,0,0,0.01)',
+  },
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  tips: {
+    fontSize: 29,
+  },
+  content: {
+    padding: 16,
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
+  arrow: {
+    borderTopColor: 'white',
+  },
+  background: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+});
 
 export default class TrendingPage extends Component {
   constructor(props) {
@@ -76,6 +107,94 @@ export default class TrendingPage extends Component {
     }
   };
 
+  openPopover = () => {
+    this.updateState({ isVisible: true });
+  };
+  closePopover = () => {
+    this.updateState({ isVisible: false });
+  };
+
+  onSelectTimeSpan(timeSpan) {
+    this.setState({
+      timeSpan: timeSpan,
+      isVisible: false,
+    });
+  }
+
+  updateState(dic) {
+    if (!this) return;
+    this.setState(dic);
+  }
+
+  renderTitleView() {
+    let { height, width } = Dimensions.get('window');
+    let os_height = Platform.OS === 'ios' ? 20 : 0;
+
+    return (
+      <View style={{ height: 30, alignContent: 'center' }}>
+        <TouchableOpacity
+          onPress={this.openPopover}
+          ref={r => (this.button = r)}
+          onLayout={this.setLayout}
+        >
+          <View style={styles.title}>
+            <Text style={GlobalStyles.titleText}>Trending</Text>
+            <Text
+              style={{
+                marginLeft: 8,
+                fontSize: 18,
+                color: 'white',
+                fontWeight: '400',
+              }}
+            >
+              {this.state.timeSpan.showText}
+            </Text>
+            <Icon
+              name="keyboard-arrow-down"
+              size={22}
+              color="white"
+              containerStyle={{ marginRight: 5 }}
+            />
+          </View>
+        </TouchableOpacity>
+        <Popover
+          visible={this.state.isVisible}
+          fromRect={{
+            x: width / 3 - 15,
+            y: 30,
+            width: 150,
+            height: 15 + os_height,
+          }}
+          displayArea={{
+            x: width / 3 - 15,
+            y: 30,
+            width: 150,
+            height: 15 + os_height,
+          }}
+          onClose={() => this.closePopover()}
+          contentStyle={styles.content}
+          placement="bottom"
+          arrowStyle={styles.arrow}
+          backgroundStyle={styles.background}
+          // contentStyle={{backgroundColor:'#343434', opacity:0.82}}
+        >
+          {timeSpanTextArray.map((result, i, arr) => {
+            return (
+              <TouchableOpacity
+                key={i}
+                underlayColor="transparent"
+                onPress={() => this.onSelectTimeSpan(arr[i])}
+              >
+                <Text style={{ fontSize: 18, fontWeight: '400', padding: 8 }}>
+                  {arr[i].showText}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </Popover>
+      </View>
+    );
+  }
   render() {
     // might need to use Container because View does not work
     let content =
@@ -108,81 +227,6 @@ export default class TrendingPage extends Component {
         {content}
       </View>
     );
-  }
-
-  renderTitleView() {
-    return (
-      <View style={{ height: 30, alignContent: 'center' }}>
-        <TouchableOpacity
-          onPress={this.openPopover}
-          ref={r => (this.button = r)}
-          onLayout={this.setLayout}
-        >
-          <View style={styles.title}>
-            <Text style={GlobalStyles.titleText}>Trending</Text>
-            <Text
-              style={{
-                marginLeft: 8,
-                fontSize: 18,
-                color: 'white',
-                fontWeight: '400',
-              }}
-            >
-              {this.state.timeSpan.showText}
-            </Text>
-            <Icon
-              name="keyboard-arrow-down"
-              size={22}
-              color="white"
-              containerStyle={{ marginRight: 5 }}
-            />
-          </View>
-        </TouchableOpacity>
-        <Popover
-          visible={this.state.isVisible}
-          fromRect={this.state.popoverAnchor}
-          onClose={() => this.closePopover()}
-          contentStyle={styles.content}
-          placement="bottom"
-          arrowStyle={styles.arrow}
-          backgroundStyle={styles.background}
-          // contentStyle={{backgroundColor:'#343434', opacity:0.82}}
-        >
-          {timeSpanTextArray.map((result, i, arr) => {
-            return (
-              <TouchableOpacity
-                key={i}
-                underlayColor="transparent"
-                onPress={() => this.onSelectTimeSpan(arr[i])}
-              >
-                <Text style={{ fontSize: 18, fontWeight: '400', padding: 8 }}>
-                  {arr[i].showText}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </Popover>
-      </View>
-    );
-  }
-
-  openPopover = () => {
-    this.updateState({ isVisible: true });
-  };
-  closePopover = () => {
-    this.updateState({ isVisible: false });
-  };
-
-  onSelectTimeSpan(timeSpan) {
-    this.setState({
-      timeSpan: timeSpan,
-      isVisible: false,
-    });
-  }
-
-  updateState(dic) {
-    if (!this) return;
-    this.setState(dic);
   }
 }
 
@@ -365,33 +409,3 @@ class TrendingTab extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tabView: {
-    // flex: 1,
-    // padding: 10,
-    // backgroundColor: 'rgba(0,0,0,0.01)',
-  },
-  title: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  tips: {
-    fontSize: 29,
-  },
-  content: {
-    padding: 16,
-    backgroundColor: 'white',
-    borderRadius: 8,
-  },
-  arrow: {
-    borderTopColor: 'white',
-  },
-  background: {
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-  },
-});
