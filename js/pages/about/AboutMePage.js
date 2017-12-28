@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Clipboard } from 'react-native';
+import { StyleSheet, Linking, View, Clipboard } from 'react-native';
 import ViewUtils from '../../util/ViewUtils';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import AboutCommon, { FLAT_ABOUT } from './AboutCommon';
@@ -51,6 +51,25 @@ export default class AboutMePage extends Component {
     let TargetComponent,
       params = { ...this.props, menuType: tab };
     switch (tab) {
+      case FLAG.BLOG.items.PERSONAL_BLOG:
+      case FLAG.BLOG.items.LINKEDIN:
+      case FLAG.BLOG.items.GITHUB:
+        TargetComponent = 'webViewPage';
+        params.url = tab.url;
+        params.title = tab.title;
+        break;
+      case FLAG.CONTACT.items.Email:
+        let url = 'mailto://' + tab.account;
+        Linking.canOpenURL(url)
+          .then(supported => {
+            if (!supported) {
+              console.log("Can't handle url: " + url);
+            } else {
+              return Linking.openURL(url);
+            }
+          })
+          .catch(err => console.error('An error occurred', err));
+        break;
       case FLAG.REPOSITORY:
         this.updateState({ showRepository: !this.state.showRepository });
         break;
@@ -119,7 +138,7 @@ export default class AboutMePage extends Component {
         )}
         <View style={GlobalStyles.line} />
         {this.state.showRepository
-          ? this.aboutCommon.renderRepository(FLAG.REPOSITORY.items, true)
+          ? this.aboutCommon.renderRepository(this.state.projectModels, true)
           : null}
 
         {ViewUtils.getSettingItem(

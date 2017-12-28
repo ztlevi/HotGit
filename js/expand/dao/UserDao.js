@@ -24,9 +24,7 @@ export default class UserDao {
 
   async loadUserAvatar() {
     try {
-      let a = await AsyncStorage.getItem('user_avatar');
-      console.log(a);
-      return a;
+      return await AsyncStorage.getItem('user_avatar');
     } catch (error) {
       console.log(error);
       return null;
@@ -193,12 +191,14 @@ export default class UserDao {
     let url = url_star + repo;
     return new Promise((resolve, reject) => {
       // if no user logged in
-      this.loadCurrentUser().then(() => {
-        if (this.username === '' || this.username == null) {
+      this.loadCurrentUser().then(result => {
+        if (result === null) {
+          DeviceEventEmitter.emit('showToast', 'Please Login...');
           reject(new Error('No user logged in'));
           return;
         }
       });
+
       // check if repo starred
       let url = url_star + repo;
       this.fetchAuthenticationHeader()
@@ -234,8 +234,9 @@ export default class UserDao {
   starRepo(repo) {
     return new Promise((resolve, reject) => {
       // if no user logged in
-      this.loadCurrentUser().then(() => {
-        if (this.username === '' || this.username == null) {
+      this.loadCurrentUser().then(result => {
+        if (result === null) {
+          DeviceEventEmitter.emit('showToast', 'Please Login...');
           reject(new Error('No user logged in'));
           return;
         }
@@ -276,11 +277,13 @@ export default class UserDao {
     let url = url_star + repo;
     return new Promise((resolve, reject) => {
       // if no user logged in
-      this.loadCurrentUser();
-      if (this.username === '' || this.username == null) {
-        reject(new Error('No user logged in'));
-        return;
-      }
+      this.loadCurrentUser().then(result => {
+        if (result === null) {
+          DeviceEventEmitter.emit('showToast', 'Please Login...');
+          reject(new Error('No user logged in'));
+          return;
+        }
+      });
 
       // unstar a repo
       this.fetchAuthenticationHeader()
@@ -315,8 +318,9 @@ export default class UserDao {
   fetchRepoInfo(repo) {
     return new Promise((resolve, reject) => {
       // if no user logged in
-      this.loadCurrentUser().then(() => {
-        if (this.username === '' || this.username == null) {
+      this.loadCurrentUser().then(result => {
+        if (result === null) {
+          DeviceEventEmitter.emit('showToast', 'Please Login...');
           reject(new Error('No user logged in'));
           return;
         }

@@ -26,7 +26,6 @@ export default class WebViewPage extends Component {
   onNavigationStateChange(e) {
     this.setState({
       canGoBack: e.canGoBack,
-      title: e.title,
     });
   }
 

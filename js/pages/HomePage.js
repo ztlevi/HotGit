@@ -80,7 +80,7 @@ export default class HomePage extends Component {
       <View style={styles.container}>
         <TabNavigator>
           {this._renderTab(PopularPage, 'tb_popular', 'Popular', 'whatshot')}
-          {this._renderTab(TrendingPage, 'tb_trending', 'Trending', 'polymer')}
+          {this._renderTab(TrendingPage, 'tb_trending', 'Trending', 'ac-unit')}
           {this._renderTab(FavoritePage, 'tb_favorite', 'Favorite', 'favorite')}
           {this._renderTab(MyPage, '', 'Account', 'account-circle')}
         </TabNavigator>

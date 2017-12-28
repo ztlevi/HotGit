@@ -33,6 +33,7 @@ export default class AboutPage extends Component {
       params = { ...this.props, menuType: tab };
     switch (tab) {
       case MORE_MENU.About_Author:
+        TargetComponent = 'aboutMePage';
         break;
       case MORE_MENU.Website:
         TargetComponent = 'webViewPage';
@@ -88,8 +89,8 @@ export default class AboutPage extends Component {
       name: 'Github Popular',
       description:
         "This is a Github Mobile App built with React Native. This app aims to help developers keep tracking on Github's popular repositories.",
-      avatar: 'https://avatars2.githubusercontent.com/u/16655096?s=460&v=4',
-      backgroundImg: require('../../../res/avatar/background.jpg'),
+      avatar: config.author.avatar1,
+      backgroundImg: config.author.backgroundImg1,
     });
   }
 }

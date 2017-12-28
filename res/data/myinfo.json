@@ -1,13 +1,13 @@
 {
   "REPOSITORY": {
-    "name":"Projects",
-    "items":{}
+    "name": "Projects",
+    "items": ["react_github", "TRI_demo", "E-Guard", "MRS"]
   },
   "BLOG": {
     "name": "Homepage",
     "items": {
       "PERSONAL_BLOG": {
-        "title": "Blog",
+        "title": "My Blog",
         "url": "https://ztlevi.github.io"
       },
       "LINKEDIN": {

@@ -234,10 +234,15 @@ export default class AboutCommon {
     );
     config.renderForeground = () => (
       <View key="parallax-header" style={styles.parallaxHeader}>
-        {params.avatar ? (
+        {typeof params.avatar === 'string' ? (
           <Image
             style={[styles.avatar, { width: AVATAR_SIZE, height: AVATAR_SIZE }]}
             source={{ uri: params.avatar }}
+          />
+        ) : typeof params.avatar === 'number' ? (
+          <Image
+            style={[styles.avatar, { width: AVATAR_SIZE, height: AVATAR_SIZE }]}
+            source={params.avatar}
           />
         ) : (
           <Icon name="account-circle" size={AVATAR_SIZE} color="white" />
