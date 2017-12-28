@@ -19,6 +19,7 @@ import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao';
 import ProjectModel from '../model/ProjectModel';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import Utils from '../util/Utils';
+import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 
 const URL = 'https://api.github.com/search/repositories?q=';
@@ -148,11 +149,6 @@ class PopularTab extends Component {
     //   this.loadData(false, false)
   }
 
-  onSelect(projectModel) {
-    const { navigate } = this.props.navigation;
-    navigate('repositoryDetailPage', { projectModel: projectModel });
-  }
-
   genFetchUrl(label) {
     return URL + label + QUERY_STR + '&order=desc';
   }
@@ -262,7 +258,12 @@ class PopularTab extends Component {
       <RepositoryCell
         {...this.props}
         key={projectModel.item.full_name}
-        onSelect={() => this.onSelect(projectModel)}
+        onSelect={() => {
+          ActionUtils.onSelectRepository({
+            projectModel: projectModel,
+            ...this.props,
+          });
+        }}
         onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
         projectModel={projectModel}
       />

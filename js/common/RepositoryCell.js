@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
+import ActionUtils from '../util/ActionUtils';
 
 export default class RepositoryCell extends Component {
   constructor(props) {
@@ -28,16 +29,6 @@ export default class RepositoryCell extends Component {
     this.setFavoriteState(nextProps.projectModel.isFavorite);
   }
 
-  // with callback function, to re-render the star icon when finish
-  onSelect() {
-    let projectModel = this.props.projectModel;
-    const { navigate } = this.props.navigation;
-    navigate('repositoryDetailPage', {
-      projectModel: projectModel,
-      callback: isFavorite => this.setFavoriteState(isFavorite),
-    });
-  }
-
   getDescription(item) {
     let text = item.description;
     if (text && text.length > 200) {
@@ -62,7 +53,13 @@ export default class RepositoryCell extends Component {
 
     return (
       <TouchableOpacity
-        onPress={() => this.onSelect()}
+        onPress={() => {
+          ActionUtils.onSelectRepository({
+            projectModel: this.props.projectModel,
+            ...this.props,
+            callback: isFavorite => this.setFavoriteState(isFavorite),
+          });
+        }}
         style={styles.container}
       >
         <View style={styles.cell_container}>

@@ -24,6 +24,7 @@ import Popover, { PopoverTouchable } from 'react-native-modal-popover';
 import ProjectModel from '../model/ProjectModel';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import Utils from '../util/Utils';
+import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
 
@@ -276,11 +277,6 @@ class TrendingTab extends Component {
     this.setState(dic);
   }
 
-  onSelect(projectModel) {
-    const { navigate } = this.props.navigation;
-    navigate('repositoryDetailPage', { projectModel: projectModel });
-  }
-
   genFetchUrl(timeSpan, category) {
     let url = API_URL + category + '?' + timeSpan.searchText;
     return url;
@@ -381,7 +377,12 @@ class TrendingTab extends Component {
       <TrendingCell
         {...this.props}
         key={projectModel.item.fullName}
-        onSelect={() => this.onSelect(projectModel)}
+        onSelect={() => {
+          ActionUtils.onSelectRepository({
+            projectModel: projectModel,
+            ...this.props,
+          });
+        }}
         onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
         projectModel={projectModel}
       />

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { Icon } from 'react-native-elements';
+import ActionUtils from '../util/ActionUtils.js';
 
 export default class TrendingCell extends Component {
   constructor(props) {
@@ -22,16 +23,6 @@ export default class TrendingCell extends Component {
     this.setState({
       isFavorite: isFavorite,
       favoriteIcon: isFavorite ? 'star' : 'star-border',
-    });
-  }
-
-  // with callback function, to re-render the star icon when finish
-  onSelect() {
-    let projectModel = this.props.projectModel;
-    const { navigate } = this.props.navigation;
-    navigate('repositoryDetailPage', {
-      projectModel: projectModel,
-      callback: isFavorite => this.setFavoriteState(isFavorite),
     });
   }
 
@@ -56,7 +47,13 @@ export default class TrendingCell extends Component {
 
     return (
       <TouchableOpacity
-        onPress={() => this.onSelect()}
+        onPress={() => {
+          ActionUtils.onSelectRepository({
+            projectModel: this.props.projectModel,
+            ...this.props,
+            callback: isFavorite => this.setFavoriteState(isFavorite),
+          });
+        }}
         style={styles.container}
       >
         <View style={styles.cell_container}>

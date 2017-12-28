@@ -11,6 +11,7 @@ import ComponentWithNavigationBar from '../common/NavigatorBar';
 import RepositoryCell from '../common/RepositoryCell';
 import ProjectModel from '../model/ProjectModel';
 import ArrayUtils from '../util/ArrayUtils';
+import ActionUtils from '../util/ActionUtils';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import TrendingCell from '../common/TrendingCell';
 import GlobalStyles from '../../res/styles/GlobalStyles';
@@ -72,11 +73,6 @@ class FavoriteTab extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.loadData(false, false);
-  }
-
-  onSelect(projectModel) {
-    const { navigate } = this.props.navigation;
-    navigate('repositoryDetailPage', { projectModel: projectModel });
   }
 
   getDataSource(data) {
@@ -146,7 +142,12 @@ class FavoriteTab extends Component {
         <RepositoryCell
           {...this.props}
           key={projectModel.item.full_name}
-          onSelect={() => this.onSelect(projectModel)}
+          onSelect={() => {
+            ActionUtils.onSelectRepository({
+              projectModel: projectModel,
+              ...this.props,
+            });
+          }}
           onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
           projectModel={projectModel}
         />
@@ -156,7 +157,12 @@ class FavoriteTab extends Component {
         <TrendingCell
           {...this.props}
           key={projectModel.item.fullName}
-          onSelect={() => this.onSelect(projectModel)}
+          onSelect={() => {
+            ActionUtils.onSelectRepository({
+              projectModel: projectModel,
+              ...this.props,
+            });
+          }}
           onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
           projectModel={projectModel}
         />

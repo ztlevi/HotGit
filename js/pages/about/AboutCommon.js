@@ -5,6 +5,7 @@ import ViewUtils from '../../util/ViewUtils';
 import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import { FLAG_STORAGE } from '../../expand/dao/DataRepository';
 import Utils from '../../util/Utils';
+import ActionUtils from '../../util/ActionUtils';
 import RepositoryCell from '../../common/RepositoryCell';
 import RepositoryUtils from '../../expand/dao/RepositoryUtils';
 import { Icon } from 'react-native-elements';
@@ -163,14 +164,6 @@ export default class AboutCommon {
     this.favoriteIcon = isFavorite ? 'star' : 'star-border';
   }
 
-  onSelect(projectModel) {
-    const { navigate } = this.props.navigation;
-    navigate('repositoryDetailPage', {
-      projectModel: projectModel,
-      callback: isFavorite => this.setFavoriteState(isFavorite),
-    });
-  }
-
   /**
    * favoriteIcon click callback function
    * @param item
@@ -204,7 +197,13 @@ export default class AboutCommon {
         <RepositoryCell
           {...this.props}
           key={projectModel.item.full_name}
-          onSelect={() => this.onSelect(projectModel)}
+          onSelect={() => {
+            ActionUtils.onSelectRepository({
+              projectModel: projectModel,
+              ...this.props,
+              callback: isFavorite => this.setFavoriteState(isFavorite),
+            });
+          }}
           onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
           projectModel={projectModel}
         />
