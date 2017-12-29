@@ -14,6 +14,7 @@ import TrendingPage from './TrendingPage';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import FavoritePage from './FavoritePage';
 import { Icon } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,27 +38,67 @@ const styles = StyleSheet.create({
   },
 });
 
+export const ACTION_HOME = { A_SHOW_TOAST: 'showToast', A_RESTART: 'restart' };
+export const FLAG_TAB = {
+  flag_popularTab: 'tb_popular',
+  flag_trendingTab: 'tb_trending',
+  flag_favoriteTab: 'tb_favorite',
+  flag_my: 'tb_my',
+};
+
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+    const { state } = this.props.navigation;
+
+    let selectedTab = 'tb_trending';
+    try {
+      selectedTab = state.params.selectedTab;
+    } catch (e) {}
+
     this.state = {
-      selectedTab: 'tb_trending',
+      selectedTab: selectedTab,
     };
   }
 
   componentDidMount() {
-    this.listener = DeviceEventEmitter.addListener('showToast', text => {
-      this.toast.show(text, DURATION.LENGTH_LONG);
+    this.listener = DeviceEventEmitter.addListener(
+      'ACTION_HOME',
+      (action, params) => this.onAction(action, params)
+    );
+  }
+
+  /**
+   * Notify callback
+   */
+  onAction(action, params) {
+    if (ACTION_HOME.A_RESTART === action) {
+      this.onRestart(params.jumpToTab);
+    } else if (ACTION_HOME.A_SHOW_TOAST === action) {
+      this.toast.show(params.text, DURATION.LENGTH_LONG);
+    }
+  }
+
+  /**
+   * Restart homepage
+   * params jumpToTab: default page
+   */
+  onRestart(jumpToTab) {
+    let resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'homePage',
+          params: { selectedTab: jumpToTab },
+        }),
+      ],
     });
+    this.props.navigation.dispatch(resetAction);
   }
 
   componentWillUnmount() {
     this.listener && this.listener.remove();
   }
-
-  static navigationOptions = {
-    title: 'Home Page',
-  };
 
   _renderTab(Component, selectTab, title, renderIcon) {
     return (

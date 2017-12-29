@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Text, Alert } from 'react-native';
 import ViewUtils from '../../util/ViewUtils';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
-import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao';
+import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
 import Checkbox from 'react-native-check-box';
 import ArrayUtils from '../../util/ArrayUtils';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
@@ -44,12 +44,12 @@ export default class CustomKeyPage extends Component {
   componentDidMount() {
     const { state } = this.props.navigation;
     this.flag = state.params.flag;
-    this.languageDao = new LanguageDao(this.flag);
+    this.languageDAO = new LanguageDAO(this.flag);
     this.loadData();
   }
 
   loadData() {
-    this.languageDao
+    this.languageDAO
       .fetch()
       .then(result => {
         this.setState({
@@ -120,7 +120,7 @@ export default class CustomKeyPage extends Component {
         ArrayUtils.remove(this.state.dataArray, this.changeValues[i]);
       }
     }
-    this.languageDao.save(this.state.dataArray);
+    this.languageDAO.save(this.state.dataArray);
     this.props.navigation.goBack();
   }
 

@@ -18,7 +18,7 @@ import TrendingCell from '../common/TrendingCell';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
-import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao';
+import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
 import TimeSpan from '../model/TimeSpan';
 import Popover, { PopoverTouchable } from 'react-native-modal-popover';
 import ProjectModel from '../model/ProjectModel';
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 export default class TrendingPage extends Component {
   constructor(props) {
     super(props);
-    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_language);
+    this.languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_language);
     this.state = {
       result: '',
       loading: false,
@@ -87,7 +87,7 @@ export default class TrendingPage extends Component {
   }
 
   loadData() {
-    this.languageDao
+    this.languageDAO
       .fetch()
       .then(result => {
         this.setState({

@@ -8,7 +8,7 @@ export let FLAG_LANGUAGE = {
   flag_key: 'flag_language_key',
 };
 
-export default class LanguageDao {
+export default class LanguageDAO {
   constructor(flag) {
     this.flag = flag;
   }

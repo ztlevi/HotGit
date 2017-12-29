@@ -16,7 +16,7 @@ import RepositoryCell from '../common/PopularCell';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
-import LanguageDao, { FLAG_LANGUAGE } from '../expand/dao/LanguageDao';
+import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
 import ProjectModel from '../model/ProjectModel';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import Utils from '../util/Utils';
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 export default class PopularPage extends Component {
   constructor(props) {
     super(props);
-    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+    this.languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key);
     this.state = {
       result: '',
       loading: false,
@@ -63,7 +63,7 @@ export default class PopularPage extends Component {
   }
 
   loadData() {
-    this.languageDao
+    this.languageDAO
       .fetch()
       .then(result => {
         this.setState({

@@ -5,8 +5,10 @@ import {
   Dimensions,
   View,
   StyleSheet,
+  DeviceEventEmitter,
   Platform,
   Text,
+  ActivityIndicator,
   ListView,
 } from 'react-native';
 import ViewUtils from '../util/ViewUtils';
@@ -17,6 +19,8 @@ import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import ProjectModel from '../model/ProjectModel';
 import Utils from '../util/Utils';
 import ActionUtils from '../util/ActionUtils';
+import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
+import { ACTION_HOME, FLAG_TAB } from './HomePage';
 
 const API_URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -36,12 +40,27 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     color: 'white',
   },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
   title: {
     fontSize: 18,
     textAlign: 'center',
-    width: 60,
     color: 'white',
     fontWeight: '500',
+  },
+  bottomButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.9,
+    height: 40,
+    position: 'absolute',
+    left: 10,
+    top: GlobalStyles.window_height - 45,
+    right: 10,
+    borderRadius: 3,
   },
 });
 
@@ -51,15 +70,67 @@ export default class FavoritePage extends Component {
   constructor(props) {
     super(props);
     this.favoriteKeys = [];
+    this.languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key);
+    this.keys = [];
+    this.pageNum = 0;
+    this.items = [];
+    this.isKeyChanged = false;
     this.state = {
       rightButtonText: 'Go',
       isLoading: false,
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
+      showBottomButton: false,
     };
-    this.pageNum = 0;
-    this.items = [];
+  }
+
+  componentDidMount() {
+    this.initKeys();
+  }
+  componentWillUnmount() {
+    if (this.isKeyChanged) {
+      DeviceEventEmitter.emit('ACTION_HOME', ACTION_HOME.A_RESTART, {
+        jumpToTab: FLAG_TAB.flag_popularTab,
+      });
+    }
+  }
+
+  /**
+   * Add key
+   */
+  saveKey() {
+    let key = this.inputKey;
+    if (this.checkKeyIsExist(this.keys, key)) {
+      this.toast.show(key + ' exists', DURATION.LENGTH_LONG);
+    } else {
+      key = {
+        path: key,
+        name: key,
+        checked: true,
+      };
+      this.keys.unshift(key);
+      this.languageDAO.save(this.keys);
+      this.toast.show(key.name + ' is saved', DURATION.LENGTH_LONG);
+      this.isKeyChanged = true;
+    }
+  }
+
+  /**
+   * Fetch all keys
+   */
+  async initKeys() {
+    this.keys = await this.languageDAO.fetch();
+  }
+
+  /**
+   * Check if key is exist in keys
+   */
+  checkKeyIsExist(keys, key) {
+    for (let i = 0, l = keys.length; i < l; i++) {
+      if (key.toLowerCase() === keys[i].name.toLowerCase()) return true;
+    }
+    return false;
   }
 
   loadData(loadMore) {
@@ -95,6 +166,11 @@ export default class FavoritePage extends Component {
 
         this.items.push(...itemArr);
         this.getFavoriteKeys();
+        if (!this.checkKeyIsExist(this.keys, this.inputKey)) {
+          this.updateState({
+            showBottomButton: true,
+          });
+        }
       })
       .catch(e => {
         this.updateState({
@@ -146,8 +222,6 @@ export default class FavoritePage extends Component {
     return this.state.dataSource.cloneWithRows(data);
   }
 
-  componentWillMount() {}
-
   onBackPress() {
     this.refs.input.blur();
     this.props.navigation.goBack();
@@ -160,6 +234,8 @@ export default class FavoritePage extends Component {
   onRightButtonClick() {
     if (this.state.rightButtonText === 'Go') {
       this.updateState({ rightButtonText: 'Cancel' });
+      this.items = [];
+      this.pageNum = 0;
       this.loadData(true);
     } else {
       this.updateState({
@@ -186,7 +262,9 @@ export default class FavoritePage extends Component {
         }}
       >
         <View style={{ marginRight: 10 }}>
-          <Text style={styles.title}>{this.state.rightButtonText}</Text>
+          <Text style={[styles.title, { width: 60 }]}>
+            {this.state.rightButtonText}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -257,18 +335,44 @@ export default class FavoritePage extends Component {
         />
       );
     }
-    let listView = (
+    let listView = !this.state.isLoading ? (
       <ListView
         dataSource={this.state.dataSource}
         onScroll={e => this._onScroll(e)}
         renderRow={e => this.renderRow(e)}
       />
+    ) : null;
+    let indicatorView = this.state.isLoading ? (
+      <ActivityIndicator
+        style={styles.centering}
+        size="large"
+        animating={this.state.isLoading}
+      />
+    ) : null;
+    let resultView = (
+      <View style={{ flex: 1 }}>
+        {indicatorView}
+        {listView}
+      </View>
     );
+    let bottomButton = this.state.showBottomButton ? (
+      <TouchableOpacity
+        style={[styles.bottomButton, { backgroundColor: '#2196F3' }]}
+        onPress={() => {
+          this.saveKey();
+        }}
+      >
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={styles.title}>Add custom key</Text>
+        </View>
+      </TouchableOpacity>
+    ) : null;
     return (
       <View style={GlobalStyles.root_container}>
         {statusBar}
         {this.renderNavBar()}
-        {listView}
+        {resultView}
+        {bottomButton}
         <Toast
           ref={toast => {
             this.toast = toast;

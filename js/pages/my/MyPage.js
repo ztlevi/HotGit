@@ -7,7 +7,7 @@ import {
   Text,
 } from 'react-native';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
-import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao';
+import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
 import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import UserDao from '../../expand/dao/UserDao';
 import { MORE_MENU } from '../../common/MoreMenu';
@@ -224,26 +224,26 @@ export default class MyPage extends Component {
         {/*/!*Reset*!/*/}
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*let languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)*/}
+        {/*let languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key)*/}
         {/*Alert.alert(*/}
         {/*'Note',*/}
         {/*'Do you want to reset keys?',*/}
         {/*[*/}
         {/*{text: 'NO', onPress: () => {}},*/}
-        {/*{text: 'YES', onPress: () => languageDao.resetKeys()},*/}
+        {/*{text: 'YES', onPress: () => languageDAO.resetKeys()},*/}
         {/*],*/}
         {/*{cancelable: false}*/}
         {/*)*/}
         {/*}}>Reset Default Keys</Text>*/}
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*let languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)*/}
+        {/*let languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key)*/}
         {/*Alert.alert(*/}
         {/*'Note',*/}
         {/*'Do you want to reset languages?',*/}
         {/*[*/}
         {/*{text: 'NO', onPress: () => {}},*/}
-        {/*{text: 'YES', onPress: () => languageDao.resetLangs()},*/}
+        {/*{text: 'YES', onPress: () => languageDAO.resetLangs()},*/}
         {/*],*/}
         {/*{cancelable: false}*/}
         {/*)*/}

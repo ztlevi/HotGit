@@ -7,7 +7,7 @@ import {
   Text,
 } from 'react-native';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
-import LanguageDao, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDao';
+import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
 import ArrayUtils from '../../util/ArrayUtils';
 import SortableListView from 'react-native-sortable-listview';
 import ViewUtils from '../../util/ViewUtils';
@@ -47,12 +47,12 @@ export default class SortKeyPage extends Component {
   componentDidMount() {
     const { state } = this.props.navigation;
     this.flag = state.params.flag;
-    this.languageDao = new LanguageDao(this.flag);
+    this.languageDAO = new LanguageDAO(this.flag);
     this.loadData();
   }
 
   loadData() {
-    this.languageDao
+    this.languageDAO
       .fetch()
       .then(result => {
         this.getCheckedItems(result);
@@ -102,7 +102,7 @@ export default class SortKeyPage extends Component {
       return;
     }
     this.getSortResult();
-    this.languageDao.save(this.sortResultArray);
+    this.languageDAO.save(this.sortResultArray);
     this.props.navigation.goBack();
   }
 
