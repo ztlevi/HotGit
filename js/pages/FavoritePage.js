@@ -8,7 +8,8 @@ import {
   Text,
 } from 'react-native';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
-import RepositoryCell from '../common/RepositoryCell';
+import { FLAG_STORAGE } from '../expand/dao/DataRepository';
+import RepositoryCell from '../common/PopularCell';
 import ProjectModel from '../model/ProjectModel';
 import ArrayUtils from '../util/ArrayUtils';
 import ActionUtils from '../util/ActionUtils';
@@ -115,21 +116,8 @@ class FavoriteTab extends Component {
   /**
    * favoriteIcon click callback function
    * @param item
-   * @param isFavorite
    */
-  onFavorite(item, isFavorite) {
-    let fullName = item.full_name ? item.full_name : item.fullName;
-    if (isFavorite) {
-      favoriteDAO.saveFavoriteItem(
-        'id_' + fullName.toString(),
-        JSON.stringify(item)
-      );
-    } else {
-      favoriteDAO.removeFavoriteItem(
-        'id_' + fullName.toString(),
-        JSON.stringify(item)
-      );
-    }
+  onFavorite(item) {
     ArrayUtils.updateArray(this.unFavoriteItems, item);
     if (this.unFavoriteItems.length > 0) {
       DeviceEventEmitter.emit('favoriteChanged');
@@ -148,7 +136,15 @@ class FavoriteTab extends Component {
               ...this.props,
             });
           }}
-          onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+          onFavorite={(item, isFavorite) => {
+            ActionUtils.onFavorite(
+              favoriteDAO,
+              item,
+              isFavorite,
+              FLAG_STORAGE.flag_popular
+            );
+            this.onFavorite(item);
+          }}
           projectModel={projectModel}
         />
       );
@@ -163,7 +159,14 @@ class FavoriteTab extends Component {
               ...this.props,
             });
           }}
-          onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+          onFavorite={(item, isFavorite) =>
+            ActionUtils.onFavorite(
+              favoriteDAO,
+              item,
+              isFavorite,
+              FLAG_STORAGE.flag_trending
+            )
+          }
           projectModel={projectModel}
         />
       );

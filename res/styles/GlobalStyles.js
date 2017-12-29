@@ -19,4 +19,7 @@ module.exports = {
     fontWeight: '400',
     marginBottom: 2.5,
   },
+  backgroundColor: '#f3f3f4',
+  nav_bar_height_ios: 44,
+  nav_bar_height_android: 50,
 };

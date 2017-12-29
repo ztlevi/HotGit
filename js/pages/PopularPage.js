@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Dimensions,
   ListView,
+  TouchableOpacity,
   RefreshControl,
   DeviceEventEmitter,
   Text,
@@ -11,7 +12,7 @@ import {
 
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import DataRepository, { FLAG_STORAGE } from '../expand/dao/DataRepository';
-import RepositoryCell from '../common/RepositoryCell';
+import RepositoryCell from '../common/PopularCell';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
@@ -21,6 +22,7 @@ import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import Utils from '../util/Utils';
 import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
+import { Icon } from 'react-native-elements';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -73,6 +75,21 @@ export default class PopularPage extends Component {
       });
   }
 
+  renderRightButton() {
+    return (
+      <TouchableOpacity
+        style={{ padding: 15 }}
+        onPress={() => {
+          this.props.navigation.navigate('searchPage', {
+            ...this.props,
+          });
+        }}
+      >
+        <Icon name="search" size={24} color="white" />
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     // might need to use Container because View does not work
     let content =
@@ -95,9 +112,11 @@ export default class PopularPage extends Component {
       ) : null;
     let title = <Text style={GlobalStyles.titleText}>Popular</Text>;
 
+    let rightButton = this.renderRightButton();
+
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(title)}
+        {ComponentWithNavigationBar(title, null, rightButton)}
         {content}
       </View>
     );
@@ -234,25 +253,6 @@ class PopularTab extends Component {
       });
   }
 
-  /**
-   * favoriteIcon click callback function
-   * @param item
-   * @param isFavorite
-   */
-  onFavorite(item, isFavorite) {
-    if (isFavorite) {
-      favoriteDAO.saveFavoriteItem(
-        'id_' + item.full_name.toString(),
-        JSON.stringify(item)
-      );
-    } else {
-      favoriteDAO.removeFavoriteItem(
-        'id_' + item.full_name.toString(),
-        JSON.stringify(item)
-      );
-    }
-  }
-
   renderRow(projectModel) {
     return (
       <RepositoryCell
@@ -264,7 +264,14 @@ class PopularTab extends Component {
             ...this.props,
           });
         }}
-        onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+        onFavorite={(item, isFavorite) =>
+          ActionUtils.onFavorite(
+            favoriteDAO,
+            item,
+            isFavorite,
+            FLAG_STORAGE.flag_trending
+          )
+        }
         projectModel={projectModel}
       />
     );

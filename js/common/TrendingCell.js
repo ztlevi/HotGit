@@ -67,12 +67,12 @@ export default class TrendingCell extends Component {
               a: styles.description,
             }}
           />
-          <Text style={styles.description}>{item.meta}</Text>
+          <Text>{item.meta}</Text>
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.description}>Build by:</Text>
+              <Text>Build by: </Text>
               {item.contributors.map((result, i, arr) => {
                 return (
                   <Image

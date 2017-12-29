@@ -59,8 +59,8 @@ export default class UserDao {
             this.fetchUserInfo()
               .then(() => {
                 // reload starred repos when logged in
-                let favoriteDao = new FavoriteDAO();
-                favoriteDao.reloadStarredRepos();
+                let favoriteDAO = new FavoriteDAO();
+                favoriteDAO.reloadStarredRepos();
 
                 // go back when success
                 callback();

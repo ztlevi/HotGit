@@ -6,7 +6,7 @@ import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import { FLAG_STORAGE } from '../../expand/dao/DataRepository';
 import Utils from '../../util/Utils';
 import ActionUtils from '../../util/ActionUtils';
-import RepositoryCell from '../../common/RepositoryCell';
+import RepositoryCell from '../../common/PopularCell';
 import RepositoryUtils from '../../expand/dao/RepositoryUtils';
 import { Icon } from 'react-native-elements';
 
@@ -107,7 +107,7 @@ export default class AboutCommon {
     this.repositories = [];
     this.config = config;
     this.favoriteKeys = null;
-    this.favoriteDao = new FavoriteDAO(FLAG_STORAGE.flag_popular);
+    this.favoriteDao = new FavoriteDAO();
     this.repositoryUtils = new RepositoryUtils(this);
   }
 
@@ -204,7 +204,14 @@ export default class AboutCommon {
               callback: isFavorite => this.setFavoriteState(isFavorite),
             });
           }}
-          onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+          onFavorite={(item, isFavorite) =>
+            ActionUtils.onFavorite(
+              favoriteDAO,
+              item,
+              isFavorite,
+              FLAG_STORAGE.flag_popular
+            )
+          }
           projectModel={projectModel}
         />
       );

@@ -47,11 +47,7 @@ export default class ViewUtils {
   static getLeftButton(callBack) {
     return (
       <TouchableOpacity style={{ padding: 15 }} onPress={callBack}>
-        <Icon
-          name="keyboard-arrow-left"
-          color="white"
-          style={{ width: 26, height: 26 }}
-        />
+        <Icon name="keyboard-arrow-left" color="white" size={26} />
       </TouchableOpacity>
     );
   }

@@ -43,11 +43,7 @@ export default class RepositoryCell extends Component {
       : this.props.projectModel;
     let favoriteButton = (
       <TouchableOpacity onPress={() => this.onPressFavorite()}>
-        <Icon
-          name={this.state.favoriteIcon}
-          color="#2196F3"
-          style={{ width: 22, height: 22 }}
-        />
+        <Icon name={this.state.favoriteIcon} color="#2196F3" size={22} />
       </TouchableOpacity>
     );
 

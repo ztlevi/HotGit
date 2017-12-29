@@ -16,8 +16,15 @@ const styles = StyleSheet.create({
     width: 100,
   },
   input: {
-    height: 30,
+    height: 35,
     flex: 1,
+    alignSelf: 'center',
+    paddingLeft: 5,
+    marginRight: 10,
+    marginLeft: 5,
+    borderRadius: 3,
+    opacity: 0.7,
+    color: 'black',
   },
   row: {
     flexDirection: 'row',

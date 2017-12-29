@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 export default class MyPage extends Component {
   constructor(props) {
     super(props);
-    this.favoriteDao = new FavoriteDAO();
+    this.favoriteDAO = new FavoriteDAO();
     this.userDao = new UserDao();
     this.state = {
       user: null,
@@ -297,7 +297,7 @@ export default class MyPage extends Component {
 
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*this.favoriteDao.reloadStarredRepos()*/}
+        {/*this.favoriteDAO.reloadStarredRepos()*/}
         {/*DeviceEventEmitter.emit('showToast', 'Reloaded')*/}
         {/*}}>Reload Repos</Text>*/}
       </View>

@@ -25,29 +25,6 @@ const defaultTitle = {
 };
 
 const STATUS_BAR_HEIGHT = 20;
-
-function ComponentWithNavigationBar(
-  titleConfig = defaultTitle,
-  leftButtonConfig = null,
-  rightButtonConfig = null
-) {
-  return (
-    <View style={styles.container}>
-      <View style={{ height: Platform.OS === 'ios' ? 0 : STATUS_BAR_HEIGHT }} />
-      <NavigationBar
-        tintColor="#2196F3"
-        statusBar={{
-          style: 'light-content',
-          tintColor: '#2196F3',
-        }}
-        title={titleConfig}
-        leftButton={leftButtonConfig}
-        rightButton={rightButtonConfig}
-      />
-    </View>
-  );
-}
-
 const NAV_BAR_HEIGHT_ANDROID = 50;
 const NAV_BAR_HEIGHT_IOS = 44;
 const StatusBarShape = {
@@ -81,3 +58,25 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+function ComponentWithNavigationBar(
+  titleConfig = defaultTitle,
+  leftButtonConfig = null,
+  rightButtonConfig = null
+) {
+  return (
+    <View style={styles.container}>
+      <View style={{ height: Platform.OS === 'ios' ? 0 : STATUS_BAR_HEIGHT }} />
+      <NavigationBar
+        tintColor="#2196F3"
+        statusBar={{
+          style: 'light-content',
+          tintColor: '#2196F3',
+        }}
+        title={titleConfig}
+        leftButton={leftButtonConfig}
+        rightButton={rightButtonConfig}
+      />
+    </View>
+  );
+}

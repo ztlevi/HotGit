@@ -282,25 +282,6 @@ class TrendingTab extends Component {
     return url;
   }
 
-  /**
-   * favoriteIcon click callback function
-   * @param item
-   * @param isFavorite
-   */
-  onFavorite(item, isFavorite) {
-    if (isFavorite) {
-      favoriteDAO.saveFavoriteItem(
-        'id_' + item.fullName.toString(),
-        JSON.stringify(item)
-      );
-    } else {
-      favoriteDAO.removeFavoriteItem(
-        'id_' + item.fullName.toString(),
-        JSON.stringify(item)
-      );
-    }
-  }
-
   getFavoriteKeys() {
     favoriteDAO
       .getFavoriteKeys()
@@ -383,7 +364,14 @@ class TrendingTab extends Component {
             ...this.props,
           });
         }}
-        onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+        onFavorite={(item, isFavorite) =>
+          ActionUtils.onFavorite(
+            favoriteDAO,
+            item,
+            isFavorite,
+            FLAG_STORAGE.flag_trending
+          )
+        }
         projectModel={projectModel}
       />
     );

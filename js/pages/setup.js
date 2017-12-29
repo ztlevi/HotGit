@@ -13,6 +13,7 @@ import FavoritePage from './FavoritePage';
 import AboutPage from './about/AboutPage';
 import WebViewPage from './WebViewPage';
 import AboutMePage from './about/AboutMePage';
+import SearchPage from './SearchPage';
 
 // init
 const Root = StackNavigator(
@@ -23,6 +24,7 @@ const Root = StackNavigator(
     trendingPage: { screen: TrendingPage },
     favoritePage: { screen: FavoritePage },
     repositoryDetailPage: { screen: RepositoryDetail },
+    searchPage: { screen: SearchPage },
 
     // my pages
     myPage: { screen: MyPage },
