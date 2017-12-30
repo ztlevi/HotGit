@@ -214,6 +214,7 @@ export default class TrendingPage extends Component {
               <TrendingTab
                 key={i}
                 tabLabel={lan.name}
+                path={lan.path}
                 timeSpan={this.state.timeSpan}
                 {...this.props}
               />
@@ -325,7 +326,7 @@ class TrendingTab extends Component {
         isLoading: true,
       });
     }
-    let url = this.genFetchUrl(timeSpan, this.props.tabLabel);
+    let url = this.genFetchUrl(timeSpan, this.props.path);
     dataRepository
       .fetchRepository(url)
       .then(result => {
