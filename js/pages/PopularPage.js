@@ -20,9 +20,13 @@ import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
 import ProjectModel from '../model/ProjectModel';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import Utils from '../util/Utils';
+import ViewUtils from '../util/ViewUtils';
 import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
+import makeCancelalbe from '../util/Cancelable';
+import MoreMenu, { MORE_MENU } from '../common/MoreMenu';
+import { FLAG_TAB } from './HomePage';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -77,16 +81,44 @@ export default class PopularPage extends Component {
 
   renderRightButton() {
     return (
-      <TouchableOpacity
-        style={{ padding: 15 }}
-        onPress={() => {
-          this.props.navigation.navigate('searchPage', {
-            ...this.props,
-          });
+      <View
+        style={{
+          padding: 5,
+          paddingTop: 8,
+          flexDirection: 'row',
+          alignItems: 'center',
         }}
       >
-        <Icon name="search" size={24} color="white" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('searchPage', {
+              ...this.props,
+            });
+          }}
+        >
+          <Icon name="search" size={24} color="white" />
+        </TouchableOpacity>
+        {ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}
+      </View>
+    );
+  }
+
+  renderMoreView() {
+    let params = { ...this.props, fromPage: FLAG_TAB.flag_popularTab };
+    return (
+      <MoreMenu
+        {...params}
+        ref="moreMenu"
+        menus={[
+          MORE_MENU.Custom_Key,
+          MORE_MENU.Sort_Key,
+          MORE_MENU.Remove_Key,
+          MORE_MENU.Custom_Theme,
+          MORE_MENU.About_Author,
+          MORE_MENU.About,
+        ]}
+        anchorView={this.refs.moreMenuButton}
+      />
     );
   }
 
@@ -118,6 +150,7 @@ export default class PopularPage extends Component {
       <View style={styles.container}>
         {ComponentWithNavigationBar(title, null, rightButton)}
         {content}
+        {this.renderMoreView()}
       </View>
     );
   }
@@ -157,6 +190,7 @@ class PopularTab extends Component {
     if (this.load_more_listener) {
       this.load_more_listener.remove();
     }
+    this.cancelable && this.cancelable.cancel();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -224,8 +258,8 @@ class PopularTab extends Component {
       this.pageNum++;
     }
     let url = this.genFetchUrl(this.props.tabLabel) + '&page=' + this.pageNum;
-    dataRepository
-      .fetchRepository(url)
+    this.cancelable = makeCancelalbe(dataRepository.fetchRepository(url));
+    this.cancelable.promise
       .then(result => {
         let itemArr =
           result && result.items ? result.items : result ? result : [];

@@ -12,15 +12,15 @@ import { Icon } from 'react-native-elements';
 export default class ViewUtils {
   /**
    * Gain Setting Page Item
-   * @param callBack click item's callback
+   * @param callback click item's callback
    * @param icon left icon
    * @param text showing text
    * @param tintStyle icon color
    * @param expandableIcon right icon
    */
-  static getSettingItem(callBack, icon, text, tintColor, expandableIcon) {
+  static getSettingItem(callback, icon, text, tintColor, expandableIcon) {
     return (
-      <TouchableHighlight onPress={callBack}>
+      <TouchableHighlight onPress={callback}>
         <View style={styles.setting_item_container}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Icon
@@ -44,17 +44,17 @@ export default class ViewUtils {
     );
   }
 
-  static getLeftButton(callBack) {
+  static getLeftButton(callback) {
     return (
-      <TouchableOpacity style={{ padding: 15 }} onPress={callBack}>
+      <TouchableOpacity style={{ padding: 15 }} onPress={callback}>
         <Icon name="keyboard-arrow-left" color="white" size={26} />
       </TouchableOpacity>
     );
   }
 
-  static getRightButton(callBack, rightButtonTitle) {
+  static getRightButton(callback, rightButtonTitle) {
     return (
-      <TouchableOpacity style={{ padding: 12.5 }} onPress={callBack}>
+      <TouchableOpacity style={{ padding: 12.5 }} onPress={callback}>
         <View styl={{ flex: 1 }}>
           <Text style={{ fontSize: 18, color: 'white', fontWeight: '400' }}>
             {rightButtonTitle}
@@ -64,11 +64,28 @@ export default class ViewUtils {
     );
   }
 
-  static getRightButtonImage(callBack, rightButtonIcon) {
+  static getRightButtonImage(callback, rightButtonIcon) {
     return (
-      <TouchableOpacity onPress={callBack} style={{ padding: 15 }}>
+      <TouchableOpacity onPress={callback} style={{ padding: 15 }}>
         {rightButtonIcon}
       </TouchableOpacity>
+    );
+  }
+
+  /**
+   * Get more button
+   */
+  static getMoreButton(callback) {
+    return (
+      <TouchableHighlight
+        ref="moreMenuButton"
+        onPress={callback}
+        underlayColor={'transparent'}
+      >
+        <View style={{ padding: 5, paddingRight: 8 }}>
+          <Icon name="more-vert" color="white" size={24} />
+        </View>
+      </TouchableHighlight>
     );
   }
 }

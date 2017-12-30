@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Text, Alert } from 'react-native';
+import {
+  View,
+  DeviceEventEmitter,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  Alert,
+} from 'react-native';
 import ViewUtils from '../../util/ViewUtils';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
 import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
 import Checkbox from 'react-native-check-box';
 import ArrayUtils from '../../util/ArrayUtils';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
+import { ACTION_HOME, FLAG_TAB } from '../HomePage';
 import { Icon } from 'react-native-elements';
 
 const styles = StyleSheet.create({
@@ -121,7 +130,15 @@ export default class CustomKeyPage extends Component {
       }
     }
     this.languageDAO.save(this.state.dataArray);
-    this.props.navigation.goBack();
+    const { state } = this.props.navigation;
+
+    let jumpToTab =
+      state.params.flag === FLAG_LANGUAGE.flag_key
+        ? FLAG_TAB.flag_popularTab
+        : FLAG_TAB.flag_trendingTab;
+    DeviceEventEmitter.emit('ACTION_HOME', ACTION_HOME.A_RESTART, {
+      jumpToTab: jumpToTab,
+    });
   }
 
   onClick(data) {
@@ -150,9 +167,28 @@ export default class CustomKeyPage extends Component {
     title =
       this.flag === FLAG_LANGUAGE.flag_language ? 'Custom Language' : title;
     let rightButtonTitle = this.isRemoveKey ? 'Remove' : 'Save';
-    let rightButton = ViewUtils.getRightButton(
-      () => this.onBack(),
-      rightButtonTitle
+    let rightButton = (
+      <View
+        style={{
+          padding: 5,
+          paddingTop: 8,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        {!this.isRemoveKey ? (
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('searchPage', {
+                ...this.props,
+              });
+            }}
+          >
+            <Icon name="search" size={24} color="white" />
+          </TouchableOpacity>
+        ) : null}
+        {ViewUtils.getRightButton(() => this.onBack(), rightButtonTitle)}
+      </View>
     );
 
     let titleText = <Text style={GlobalStyles.titleText}>{title}</Text>;

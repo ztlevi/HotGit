@@ -17,6 +17,7 @@ import Toast, { DURATION } from 'react-native-easy-toast';
 import RepositoryCell from '../common/PopularCell';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import ProjectModel from '../model/ProjectModel';
+import makeCancelable from '../util/Cancelable';
 import Utils from '../util/Utils';
 import ActionUtils from '../util/ActionUtils';
 import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
@@ -142,7 +143,8 @@ export default class FavoritePage extends Component {
     }
     let url = this.genFetchUrl(this.inputKey) + '&page=' + this.pageNum;
 
-    fetch(url)
+    this.cancelable = makeCancelable(fetch(url));
+    this.cancelable.promise
       .then(response => response.json())
       .then(responseData => {
         let itemArr =
@@ -242,6 +244,7 @@ export default class FavoritePage extends Component {
         rightButtonText: 'Go',
         isLoading: false,
       });
+      this.cancelable && this.cancelable.cancel();
     }
   }
 
@@ -318,7 +321,6 @@ export default class FavoritePage extends Component {
       windowHeight + offset >= height
     ) {
       this.loadData(true);
-      console.log('End Scroll');
     }
   }
 

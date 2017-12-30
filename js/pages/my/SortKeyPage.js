@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   Text,
+  DeviceEventEmitter,
 } from 'react-native';
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
 import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
@@ -13,6 +14,7 @@ import SortableListView from 'react-native-sortable-listview';
 import ViewUtils from '../../util/ViewUtils';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
+import { ACTION_HOME, FLAG_TAB } from '../HomePage';
 
 const styles = StyleSheet.create({
   container: {
@@ -103,7 +105,16 @@ export default class SortKeyPage extends Component {
     }
     this.getSortResult();
     this.languageDAO.save(this.sortResultArray);
-    this.props.navigation.goBack();
+
+    const { state } = this.props.navigation;
+
+    let jumpToTab =
+      state.params.flag === FLAG_LANGUAGE.flag_key
+        ? FLAG_TAB.flag_popularTab
+        : FLAG_TAB.flag_trendingTab;
+    DeviceEventEmitter.emit('ACTION_HOME', ACTION_HOME.A_RESTART, {
+      jumpToTab: jumpToTab,
+    });
   }
 
   getSortResult() {

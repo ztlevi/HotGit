@@ -99,7 +99,7 @@ export default class RepositoryDetail extends Component {
       <Icon
         name="star"
         color={this.state.isFavorite ? 'orange' : 'white'}
-        style={{ width: 26, height: 26 }}
+        size={26}
       />
     );
     let rightButton = ViewUtils.getRightButtonImage(

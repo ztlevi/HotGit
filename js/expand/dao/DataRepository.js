@@ -96,7 +96,7 @@ export default class DataRepository {
     });
   }
 
-  saveRepository(url, items, callBack) {
+  saveRepository(url, items, callback) {
     if (!url || !items) return;
     let wrapData;
     if (this.flag === FLAG_STORAGE.flag_my) {
@@ -104,6 +104,6 @@ export default class DataRepository {
     } else {
       wrapData = { items: items, update_date: new Date().getTime() };
     }
-    AsyncStorage.setItem(url, JSON.stringify(wrapData), callBack);
+    AsyncStorage.setItem(url, JSON.stringify(wrapData), callback);
   }
 }

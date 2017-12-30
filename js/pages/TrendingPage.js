@@ -20,9 +20,10 @@ import ScrollableTabView, {
 } from 'react-native-scrollable-tab-view';
 import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
 import TimeSpan from '../model/TimeSpan';
-import Popover, { PopoverTouchable } from 'react-native-modal-popover';
+import Popover from 'react-native-modal-popover';
 import ProjectModel from '../model/ProjectModel';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
+import makeCancelable from '../util/Cancelable';
 import Utils from '../util/Utils';
 import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
@@ -78,7 +79,7 @@ export default class TrendingPage extends Component {
       isVisible: false,
       languages: [],
       timeSpan: timeSpanTextArray[0],
-      popoverAnchor: { x: 0, y: 0, width: 0, height: 0 },
+      buttonReact: {},
     };
   }
 
@@ -99,18 +100,15 @@ export default class TrendingPage extends Component {
       });
   }
 
-  setLayout = e => {
-    const handle = findNodeHandle(this.button);
-    if (handle) {
-      NativeModules.UIManager.measure(handle, (x0, y0, width, height, x, y) => {
-        this.setState({ popoverAnchor: { x, y, width, height } });
+  showPopover = () => {
+    this.refs.button.measure((ox, oy, width, height, px, py) => {
+      this.setState({
+        isVisible: true,
+        buttonReact: { x: px, y: py, width: width, height: height },
       });
-    }
+    });
   };
 
-  openPopover = () => {
-    this.updateState({ isVisible: true });
-  };
   closePopover = () => {
     this.updateState({ isVisible: false });
   };
@@ -128,16 +126,9 @@ export default class TrendingPage extends Component {
   }
 
   renderTitleView() {
-    let { height, width } = Dimensions.get('window');
-    let os_height = Platform.OS === 'ios' ? 20 : 0;
-
     return (
       <View style={{ height: 30, alignContent: 'center' }}>
-        <TouchableOpacity
-          onPress={this.openPopover}
-          ref={r => (this.button = r)}
-          onLayout={this.setLayout}
-        >
+        <TouchableOpacity onPress={this.showPopover} ref="button">
           <View style={styles.title}>
             <Text style={GlobalStyles.titleText}>Trending</Text>
             <Text
@@ -160,24 +151,12 @@ export default class TrendingPage extends Component {
         </TouchableOpacity>
         <Popover
           visible={this.state.isVisible}
-          fromRect={{
-            x: width / 3 - 15,
-            y: 30,
-            width: 150,
-            height: 15 + os_height,
-          }}
-          displayArea={{
-            x: width / 3 - 15,
-            y: 30,
-            width: 150,
-            height: 15 + os_height,
-          }}
+          fromRect={this.state.buttonReact}
           onClose={() => this.closePopover()}
           contentStyle={styles.content}
           placement="bottom"
           arrowStyle={styles.arrow}
           backgroundStyle={styles.background}
-          // contentStyle={{backgroundColor:'#343434', opacity:0.82}}
         >
           {timeSpanTextArray.map((result, i, arr) => {
             return (
@@ -186,7 +165,14 @@ export default class TrendingPage extends Component {
                 underlayColor="transparent"
                 onPress={() => this.onSelectTimeSpan(arr[i])}
               >
-                <Text style={{ fontSize: 18, fontWeight: '400', padding: 8 }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: '400',
+                    padding: 8,
+                    textAlign: 'center',
+                  }}
+                >
                   {arr[i].showText}
                 </Text>
               </TouchableOpacity>
@@ -261,6 +247,7 @@ class TrendingTab extends Component {
     if (this.load_more_listener) {
       this.load_more_listener.remove();
     }
+    this.cancelable && this.cancelable.cancel();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -269,8 +256,8 @@ class TrendingTab extends Component {
     } else if (this.isFavorteChanged) {
       this.isFavorteChanged = false;
       this.getFavoriteKeys();
+      this.loadData(this.props.timeSpan, false);
     }
-    this.loadData(this.props.timeSpan, false);
   }
 
   updateState(dic) {
@@ -327,6 +314,8 @@ class TrendingTab extends Component {
       });
     }
     let url = this.genFetchUrl(timeSpan, this.props.path);
+    /* this.cancelable = makeCancelable(dataRepository.fetchRepository(url));
+     * this.cancelable.promise*/
     dataRepository
       .fetchRepository(url)
       .then(result => {
