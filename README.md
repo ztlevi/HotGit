@@ -9,8 +9,9 @@ This project was bootstrapped with [Create React Native App](https://github.com/
 install with `yarn` and then `yarn start`. Scan the QR code to install the Expo app and run the app on your iPhone.
 
 > Notes:
-> Current react-natiev-modal-popover version has issue with Android. See details here https://github.com/doomsower/react-native-modal-popover/pull/10 .
-> I manually fix this in node_modules by changing `useNativeDriver: Platform.OS === 'ios'`
+>
+> 1. Current react-natiev-modal-popover version has issue with Android. See details here https://github.com/doomsower/react-native-modal-popover/pull/10 .I manually fix this in node_modules by changing `useNativeDriver: Platform.OS === 'ios'`
+> 2. If you, or any libraries that you use, use `View.propTypes.style` you will need to change that to `ViewPropTypes.style`. This is required in Expo App 22.
 
 ## Detail
 
@@ -22,6 +23,7 @@ For the favorite page, there is some delay for Github API. That's why I put 2 mi
 
 ## TODO
 
-1. Coverage
-2. Eslint
-3. Travis
+1. Mobx
+2. Coverage
+3. Eslint
+4. Travis

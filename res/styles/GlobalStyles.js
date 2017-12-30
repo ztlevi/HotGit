@@ -6,7 +6,7 @@ const { height, width } = Dimensions.get('window');
 module.exports = {
   line: {
     flex: 1,
-    height: 1,
+    height: 0.75,
     opacity: 0.5,
     backgroundColor: 'darkgray',
   },

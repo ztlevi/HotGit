@@ -9,6 +9,7 @@ import {
   Linking,
   Platform,
   View,
+  ViewPropTypes,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -66,7 +67,7 @@ export default class MoreMenu extends Component {
   }
 
   static propTypes = {
-    containerStyle: View.propTypes.style,
+    containerStyle: ViewPropTypes.style,
     menus: PropTypes.array.isRequired,
     anchorView: PropTypes.object,
   };
