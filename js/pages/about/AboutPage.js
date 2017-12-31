@@ -83,6 +83,7 @@ export default class AboutPage extends Component {
           MORE_MENU.Feedback,
           '#2196F3'
         )}
+        <View style={GlobalStyles.line} />
       </View>
     );
     return this.aboutCommon.render(content, {

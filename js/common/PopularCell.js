@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import ActionUtils from '../util/ActionUtils';
+import GlobalStyles from '../../res/styles/GlobalStyles';
 
 export default class RepositoryCell extends Component {
   constructor(props) {
@@ -78,6 +79,8 @@ export default class RepositoryCell extends Component {
             {favoriteButton}
           </View>
         </View>
+
+        <View style={GlobalStyles.line} />
       </TouchableOpacity>
     );
   }
@@ -101,12 +104,6 @@ const styles = StyleSheet.create({
   cell_container: {
     backgroundColor: 'white',
     padding: 10,
-    marginLeft: 5,
-    marginRight: 5,
-    marginVertical: 3,
-    borderWidth: 0.5,
-    borderColor: '#dddddd',
-    borderRadius: 3,
     shadowColor: 'gray',
     shadowOffset: { width: 0.5, height: 0.5 },
     shadowOpacity: 0.4,
