@@ -6,7 +6,7 @@ export const config = {
     currentRepoUrl: 'https://api.github.com/repos/ztlevi/react_github',
   },
   author: {
-    name: 'Ting Zhou',
+    name: 'ztlevi',
     description: "I'm a newbie full-stack developer 🎃",
     avatar: 'https://avatars2.githubusercontent.com/u/16655096?s=460&v=4',
     backgroundImg: require('../avatar/background.jpg'),

@@ -25,9 +25,12 @@ import ProjectModel from '../model/ProjectModel';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import makeCancelable from '../util/Cancelable';
 import Utils from '../util/Utils';
+import ViewUtils from '../util/ViewUtils';
+import MoreMenu, { MORE_MENU } from '../common/MoreMenu';
 import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
+import { FLAG_TAB } from './HomePage';
 
 let dataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
 let favoriteDAO = new FavoriteDAO();
@@ -42,11 +45,6 @@ let timeSpanTextArray = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  tabView: {
-    // flex: 1,
-    // padding: 10,
-    // backgroundColor: 'rgba(0,0,0,0.01)',
   },
   title: {
     flexDirection: 'row',
@@ -125,9 +123,27 @@ export default class TrendingPage extends Component {
     this.setState(dic);
   }
 
+  renderMoreView() {
+    let params = { ...this.props, fromPage: FLAG_TAB.flag_trendingTab };
+    return (
+      <MoreMenu
+        {...params}
+        ref="moreMenu"
+        menus={[
+          MORE_MENU.Custom_Language,
+          MORE_MENU.Sort_Language,
+          MORE_MENU.Custom_Theme,
+          MORE_MENU.About_Author,
+          MORE_MENU.About,
+        ]}
+        anchorView={this.refs.moreMenuButton}
+      />
+    );
+  }
+
   renderTitleView() {
     return (
-      <View style={{ height: 30, alignContent: 'center' }}>
+      <View style={{ alignContent: 'center' }}>
         <TouchableOpacity onPress={this.showPopover} ref="button">
           <View style={styles.title}>
             <Text style={GlobalStyles.titleText}>Trending</Text>
@@ -209,10 +225,24 @@ export default class TrendingPage extends Component {
         </ScrollableTabView>
       ) : null;
 
+    let rightButton = (
+      <View
+        style={{
+          padding: 5,
+          paddingTop: 8,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        {ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}
+      </View>
+    );
+
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(this.renderTitleView())}
+        {ComponentWithNavigationBar(this.renderTitleView(), null, rightButton)}
         {content}
+        {this.renderMoreView()}
       </View>
     );
   }

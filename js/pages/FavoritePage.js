@@ -16,6 +16,9 @@ import ActionUtils from '../util/ActionUtils';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import TrendingCell from '../common/TrendingCell';
 import GlobalStyles from '../../res/styles/GlobalStyles';
+import { FLAG_TAB } from './HomePage';
+import ViewUtils from '../util/ViewUtils';
+import MoreMenu, { MORE_MENU } from '../common/MoreMenu';
 
 let favoriteDAO = new FavoriteDAO();
 
@@ -36,19 +39,64 @@ const styles = StyleSheet.create({
 export default class FavoritePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { reload: false };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    // use DidMount to reload page
+    // reload does not mean anything, just used to refresh
+    // the page so that the refs can be found
+    this.updateState({
+      reload: true,
+    });
+  }
+
+  updateState(dic) {
+    if (!this) return;
+    this.setState(dic);
+  }
+
+  renderMoreView() {
+    let params = { ...this.props, fromPage: FLAG_TAB.flag_favoriteTab };
+    return (
+      <MoreMenu
+        {...params}
+        ref="moreMenu"
+        menus={[
+          MORE_MENU.Custom_Theme,
+          MORE_MENU.About_Author,
+          MORE_MENU.About,
+        ]}
+        anchorView={this.refs.moreMenuButton}
+      />
+    );
+  }
+
+  renderRightButton() {
+    return (
+      <View
+        style={{
+          padding: 5,
+          paddingTop: 8,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        {ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}
+      </View>
+    );
+  }
 
   render() {
     let content = <FavoriteTab {...this.props} />;
     let title = <Text style={GlobalStyles.titleText}>Favorite</Text>;
+    let rightButton = this.renderRightButton();
 
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(title)}
+        {ComponentWithNavigationBar(title, null, rightButton)}
         {content}
+        {this.renderMoreView()}
       </View>
     );
   }
