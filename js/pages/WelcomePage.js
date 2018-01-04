@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import { Avatar } from 'react-native-elements';
+import ThemeDAO from '../expand/dao/ThemeDAO';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,9 +14,12 @@ const styles = StyleSheet.create({
 
 export default class WelcomePage extends Component {
   componentDidMount() {
+    new ThemeDAO().getTheme().then(data => {
+      this.theme = data;
+    });
     const { navigate } = this.props.navigation;
     setTimeout(() => {
-      navigate('homePage');
+      navigate('homePage', { theme: this.theme });
     }, 500);
   }
 

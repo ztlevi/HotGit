@@ -138,7 +138,12 @@ export default class SortKeyPage extends Component {
 
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(titleText, leftButton, rightButton)}
+        {ComponentWithNavigationBar(
+          titleText,
+          leftButton,
+          rightButton,
+          this.props.theme.themeColor
+        )}
         <SortableListView
           data={this.state.checkedArray}
           order={order}
@@ -150,7 +155,9 @@ export default class SortKeyPage extends Component {
             );
             this.forceUpdate();
           }}
-          renderRow={row => <SortCell data={row} />}
+          renderRow={row => (
+            <SortCell data={row} color={this.props.theme.themeColor} />
+          )}
         />
       </View>
     );
@@ -170,7 +177,7 @@ class SortCell extends Component {
           <Icon
             name="reorder"
             size={16}
-            color="#2196f3"
+            color={this.props.color}
             containerStyle={{ marginRight: 10 }}
           />
           <Text style={{ fontWeight: 'bold' }}>{this.props.data.name}</Text>

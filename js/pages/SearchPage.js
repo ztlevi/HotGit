@@ -14,7 +14,7 @@ import {
 import ViewUtils from '../util/ViewUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import Toast, { DURATION } from 'react-native-easy-toast';
-import RepositoryCell from '../common/PopularCell';
+import PopularCell from '../common/PopularCell';
 import FavoriteDAO from '../expand/dao/FavoriteDAO';
 import ProjectModel from '../model/ProjectModel';
 import makeCancelable from '../util/Cancelable';
@@ -274,7 +274,7 @@ export default class FavoritePage extends Component {
     return (
       <View
         style={{
-          backgroundColor: '#2196F3',
+          backgroundColor: this.props.theme.themeColor,
           flexDirection: 'row',
           alignItems: 'center',
           height:
@@ -292,7 +292,7 @@ export default class FavoritePage extends Component {
 
   renderRow(projectModel) {
     return (
-      <RepositoryCell
+      <PopularCell
         {...this.props}
         key={projectModel.item.full_name}
         onSelect={() => {
@@ -332,7 +332,7 @@ export default class FavoritePage extends Component {
           style={{
             height:
               Platform.OS === 'ios' ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT,
-            backgroundColor: '#2196F3',
+            backgroundColor: this.props.theme.themeColor,
           }}
         />
       );
@@ -359,7 +359,10 @@ export default class FavoritePage extends Component {
     );
     let bottomButton = this.state.showBottomButton ? (
       <TouchableOpacity
-        style={[styles.bottomButton, { backgroundColor: '#2196F3' }]}
+        style={[
+          styles.bottomButton,
+          { backgroundColor: this.props.theme.themeColor },
+        ]}
         onPress={() => {
           this.saveKey();
         }}

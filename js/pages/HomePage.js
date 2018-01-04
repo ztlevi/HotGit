@@ -15,6 +15,7 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 import FavoritePage from './FavoritePage';
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
+import BaseComponent from './BaseComponent';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,7 +39,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ACTION_HOME = { A_SHOW_TOAST: 'showToast', A_RESTART: 'restart' };
+export const ACTION_HOME = {
+  A_SHOW_TOAST: 'showToast',
+  A_RESTART: 'restart',
+  A_THEME: 'theme',
+};
 export const FLAG_TAB = {
   flag_popularTab: 'tb_popular',
   flag_trendingTab: 'tb_trending',
@@ -46,28 +51,32 @@ export const FLAG_TAB = {
   flag_my: 'tb_my',
 };
 
-export default class HomePage extends Component {
+export default class HomePage extends BaseComponent {
   constructor(props) {
     super(props);
-    const { state } = this.props.navigation;
-
     let selectedTab = 'tb_trending';
     try {
-      selectedTab = state.params.selectedTab;
+      if (this.props.selectedTab) selectedTab = this.props.selectedTab;
     } catch (e) {}
 
     this.state = {
       selectedTab: selectedTab,
+      theme: this.props.theme,
     };
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.listener = DeviceEventEmitter.addListener(
       'ACTION_HOME',
       (action, params) => this.onAction(action, params)
     );
   }
 
+  componentWillUnmount() {
+    super.componentWillUnmount();
+    this.listener && this.listener.remove();
+  }
   /**
    * Notify callback
    */
@@ -89,29 +98,27 @@ export default class HomePage extends Component {
       actions: [
         NavigationActions.navigate({
           routeName: 'homePage',
-          params: { selectedTab: jumpToTab },
+          params: { selectedTab: jumpToTab, ...this.props },
         }),
       ],
     });
     this.props.navigation.dispatch(resetAction);
   }
 
-  componentWillUnmount() {
-    this.listener && this.listener.remove();
-  }
-
   _renderTab(Component, selectTab, title, renderIcon) {
     return (
       <TabNavigator.Item
         selected={this.state.selectedTab === selectTab}
-        selectedTitleStyle={{ color: '#2196F3' }}
+        selectedTitleStyle={this.state.theme.styles.selectedTitleStyle}
         title={title}
         renderIcon={() => <Icon name={renderIcon} color="black" />}
-        renderSelectedIcon={() => <Icon name={renderIcon} color="#2196F3" />}
+        renderSelectedIcon={() => (
+          <Icon name={renderIcon} color={this.state.theme.themeColor} />
+        )}
         onPress={() => this.setState({ selectedTab: selectTab })}
       >
         {/*pass the props to the next Component*/}
-        <Component {...this.props} />
+        <Component {...this.props} theme={this.state.theme} />
       </TabNavigator.Item>
     );
   }

@@ -5,6 +5,32 @@ import { Icon } from 'react-native-elements';
 import ActionUtils from '../util/ActionUtils.js';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 16,
+    marginBottom: 2,
+    color: '#212121',
+  },
+  description: {
+    fontSize: 14,
+    marginBottom: 2,
+    color: '#757575',
+    borderRadius: 2,
+  },
+  cell_container: {
+    backgroundColor: 'white',
+    padding: 10,
+    shadowColor: 'gray',
+    shadowOffset: { width: 0.5, height: 0.5 },
+    shadowOpacity: 0.4,
+    shadowRadius: 1,
+    elevation: 2,
+  },
+});
+
 export default class TrendingCell extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +63,11 @@ export default class TrendingCell extends Component {
       : this.props.projectModel;
     let favoriteButton = (
       <TouchableOpacity onPress={() => this.onPressFavorite()}>
-        <Icon name={this.state.favoriteIcon} color="#2196F3" size={22} />
+        <Icon
+          name={this.state.favoriteIcon}
+          color={this.props.theme.themeColor}
+          size={22}
+        />
       </TouchableOpacity>
     );
     let description = '<p>' + item.description + '</p>';
@@ -89,29 +119,3 @@ export default class TrendingCell extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-    marginBottom: 2,
-    color: '#212121',
-  },
-  description: {
-    fontSize: 14,
-    marginBottom: 2,
-    color: '#757575',
-    borderRadius: 2,
-  },
-  cell_container: {
-    backgroundColor: 'white',
-    padding: 10,
-    shadowColor: 'gray',
-    shadowOffset: { width: 0.5, height: 0.5 },
-    shadowOpacity: 0.4,
-    shadowRadius: 1,
-    elevation: 2,
-  },
-});

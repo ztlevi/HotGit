@@ -79,9 +79,14 @@ export default class CustomKeyPage extends Component {
           leftText={leftText}
           onClick={() => this.onClick(data)}
           isChecked={isChecked}
-          checkedImage={<Icon color="#2196F3" name="check-box" />}
+          checkedImage={
+            <Icon color={this.props.theme.themeColor} name="check-box" />
+          }
           unCheckedImage={
-            <Icon color="#2196F3" name="check-box-outline-blank" />
+            <Icon
+              color={this.props.theme.themeColor}
+              name="check-box-outline-blank"
+            />
           }
         />
       </View>
@@ -196,7 +201,12 @@ export default class CustomKeyPage extends Component {
 
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(titleText, leftButton, rightButton)}
+        {ComponentWithNavigationBar(
+          titleText,
+          leftButton,
+          rightButton,
+          this.props.theme.themeColor
+        )}
         <ScrollView>{this.renderView()}</ScrollView>
       </View>
     );

@@ -32,7 +32,8 @@
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sortable-listview": "^0.2.6",
     "react-native-tab-navigator": "^0.3.4",
-    "react-navigation": "^1.0.0-beta.21"
+    "react-navigation": "^1.0.0-beta.21",
+    "react-navigation-props-mapper": "^0.1.2"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

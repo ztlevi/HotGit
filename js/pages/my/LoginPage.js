@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import AboutCommon, { FLAT_ABOUT } from '../about/AboutCommon';
-import UserDao from '../../expand/dao/UserDao';
+import UserDAO from '../../expand/dao/UserDAO';
 import { Button } from 'react-native-elements';
 
-let userDao = new UserDao();
+let userDAO = new UserDAO();
 
 const styles = StyleSheet.create({
   container: {
@@ -91,10 +91,10 @@ export default class LoginPage extends Component {
         <View style={[styles.row, { paddingTop: 10 }]}>
           <Button
             onPress={() => {
-              userDao.logout(() => this.onLogout());
+              userDAO.logout(() => this.onLogout());
             }}
             buttonStyle={styles.button}
-            backgroundColor="#2196F3"
+            backgroundColor={this.props.theme.themeColor}
             title="Logout"
           />
         </View>
@@ -123,20 +123,20 @@ export default class LoginPage extends Component {
           <View style={[styles.row, { paddingTop: 10 }]}>
             <Button
               onPress={() => {
-                userDao.logout(() => this.onLogout());
+                userDAO.logout(() => this.onLogout());
               }}
               buttonStyle={styles.button}
-              backgroundColor="#2196F3"
+              backgroundColor={this.props.theme.themeColor}
               title="Logout"
             />
             <Button
               onPress={() => {
-                userDao.login(this.username, this.password, response =>
+                userDAO.login(this.username, this.password, response =>
                   this.onLogin(response)
                 );
               }}
               buttonStyle={styles.button}
-              backgroundColor="#2196F3"
+              backgroundColor={this.props.theme.themeColor}
               title="Login"
             />
           </View>

@@ -12,7 +12,7 @@ import {
 
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import DataRepository, { FLAG_STORAGE } from '../expand/dao/DataRepository';
-import RepositoryCell from '../common/PopularCell';
+import PopularCell from '../common/PopularCell';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
@@ -27,6 +27,8 @@ import { Icon } from 'react-native-elements';
 import makeCancelalbe from '../util/Cancelable';
 import MoreMenu, { MORE_MENU } from '../common/MoreMenu';
 import { FLAG_TAB } from './HomePage';
+import BaseComponent from './BaseComponent';
+import CustomThemePage from './my/CustomTheme';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -51,7 +53,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-export default class PopularPage extends Component {
+
+export default class PopularPage extends BaseComponent {
   constructor(props) {
     super(props);
     this.languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key);
@@ -59,11 +62,17 @@ export default class PopularPage extends Component {
       result: '',
       loading: false,
       languages: [],
+      theme: this.props.theme,
     };
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.loadData();
+  }
+
+  componentWillUnmount() {
+    super.componentWillUnmount();
   }
 
   loadData() {
@@ -113,7 +122,6 @@ export default class PopularPage extends Component {
           MORE_MENU.Custom_Key,
           MORE_MENU.Sort_Key,
           MORE_MENU.Remove_Key,
-          MORE_MENU.Custom_Theme,
           MORE_MENU.About_Author,
           MORE_MENU.About,
         ]}
@@ -127,7 +135,7 @@ export default class PopularPage extends Component {
     let content =
       this.state.languages.length > 0 ? (
         <ScrollableTabView
-          tabBarBackgroundColor="#2196F3"
+          tabBarBackgroundColor={this.state.theme.themeColor}
           tabBarInactiveTextColor="mintcream"
           tabBarActiveTextColor="white"
           tabBarUnderlineStyle={{ backgroundColor: '#e7e7e7', height: 2 }}
@@ -148,7 +156,12 @@ export default class PopularPage extends Component {
 
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(title, null, rightButton)}
+        {ComponentWithNavigationBar(
+          title,
+          null,
+          rightButton,
+          this.state.theme.themeColor
+        )}
         {content}
         {this.renderMoreView()}
       </View>
@@ -168,6 +181,7 @@ class PopularTab extends Component {
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
       favoriteKeys: [],
+      theme: this.props.theme,
     };
     this.pageNum = 0;
   }
@@ -197,7 +211,11 @@ class PopularTab extends Component {
     if (this.isFavorteChanged) {
       this.isFavorteChanged = false;
       this.getFavoriteKeys();
+    } else if (nextProps.theme !== this.state.theme) {
+      this.updateState({ theme: nextProps.theme });
+      this.flushFavoriteState();
     }
+
     // if (!nextProps)
     //   this.loadData(false, false)
   }
@@ -289,7 +307,7 @@ class PopularTab extends Component {
 
   renderRow(projectModel) {
     return (
-      <RepositoryCell
+      <PopularCell
         {...this.props}
         key={projectModel.item.full_name}
         onSelect={() => {
@@ -338,10 +356,10 @@ class PopularTab extends Component {
             <RefreshControl
               refreshing={this.state.isLoading}
               onRefresh={() => this.loadData(true, false)}
-              color={['#2196F3']}
-              tintColor={'#2196F3'}
+              color={[this.state.theme.themeColor]}
+              tintColor={this.state.theme.themeColor}
               title={'Loading...'}
-              titleColor={'#2196F3'}
+              titleColor={this.state.theme.themeColor}
             />
           }
         />

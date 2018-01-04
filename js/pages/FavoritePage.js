@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import { FLAG_STORAGE } from '../expand/dao/DataRepository';
-import RepositoryCell from '../common/PopularCell';
+import PopularCell from '../common/PopularCell';
 import ProjectModel from '../model/ProjectModel';
 import ArrayUtils from '../util/ArrayUtils';
 import ActionUtils from '../util/ActionUtils';
@@ -19,6 +19,8 @@ import GlobalStyles from '../../res/styles/GlobalStyles';
 import { FLAG_TAB } from './HomePage';
 import ViewUtils from '../util/ViewUtils';
 import MoreMenu, { MORE_MENU } from '../common/MoreMenu';
+import BaseComponent from './BaseComponent';
+import CustomThemePage from './my/CustomTheme';
 
 let favoriteDAO = new FavoriteDAO();
 
@@ -36,13 +38,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class FavoritePage extends Component {
+export default class FavoritePage extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = { reload: false };
+    this.state = {
+      theme: this.props.theme,
+      reload: false,
+    };
   }
 
   componentDidMount() {
+    super.componentDidMount();
     // use DidMount to reload page
     // reload does not mean anything, just used to refresh
     // the page so that the refs can be found
@@ -62,12 +68,15 @@ export default class FavoritePage extends Component {
       <MoreMenu
         {...params}
         ref="moreMenu"
-        menus={[
-          MORE_MENU.Custom_Theme,
-          MORE_MENU.About_Author,
-          MORE_MENU.About,
-        ]}
+        menus={[MORE_MENU.About_Author, MORE_MENU.About]}
         anchorView={this.refs.moreMenuButton}
+        onMoreMenuSelect={e => {
+          if (e === MORE_MENU.Custom_Theme) {
+            this.setState({
+              customThemeViewVisbile: true,
+            });
+          }
+        }}
       />
     );
   }
@@ -93,8 +102,13 @@ export default class FavoritePage extends Component {
     let rightButton = this.renderRightButton();
 
     return (
-      <View style={styles.container}>
-        {ComponentWithNavigationBar(title, null, rightButton)}
+      <View style={GlobalStyles.root_container}>
+        {ComponentWithNavigationBar(
+          title,
+          null,
+          rightButton,
+          this.state.theme.themeColor
+        )}
         {content}
         {this.renderMoreView()}
       </View>
@@ -113,6 +127,7 @@ class FavoriteTab extends Component {
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
       favoriteKeys: [],
+      theme: this.props.theme,
     };
   }
 
@@ -175,7 +190,7 @@ class FavoriteTab extends Component {
   renderRow(projectModel) {
     if (projectModel.item.full_name) {
       return (
-        <RepositoryCell
+        <PopularCell
           {...this.props}
           key={projectModel.item.full_name}
           onSelect={() => {
@@ -220,7 +235,6 @@ class FavoriteTab extends Component {
       );
     }
   }
-
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -232,10 +246,10 @@ class FavoriteTab extends Component {
             <RefreshControl
               refreshing={this.state.isLoading}
               onRefresh={() => this.loadData(true, true)}
-              color={['#2196F3']}
-              tintColor={'#2196F3'}
+              color={[this.state.theme.themeColor]}
+              tintColor={this.state.theme.themeColor}
               title={'Loading...'}
-              titleColor={'#2196F3'}
+              titleColor={this.state.theme.themeColor}
             />
           }
         />

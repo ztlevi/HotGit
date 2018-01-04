@@ -6,7 +6,7 @@ import FavoriteDAO from '../../expand/dao/FavoriteDAO';
 import { FLAG_STORAGE } from '../../expand/dao/DataRepository';
 import Utils from '../../util/Utils';
 import ActionUtils from '../../util/ActionUtils';
-import RepositoryCell from '../../common/PopularCell';
+import PopularCell from '../../common/PopularCell';
 import RepositoryUtils from '../../expand/dao/RepositoryUtils';
 import { Icon } from 'react-native-elements';
 
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
 });
 export default class AboutCommon {
-  constructor(props, updateState, flag_about, config) {
+  constructor(props, updateState, flag_about, config, theme) {
     this.props = props;
     this.updateState = updateState;
     this.flag_about = flag_about;
@@ -194,7 +194,7 @@ export default class AboutCommon {
     for (let i = 0, l = projectModels.length; i < l; i++) {
       let projectModel = projectModels[i];
       views.push(
-        <RepositoryCell
+        <PopularCell
           {...this.props}
           key={projectModel.item.full_name}
           onSelect={() => {
@@ -278,7 +278,7 @@ export default class AboutCommon {
     return (
       <ParallaxScrollView
         headerBackgroundColor="#333"
-        backgroundColor="#2196F3"
+        backgroundColor={this.props.theme.themeColor}
         stickyHeaderHeight={STICKY_HEADER_HEIGHT}
         parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
         backgroundSpeed={10}

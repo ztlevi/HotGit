@@ -7,7 +7,7 @@ export const config = {
   },
   author: {
     name: 'ztlevi',
-    description: "I'm a newbie full-stack developer 🎃",
+    description: "I'm a newbie full-stack developer \nand an evil emacser 🎃",
     avatar: 'https://avatars2.githubusercontent.com/u/16655096?s=460&v=4',
     backgroundImg: require('../avatar/background.jpg'),
     avatar1: require('../icon/github.png'),

@@ -114,7 +114,12 @@ export default class RepositoryDetail extends Component {
     let title = <Text style={GlobalStyles.titleText}>{titleShrinked}</Text>;
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(title, leftButton, rightButton)}
+        {ComponentWithNavigationBar(
+          title,
+          leftButton,
+          rightButton,
+          this.props.theme.themeColor
+        )}
         <WebView
           ref={webView => (this.webView = webView)}
           source={{ uri: this.state.url }}

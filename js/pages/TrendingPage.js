@@ -31,6 +31,7 @@ import ActionUtils from '../util/ActionUtils';
 import GlobalStyles from '../../res/styles/GlobalStyles';
 import { Icon } from 'react-native-elements';
 import { FLAG_TAB } from './HomePage';
+import BaseComponent from './BaseComponent';
 
 let dataRepository = new DataRepository(FLAG_STORAGE.flag_trending);
 let favoriteDAO = new FavoriteDAO();
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class TrendingPage extends Component {
+export default class TrendingPage extends BaseComponent {
   constructor(props) {
     super(props);
     this.languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_language);
@@ -78,10 +79,12 @@ export default class TrendingPage extends Component {
       languages: [],
       timeSpan: timeSpanTextArray[0],
       buttonReact: {},
+      theme: this.props.theme,
     };
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.loadData();
   }
 
@@ -132,7 +135,6 @@ export default class TrendingPage extends Component {
         menus={[
           MORE_MENU.Custom_Language,
           MORE_MENU.Sort_Language,
-          MORE_MENU.Custom_Theme,
           MORE_MENU.About_Author,
           MORE_MENU.About,
         ]}
@@ -203,7 +205,7 @@ export default class TrendingPage extends Component {
     let content =
       this.state.languages.length > 0 ? (
         <ScrollableTabView
-          tabBarBackgroundColor="#2196F3"
+          tabBarBackgroundColor={this.state.theme.themeColor}
           tabBarInactiveTextColor="mintcream"
           tabBarActiveTextColor="white"
           tabBarUnderlineStyle={{ backgroundColor: '#e7e7e7', height: 2 }}
@@ -240,7 +242,12 @@ export default class TrendingPage extends Component {
 
     return (
       <View style={styles.container}>
-        {ComponentWithNavigationBar(this.renderTitleView(), null, rightButton)}
+        {ComponentWithNavigationBar(
+          this.renderTitleView(),
+          null,
+          rightButton,
+          this.state.theme.themeColor
+        )}
         {content}
         {this.renderMoreView()}
       </View>
@@ -259,6 +266,7 @@ class TrendingTab extends Component {
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
       favoriteKeys: [],
+      theme: this.props.theme,
     };
     this.pageNum = 0;
   }
@@ -287,6 +295,9 @@ class TrendingTab extends Component {
       this.isFavorteChanged = false;
       this.getFavoriteKeys();
       this.loadData(this.props.timeSpan, false);
+    } else if (nextProps.theme !== this.state.theme) {
+      this.updateState({ theme: nextProps.theme });
+      this.flushFavoriteState();
     }
   }
 
@@ -407,10 +418,9 @@ class TrendingTab extends Component {
             <RefreshControl
               refreshing={this.state.isLoading}
               onRefresh={() => this.loadData(this.props.timeSpan, true)}
-              color={['#2196F3']}
-              tintColor={'#2196F3'}
+              color={[this.state.theme.themeColor]}
+              tintColor={this.state.theme.themeColor}
               title={'Loading...'}
-              titleColor={'#2196F3'}
             />
           }
         />

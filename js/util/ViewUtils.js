@@ -18,14 +18,14 @@ export default class ViewUtils {
    * @param tintStyle icon color
    * @param expandableIcon right icon
    */
-  static getSettingItem(callback, icon, text, tintColor, expandableIcon) {
+  static getSettingItem(callback, icon, text, color, expandableIcon) {
     return (
       <TouchableHighlight onPress={callback}>
         <View style={styles.setting_item_container}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Icon
               name={icon}
-              color={tintColor}
+              color={color}
               size={20}
               containerStyle={{ marginRight: 10 }}
             />
@@ -35,7 +35,7 @@ export default class ViewUtils {
             name={
               expandableIcon ? 'keyboard-arrow-down' : 'keyboard-arrow-right'
             }
-            color="#2196F3"
+            color={color}
             size={20}
             containerStyle={{ marginRight: 10 }}
           />

@@ -10,7 +10,7 @@ const url_repo = 'https://api.github.com/repos/';
 const url_page = 'https://api.github.com/user/starred?page=';
 const url_user = 'https://api.github.com/user';
 
-export default class UserDao {
+export default class UserDAO {
   constructor() {}
 
   async loadCurrentUser() {

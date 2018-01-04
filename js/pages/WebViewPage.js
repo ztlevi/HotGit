@@ -36,7 +36,12 @@ export default class WebViewPage extends Component {
     let leftButton = ViewUtils.getLeftButton(() => this.onBackPress());
     return (
       <View style={GlobalStyles.root_container}>
-        {ComponentWithNavigationBar(titleText, leftButton)}
+        {ComponentWithNavigationBar(
+          titleText,
+          leftButton,
+          null,
+          this.props.theme.themeColor
+        )}
         <WebView
           ref={webView => (this.webView = webView)}
           source={{ uri: this.state.url }}

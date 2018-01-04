@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import UserDao from './UserDao';
+import UserDAO from './UserDAO';
 
 const base64 = require('base-64');
 const url_star = 'https://api.github.com/user/starred/';
@@ -8,7 +8,7 @@ const url_page = 'https://api.github.com/user/starred?page=';
 
 export default class FavoriteDAO {
   constructor() {
-    this.userDao = new UserDao();
+    this.userDAO = new UserDAO();
     this.favoriteKey = 'favorite';
     this.tDate = new Date();
   }
@@ -16,13 +16,13 @@ export default class FavoriteDAO {
   // fetch all user's starred repo and update
   reloadStarredRepos() {
     // if no user logged in, pass
-    this.userDao
+    this.userDAO
       .loadCurrentUser()
       .then(() => {
         // fetch data only when data outdated
         if (this.checkDate()) {
           // fetch remote starred repos
-          this.userDao.fetchStarredRepos().then(responses => {
+          this.userDAO.fetchStarredRepos().then(responses => {
             let values = [];
             let ids = [];
             for (let i = 0, len = responses.length; i < len; i++) {
@@ -101,7 +101,7 @@ export default class FavoriteDAO {
     });
     let item = JSON.parse(value);
     let repo_name = item.full_name ? item.full_name : item.fullName;
-    this.userDao.starRepo(repo_name);
+    this.userDAO.starRepo(repo_name);
   }
 
   /**
@@ -160,7 +160,7 @@ export default class FavoriteDAO {
     });
     let item = JSON.parse(value);
     let repo_name = item.full_name ? item.full_name : item.fullName;
-    this.userDao.unstarRepo(repo_name);
+    this.userDAO.unstarRepo(repo_name);
   }
 
   /**

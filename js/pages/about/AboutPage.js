@@ -67,21 +67,21 @@ export default class AboutPage extends Component {
           () => this.onClick(MORE_MENU.Website),
           'computer',
           MORE_MENU.Website,
-          '#2196F3'
+          this.props.theme.themeColor
         )}
         <View style={GlobalStyles.line} />
         {ViewUtils.getSettingItem(
           () => this.onClick(MORE_MENU.About_Author),
           'mood',
           MORE_MENU.About_Author,
-          '#2196F3'
+          this.props.theme.themeColor
         )}
         <View style={GlobalStyles.line} />
         {ViewUtils.getSettingItem(
           () => this.onClick(MORE_MENU.Feedback),
           'feedback',
           MORE_MENU.Feedback,
-          '#2196F3'
+          this.props.theme.themeColor
         )}
         <View style={GlobalStyles.line} />
       </View>

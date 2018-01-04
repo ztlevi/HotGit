@@ -107,7 +107,7 @@ export default class AboutMePage extends Component {
             () => this.onClick(dic[i]),
             null,
             title,
-            '#2196F3'
+            this.props.theme.themeColor
           )}
           <View style={GlobalStyles.line} />
         </View>
@@ -123,7 +123,7 @@ export default class AboutMePage extends Component {
           () => this.onClick(FLAG.BLOG),
           'computer',
           FLAG.BLOG.name,
-          '#2196F3',
+          this.props.theme.themeColor,
           this.getClickIcon(this.state.showBlog)
         )}
         <View style={GlobalStyles.line} />
@@ -133,7 +133,7 @@ export default class AboutMePage extends Component {
           () => this.onClick(FLAG.REPOSITORY),
           'code',
           FLAG.REPOSITORY.name,
-          '#2196F3',
+          this.props.theme.themeColor,
           this.getClickIcon(this.state.showRepository)
         )}
         <View style={GlobalStyles.line} />
@@ -145,7 +145,7 @@ export default class AboutMePage extends Component {
           () => this.onClick(FLAG.CONTACT),
           'contacts',
           FLAG.CONTACT.name,
-          '#2196F3',
+          this.props.theme.themeColor,
           this.getClickIcon(this.state.showContact)
         )}
         <View style={GlobalStyles.line} />

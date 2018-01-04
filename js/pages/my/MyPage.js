@@ -9,11 +9,13 @@ import {
 import ComponentWithNavigationBar from '../../common/NavigatorBar';
 import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
 import FavoriteDAO from '../../expand/dao/FavoriteDAO';
-import UserDao from '../../expand/dao/UserDao';
+import UserDAO from '../../expand/dao/UserDAO';
 import { MORE_MENU } from '../../common/MoreMenu';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
 import ViewUtils from '../../util/ViewUtils';
 import { Icon } from 'react-native-elements';
+import CustomThemePage from './CustomTheme';
+import BaseComponent from '../BaseComponent';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,28 +41,31 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class MyPage extends Component {
+export default class MyPage extends BaseComponent {
   constructor(props) {
     super(props);
     this.favoriteDAO = new FavoriteDAO();
-    this.userDao = new UserDao();
+    this.userDAO = new UserDAO();
     this.state = {
       user: null,
       avatar_url: null,
+      customThemeViewVisible: false,
+      theme: this.props.theme,
     };
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.loadUser();
   }
 
   loadUser() {
-    this.userDao.loadCurrentUser().then(result => {
+    this.userDAO.loadCurrentUser().then(result => {
       this.setState({
         user: result,
       });
     });
-    this.userDao.loadUserAvatar().then(result => {
+    this.userDAO.loadUserAvatar().then(result => {
       this.setState({
         user_avatar: result,
       });
@@ -72,6 +77,20 @@ export default class MyPage extends Component {
       user: null,
       user_avatar: null,
     });
+  }
+
+  renderCustomThemeView() {
+    return (
+      <CustomThemePage
+        visible={this.state.customThemeViewVisible}
+        {...this.props}
+        onClose={() =>
+          this.setState({
+            customThemeViewVisible: false,
+          })
+        }
+      />
+    );
   }
 
   onClick(tab) {
@@ -107,6 +126,7 @@ export default class MyPage extends Component {
         params.logoutUser = () => this.logoutUser();
         break;
       case MORE_MENU.Custom_Theme:
+        this.setState({ customThemeViewVisible: true });
         break;
       case MORE_MENU.About_Author:
         TargetComponent = 'aboutMePage';
@@ -117,7 +137,10 @@ export default class MyPage extends Component {
     }
 
     if (TargetComponent) {
-      this.props.navigation.navigate(TargetComponent, { ...params });
+      this.props.navigation.navigate(TargetComponent, {
+        ...params,
+        theme: this.state.theme,
+      });
     }
   }
 
@@ -126,7 +149,7 @@ export default class MyPage extends Component {
       () => this.onClick(tag),
       icon,
       text,
-      '#2196F3',
+      this.state.theme.themeColor,
       null
     );
   }
@@ -136,7 +159,12 @@ export default class MyPage extends Component {
 
     return (
       <View style={GlobalStyles.root_container}>
-        {ComponentWithNavigationBar(title)}
+        {ComponentWithNavigationBar(
+          title,
+          null,
+          null,
+          this.state.theme.themeColor
+        )}
         <ScrollView>
           <TouchableHighlight onPress={() => this.onClick(MORE_MENU.Login)}>
             <View style={[styles.row, { height: 90 }]}>
@@ -144,7 +172,7 @@ export default class MyPage extends Component {
                 <Icon
                   name="account-circle"
                   size={40}
-                  color="#2196F3"
+                  color={this.state.theme.themeColor}
                   containerStyle={{ marginRight: 10 }}
                 />
                 <Text style={{ fontSize: 20 }}>
@@ -155,7 +183,7 @@ export default class MyPage extends Component {
                 name="keyboard-arrow-right"
                 size={22}
                 containerStyle={{ marginRight: 10 }}
-                color="#2196F3"
+                color={this.state.theme.themeColor}
               />
             </View>
           </TouchableHighlight>
@@ -194,6 +222,7 @@ export default class MyPage extends Component {
           {this.getItem(MORE_MENU.About_Author, 'mood', 'About Author')}
           <View style={GlobalStyles.line} />
         </ScrollView>
+        {this.renderCustomThemeView()}
 
         {/*/!*Custom Pages*!/*/}
         {/*<Text style={styles.tips}*/}
@@ -252,7 +281,7 @@ export default class MyPage extends Component {
         {/*/!*Star and Unstar*!/*/}
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*userDao.starRepo('apple/turicreate')*/}
+        {/*userDAO.starRepo('apple/turicreate')*/}
         {/*.then(() => {*/}
         {/*DeviceEventEmitter.emit('showToast', 'Starred')*/}
         {/*})*/}
@@ -262,7 +291,7 @@ export default class MyPage extends Component {
         {/*}}>Star</Text>*/}
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*userDao.unstarRepo('apple/turicreate')*/}
+        {/*userDAO.unstarRepo('apple/turicreate')*/}
         {/*.then(() => {*/}
         {/*DeviceEventEmitter.emit('showToast', 'Unstarred')*/}
         {/*})*/}
@@ -272,7 +301,7 @@ export default class MyPage extends Component {
         {/*}}>Unstar</Text>*/}
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*userDao.checkIfRepoStarred('apple/turicreate')*/}
+        {/*userDAO.checkIfRepoStarred('apple/turicreate')*/}
         {/*.then((result) => {*/}
         {/*if (result === 1)*/}
         {/*DeviceEventEmitter.emit('showToast', 'starred')*/}
@@ -286,7 +315,7 @@ export default class MyPage extends Component {
 
         {/*<Text style={styles.tips}*/}
         {/*onPress={() => {*/}
-        {/*userDao.fetchStarredRepos()*/}
+        {/*userDAO.fetchStarredRepos()*/}
         {/*.then(() => {*/}
         {/*DeviceEventEmitter.emit('showToast', 'Starred')*/}
         {/*})*/}
