@@ -24,6 +24,7 @@ For the favorite page, there is some delay for Github API. That's why I put 2 mi
 ## TODO
 
 1. Mobx
-2. Coverage
-3. Eslint
-4. Travis
+2. Use custom view for repos instead of WebView
+3. Coverage
+4. Eslint
+5. Travis

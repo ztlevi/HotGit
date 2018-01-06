@@ -70,13 +70,6 @@ export default class FavoritePage extends BaseComponent {
         ref="moreMenu"
         menus={[MORE_MENU.About_Author, MORE_MENU.About]}
         anchorView={this.refs.moreMenuButton}
-        onMoreMenuSelect={e => {
-          if (e === MORE_MENU.Custom_Theme) {
-            this.setState({
-              customThemeViewVisbile: true,
-            });
-          }
-        }}
       />
     );
   }

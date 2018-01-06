@@ -341,7 +341,6 @@ class PopularTab extends Component {
       windowHeight + offset >= height
     ) {
       this.loadData(false, true);
-      console.log('End Scroll');
     }
   }
 
