@@ -1,15 +1,4 @@
 {
-  "expo": {
-    "sdkVersion": "23.0.0",
-    "name": "Github Trending",
-    "icon": "./res/icon/github.png",
-    "version": "1.0.0",
-    "slug": "react_github",
-    "ios": {
-      "bundleIdentifier": "com.github.ztlevi"
-    },
-    "android": {
-      "package": "com.github.ztlevi"
-    }
-  }
+  "name": "react_github",
+  "displayName": "react_github"
 }

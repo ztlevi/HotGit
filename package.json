@@ -3,24 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
     "prettier": "prettier --write \"**/*.js\"",
     "eslint": "eslint .",
     "stylelint": "stylelint src/**/*.js",
     "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "dependencies": {
     "GitHubTrending": "^3.0.0",
     "base-64": "^0.1.0",
-    "expo": "^23.0.4",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
-    "react-native": "0.50.4",
+    "react-native": "0.51.0",
     "react-native-check-box": "^2.0.2",
     "react-native-easy-toast": "^1.0.9",
     "react-native-elements": "^0.18.5",
@@ -32,17 +27,17 @@
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sortable-listview": "^0.2.6",
     "react-native-tab-navigator": "^0.3.4",
+    "react-native-vector-icons": "^4.4.3",
     "react-navigation": "^1.0.0-beta.21",
     "react-navigation-props-mapper": "^0.1.2"
   },
   "devDependencies": {
-    "babel-jest": "21.2.0",
+    "babel-jest": "22.0.4",
     "babel-preset-react-native": "4.0.0",
-    "jest-expo": "23.0.0",
-    "react-native-scripts": "1.8.1",
+    "jest": "22.0.4",
     "react-test-renderer": "16.0.0"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "react-native"
   }
 }
