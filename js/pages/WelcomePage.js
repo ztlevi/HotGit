@@ -21,7 +21,7 @@ export default class WelcomePage extends Component {
     const { navigate } = this.props.navigation;
     setTimeout(() => {
       navigate('homePage', { theme: this.theme });
-    }, 500);
+    }, 1000);
   }
 
   componentWillUnmount() {

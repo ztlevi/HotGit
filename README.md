@@ -25,6 +25,7 @@ For the favorite page, there is some delay for Github API. That's why I put 2 mi
 
 1. Mobx
 2. Use custom view for repos instead of WebView
-3. Coverage
-4. Eslint
-5. Travis
+3. Favorite Page add search module
+4. Coverage
+5. Eslint
+6. Travis
