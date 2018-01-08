@@ -6,13 +6,13 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 
 export const ThemeFlags = {
-  Default: '#2196F3',
+  Default: '#1e90ff',
   Red: '#F44336',
   Pink: '#E91E63',
   Purple: '#9C27B0',
   DeepPurple: '#673AB7',
   Indigo: '#3F51B5',
-  Blue: '#2196F3',
+  Blue: '#1e90ff',
   LightBlue: '#03A9F4',
   Cyan: '#00BCD4',
   Teal: '#009688',
