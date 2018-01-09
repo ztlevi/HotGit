@@ -1,5 +1,6 @@
 # Github Treading App powered by React Native
 
+[![BCH compliance](https://bettercodehub.com/edge/badge/ztlevi/react_github?branch=master)](https://bettercodehub.com/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
