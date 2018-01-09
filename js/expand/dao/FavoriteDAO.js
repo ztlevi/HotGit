@@ -118,7 +118,7 @@ export default class FavoriteDAO {
         }
         let index = favoriteKeys.indexOf(key);
         if (isAdd && index === -1) {
-          favoriteKeys.push(key);
+          favoriteKeys.splice(0, 0, key);
         } else if (!isAdd && index !== -1) {
           favoriteKeys.splice(index, 1);
         }

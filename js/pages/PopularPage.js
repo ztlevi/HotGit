@@ -28,7 +28,6 @@ import makeCancelalbe from '../util/Cancelable';
 import MoreMenu, { MORE_MENU } from '../common/MoreMenu';
 import { FLAG_TAB } from './HomePage';
 import BaseComponent from './BaseComponent';
-import CustomThemePage from './my/CustomTheme';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -321,7 +320,7 @@ class PopularTab extends Component {
             favoriteDAO,
             item,
             isFavorite,
-            FLAG_STORAGE.flag_trending
+            FLAG_STORAGE.flag_popular
           )
         }
         projectModel={projectModel}
