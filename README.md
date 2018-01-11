@@ -3,11 +3,9 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/ztlevi/react_github?branch=master)](https://bettercodehub.com/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
-
 ## Intsall
 
-install with `yarn` and then `yarn start`. Scan the QR code to install the Expo app and run the app on your iPhone.
+install packages with `yarn` and then `yarn ios` or `yarn android` to run the application on the device.
 
 > Notes:
 >
@@ -20,7 +18,7 @@ For the favorite page, there is some delay for Github API. That's why I put 2 mi
 
 ## Screen shots
 
-![screenshots](./screenshots/screenshots.png)
+![screenshots](./screenshots/screenshots.jpg)
 
 ## TODO
 

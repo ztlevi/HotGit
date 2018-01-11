@@ -22,6 +22,7 @@ import Utils from '../util/Utils';
 import ActionUtils from '../util/ActionUtils';
 import LanguageDAO, { FLAG_LANGUAGE } from '../expand/dao/LanguageDAO';
 import { ACTION_HOME, FLAG_TAB } from './HomePage';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 const API_URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -60,6 +61,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
     top: GlobalStyles.window_height - 45,
+    ...ifIphoneX({
+      top: GlobalStyles.window_height - 55,
+    }),
     right: 10,
     borderRadius: 3,
   },
@@ -205,7 +209,7 @@ export default class FavoritePage extends Component {
       projectModels.push(
         new ProjectModel(
           items[i],
-          Utils.checkFavorite(items[i], this.state.favoriteKeys)
+          Utils.checkFavorite(items[i], this.state.favoriteKeys || [])
         )
       );
     }
@@ -330,8 +334,10 @@ export default class FavoritePage extends Component {
       statusBar = (
         <View
           style={{
-            height:
-              Platform.OS === 'ios' ? STATUS_BAR_HEIGHT : STATUS_BAR_HEIGHT,
+            height: 20,
+            ...ifIphoneX({
+              height: 30,
+            }),
             backgroundColor: this.props.theme.themeColor,
           }}
         />

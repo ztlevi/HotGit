@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "clean": "rm -rf node_modules",
+    "clean:android": "cd android && ./gradlew clean && cd -",
+    "link": "react-native link",
+    "ios": "node_modules/.bin/react-native run-ios",
+    "android": "node_modules/.bin/react-native run-android",
     "test": "jest",
     "prettier": "prettier --write \"**/*.js\"",
     "eslint": "eslint .",

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import ThemeFactory, { ThemeFlags } from '../../res/styles/ThemeFactory';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 module.exports = ComponentWithNavigationBar;
 
@@ -32,8 +33,15 @@ function ComponentWithNavigationBar(
   themeColor = '#2196F3'
 ) {
   return (
-    <View style={styles.container}>
-      <View style={{ height: Platform.OS === 'ios' ? 0 : STATUS_BAR_HEIGHT }} />
+    <View style={{ backgroundColor: themeColor }}>
+      <View
+        style={{
+          height: Platform.OS === 'ios' ? 0 : STATUS_BAR_HEIGHT,
+          ...ifIphoneX({
+            height: 10,
+          }),
+        }}
+      />
       <NavigationBar
         tintColor={themeColor}
         statusBar={{
