@@ -7,6 +7,9 @@
     "clean:android": "cd android && ./gradlew clean && cd -",
     "link": "react-native link",
     "ios": "node_modules/.bin/react-native run-ios",
+    "ios_build": "react-native run-ios --configuration release --device",
+    "ios_kill":
+      "rm -rf ios/build/; kill $(lsof -t -i:8081); react-native run-ios",
     "android": "node_modules/.bin/react-native run-android",
     "test": "jest",
     "prettier": "prettier --write \"**/*.js\"",
