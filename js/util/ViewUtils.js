@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  TouchableHighlight,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, TouchableHighlight, Image, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 export default class ViewUtils {
@@ -23,18 +16,11 @@ export default class ViewUtils {
       <TouchableHighlight onPress={callback}>
         <View style={styles.setting_item_container}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Icon
-              name={icon}
-              color={color}
-              size={20}
-              containerStyle={{ marginRight: 10 }}
-            />
+            <Icon name={icon} color={color} size={20} containerStyle={{ marginRight: 10 }} />
             <Text>{text}</Text>
           </View>
           <Icon
-            name={
-              expandableIcon ? 'keyboard-arrow-down' : 'keyboard-arrow-right'
-            }
+            name={expandableIcon ? 'keyboard-arrow-down' : 'keyboard-arrow-right'}
             color={color}
             size={20}
             containerStyle={{ marginRight: 10 }}
@@ -46,29 +32,31 @@ export default class ViewUtils {
 
   static getLeftButton(callback) {
     return (
-      <TouchableOpacity style={{ padding: 15 }} onPress={callback}>
-        <Icon name="keyboard-arrow-left" color="white" size={26} />
-      </TouchableOpacity>
+      <View style={styles.titleBarItem}>
+        <TouchableOpacity onPress={callback}>
+          <Icon name="keyboard-arrow-left" color="white" size={26} />
+        </TouchableOpacity>
+      </View>
     );
   }
 
   static getRightButton(callback, rightButtonTitle) {
     return (
-      <TouchableOpacity style={{ padding: 12.5 }} onPress={callback}>
-        <View styl={{ flex: 1 }}>
+      <View style={styles.titleBarItem}>
+        <TouchableOpacity onPress={callback}>
           <Text style={{ fontSize: 18, color: 'white', fontWeight: '400' }}>
             {rightButtonTitle}
           </Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     );
   }
 
   static getRightButtonImage(callback, rightButtonIcon) {
     return (
-      <TouchableOpacity onPress={callback} style={{ padding: 15 }}>
-        {rightButtonIcon}
-      </TouchableOpacity>
+      <View style={styles.titleBarItem}>
+        <TouchableOpacity onPress={callback}>{rightButtonIcon}</TouchableOpacity>
+      </View>
     );
   }
 
@@ -77,15 +65,11 @@ export default class ViewUtils {
    */
   static getMoreButton(callback) {
     return (
-      <TouchableHighlight
-        ref="moreMenuButton"
-        onPress={callback}
-        underlayColor={'transparent'}
-      >
-        <View style={{ padding: 5, paddingRight: 8 }}>
+      <View style={styles.titleBarItem}>
+        <TouchableHighlight ref="moreMenuButton" onPress={callback} underlayColor={'transparent'}>
           <Icon name="more-vert" color="white" size={24} />
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
     );
   }
 }
@@ -98,5 +82,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     height: 60,
+  },
+  titleBarItem: {
+    marginLeft: 5,
+    marginRight: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

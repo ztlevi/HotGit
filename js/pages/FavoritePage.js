@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  ListView,
-  RefreshControl,
-  DeviceEventEmitter,
-  Text,
-} from 'react-native';
+import { View, StyleSheet, ListView, RefreshControl, DeviceEventEmitter, Text } from 'react-native';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import { FLAG_STORAGE } from '../expand/dao/DataRepository';
 import PopularCell from '../common/PopularCell';
@@ -75,18 +68,7 @@ export default class FavoritePage extends BaseComponent {
   }
 
   renderRightButton() {
-    return (
-      <View
-        style={{
-          padding: 5,
-          paddingTop: 8,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        {ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}
-      </View>
-    );
+    return <View>{ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}</View>;
   }
 
   render() {
@@ -96,12 +78,7 @@ export default class FavoritePage extends BaseComponent {
 
     return (
       <View style={GlobalStyles.root_container}>
-        {ComponentWithNavigationBar(
-          title,
-          null,
-          rightButton,
-          this.state.theme.themeColor
-        )}
+        {ComponentWithNavigationBar(title, null, rightButton, this.state.theme.themeColor)}
         {content}
         {this.renderMoreView()}
       </View>
@@ -193,12 +170,7 @@ class FavoriteTab extends Component {
             });
           }}
           onFavorite={(item, isFavorite) => {
-            ActionUtils.onFavorite(
-              favoriteDAO,
-              item,
-              isFavorite,
-              FLAG_STORAGE.flag_popular
-            );
+            ActionUtils.onFavorite(favoriteDAO, item, isFavorite, FLAG_STORAGE.flag_popular);
             this.onFavorite(item);
           }}
           projectModel={projectModel}
@@ -216,12 +188,7 @@ class FavoriteTab extends Component {
             });
           }}
           onFavorite={(item, isFavorite) =>
-            ActionUtils.onFavorite(
-              favoriteDAO,
-              item,
-              isFavorite,
-              FLAG_STORAGE.flag_trending
-            )
+            ActionUtils.onFavorite(favoriteDAO, item, isFavorite, FLAG_STORAGE.flag_trending)
           }
           projectModel={projectModel}
         />

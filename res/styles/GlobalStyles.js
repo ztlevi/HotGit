@@ -17,7 +17,7 @@ module.exports = {
     fontSize: 20,
     color: 'white',
     fontWeight: '400',
-    marginBottom: 2.5,
+    marginBottom: 4.5,
   },
   backgroundColor: '#f3f3f4',
   nav_bar_height_ios: 44,

@@ -1,4 +1,5 @@
 {
-  "name": "react_github",
-  "displayName": "HotGit"
+  "expo": {
+    "sdkVersion": "27.0.0"
+  }
 }

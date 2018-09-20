@@ -64,6 +64,7 @@ export default class CustomKeyPage extends Component {
         this.setState({
           dataArray: result,
         });
+        this.renderView();
       })
       .catch(error => {
         console.log(error);
@@ -72,7 +73,8 @@ export default class CustomKeyPage extends Component {
 
   renderCheckBox(data) {
     let leftText = data.name;
-    let isChecked = this.isRemoveKey ? false : data.checked;
+    // let isChecked = this.isRemoveKey ? false : data.checked;
+    let isChecked = data.checked;
     return (
       <View style={{ flex: 1, padding: 10 }}>
         <Checkbox
@@ -121,7 +123,9 @@ export default class CustomKeyPage extends Component {
       </View>
     );
 
-    return views;
+    this.setState({
+      selectionSection: views,
+    });
   }
 
   onSave() {
@@ -147,7 +151,9 @@ export default class CustomKeyPage extends Component {
   }
 
   onClick(data) {
-    if (!this.isRemoveKey) data.checked = !data.checked;
+    // if (!this.isRemoveKey) data.checked = !data.checked;
+    data.checked = !data.checked;
+    this.renderView();
     ArrayUtils.updateArray(this.changeValues, data);
   }
 
@@ -175,8 +181,6 @@ export default class CustomKeyPage extends Component {
     let rightButton = (
       <View
         style={{
-          padding: 5,
-          paddingTop: 8,
           flexDirection: 'row',
           alignItems: 'center',
         }}
@@ -207,7 +211,7 @@ export default class CustomKeyPage extends Component {
           rightButton,
           this.props.theme.themeColor
         )}
-        <ScrollView>{this.renderView()}</ScrollView>
+        <ScrollView>{this.state.selectionSection}</ScrollView>
       </View>
     );
   }

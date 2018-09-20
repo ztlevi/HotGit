@@ -1,28 +1,30 @@
 {
-  "name": "react_github",
-  "version": "0.0.1",
+  "name": "HotGit",
+  "version": "0.1.0",
   "private": true,
+  "devDependencies": {
+    "react-native-scripts": "1.14.0",
+    "jest-expo": "~27.0.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "clean:android": "cd android && ./gradlew clean && cd -",
-    "link": "react-native link",
-    "ios": "node_modules/.bin/react-native run-ios",
-    "ios_build": "react-native run-ios --configuration release --device",
-    "ios_kill":
-      "rm -rf ios/build/; kill $(lsof -t -i:8081); react-native run-ios",
-    "android": "node_modules/.bin/react-native run-android",
-    "test": "jest",
-    "prettier": "prettier --write \"**/*.js\"",
-    "eslint": "eslint .",
-    "stylelint": "stylelint src/**/*.js",
-    "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "dependencies": {
+    "expo": "^27.0.1",
+    "react": "16.3.1",
+    "react-native": "~0.55.2",
     "GitHubTrending": "^3.0.0",
     "base-64": "^0.1.0",
     "prop-types": "^15.6.0",
-    "react": "16.0.0",
-    "react-native": "0.51.0",
     "react-native-check-box": "^2.0.2",
     "react-native-easy-toast": "^1.0.9",
     "react-native-elements": "^0.18.5",
@@ -37,14 +39,5 @@
     "react-native-vector-icons": "^4.4.3",
     "react-navigation": "^1.0.0-beta.21",
     "react-navigation-props-mapper": "^0.1.2"
-  },
-  "devDependencies": {
-    "babel-jest": "22.0.4",
-    "babel-preset-react-native": "4.0.0",
-    "jest": "22.0.4",
-    "react-test-renderer": "16.0.0"
-  },
-  "jest": {
-    "preset": "react-native"
   }
 }

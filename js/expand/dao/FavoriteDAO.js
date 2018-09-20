@@ -22,22 +22,19 @@ export default class FavoriteDAO {
         // fetch data only when data outdated
         if (this.checkDate()) {
           // fetch remote starred repos
-          this.userDAO.fetchStarredRepos().then(responses => {
-            let values = [];
-            let ids = [];
-            for (let i = 0, len = responses.length; i < len; i++) {
-              let repos = JSON.parse(responses[i]._bodyText);
+          this.userDAO
+            .fetchStarredRepos()
+            .then(responses => responses[0].json())
+            .then(repos => {
+              let values = [];
+              let ids = [];
               for (let j = 0; j < repos.length; j++) {
                 ids.push('id_' + repos[j].full_name.toString());
                 values.push(JSON.stringify(repos[j]));
               }
-            }
 
-            // set this.favoriteKey in AsyncStorage
-            AsyncStorage.setItem(
-              this.favoriteKey,
-              JSON.stringify(ids),
-              error => {
+              // set this.favoriteKey in AsyncStorage
+              AsyncStorage.setItem(this.favoriteKey, JSON.stringify(ids), error => {
                 if (!error) {
                   let zip = ids.map(function(e, i) {
                     return [e, values[i]];
@@ -62,9 +59,8 @@ export default class FavoriteDAO {
                     }
                   });
                 }
-              }
-            );
-          });
+              });
+            });
         }
       })
       .catch(error => {

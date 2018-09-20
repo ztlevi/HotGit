@@ -148,15 +148,8 @@ export default class TrendingPage extends BaseComponent {
       <View style={{ alignContent: 'center' }}>
         <TouchableOpacity onPress={this.showPopover} ref="button">
           <View style={styles.title}>
-            <Text style={GlobalStyles.titleText}>Trending</Text>
-            <Text
-              style={{
-                marginLeft: 8,
-                fontSize: 18,
-                color: 'white',
-                fontWeight: '400',
-              }}
-            >
+            <Text style={GlobalStyles.titleText}>Trending </Text>
+            <Text style={GlobalStyles.titleText}>
               {this.state.timeSpan.showText}
             </Text>
             <Icon
