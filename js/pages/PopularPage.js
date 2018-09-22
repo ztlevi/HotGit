@@ -61,7 +61,6 @@ export default class PopularPage extends BaseComponent {
       result: '',
       loading: false,
       languages: [],
-      theme: this.props.theme,
     };
   }
 
@@ -134,7 +133,7 @@ export default class PopularPage extends BaseComponent {
     let content =
       this.state.languages.length > 0 ? (
         <ScrollableTabView
-          tabBarBackgroundColor={this.state.theme.themeColor}
+          tabBarBackgroundColor={this.props.theme.themeColor}
           tabBarInactiveTextColor="mintcream"
           tabBarActiveTextColor="white"
           tabBarUnderlineStyle={{ backgroundColor: '#e7e7e7', height: 2 }}
@@ -159,7 +158,7 @@ export default class PopularPage extends BaseComponent {
           title,
           null,
           rightButton,
-          this.state.theme.themeColor
+          this.props.theme.themeColor
         )}
         {content}
         {this.renderMoreView()}
@@ -210,7 +209,7 @@ class PopularTab extends Component {
     if (this.isFavorteChanged) {
       this.isFavorteChanged = false;
       this.getFavoriteKeys();
-    } else if (nextProps.theme !== this.state.theme) {
+    } else if (nextProps.theme !== this.props.theme) {
       this.updateState({ theme: nextProps.theme });
       this.flushFavoriteState();
     }
@@ -344,6 +343,7 @@ class PopularTab extends Component {
   }
 
   render() {
+    const { theme } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ListView
@@ -354,10 +354,10 @@ class PopularTab extends Component {
             <RefreshControl
               refreshing={this.state.isLoading}
               onRefresh={() => this.loadData(true, false)}
-              color={[this.state.theme.themeColor]}
-              tintColor={this.state.theme.themeColor}
+              color={[theme.themeColor]}
+              tintColor={theme.themeColor}
               title={'Loading...'}
-              titleColor={this.state.theme.themeColor}
+              titleColor={theme.themeColor}
             />
           }
         />

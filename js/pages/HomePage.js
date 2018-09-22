@@ -3,19 +3,20 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import React, { Component } from 'react';
-import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
-
-import TabNavigator from 'react-native-tab-navigator';
-import PopularPage from './PopularPage';
-import MyPage from './my/MyPage';
-import Toast, { DURATION } from 'react-native-easy-toast';
-import TrendingPage from './TrendingPage';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
-import FavoritePage from './FavoritePage';
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
+import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
+import { connect } from 'react-redux';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import React, { Component } from 'react';
+import TabNavigator from 'react-native-tab-navigator';
+import Toast, { DURATION } from 'react-native-easy-toast';
+
 import BaseComponent from './BaseComponent';
+import FavoritePage from './FavoritePage';
+import MyPage from './my/MyPage';
+import PopularPage from './PopularPage';
+import TrendingPage from './TrendingPage';
 
 const styles = StyleSheet.create({
   container: {
@@ -51,7 +52,7 @@ export const FLAG_TAB = {
   flag_my: 'tb_my',
 };
 
-export default class HomePage extends BaseComponent {
+class HomePage extends BaseComponent {
   constructor(props) {
     super(props);
     let selectedTab = 'tb_trending';
@@ -61,7 +62,6 @@ export default class HomePage extends BaseComponent {
 
     this.state = {
       selectedTab: selectedTab,
-      theme: this.props.theme,
     };
   }
 
@@ -106,19 +106,20 @@ export default class HomePage extends BaseComponent {
   }
 
   _renderTab(Component, selectTab, title, renderIcon) {
+    const { theme } = this.props;
     return (
       <TabNavigator.Item
         selected={this.state.selectedTab === selectTab}
-        selectedTitleStyle={this.state.theme.styles.selectedTitleStyle}
+        selectedTitleStyle={theme.styles.selectedTitleStyle}
         title={title}
         renderIcon={() => <Icon name={renderIcon} color="black" />}
         renderSelectedIcon={() => (
-          <Icon name={renderIcon} color={this.state.theme.themeColor} />
+          <Icon name={renderIcon} color={theme.themeColor} />
         )}
         onPress={() => this.setState({ selectedTab: selectTab })}
       >
         {/*pass the props to the next Component*/}
-        <Component {...this.props} theme={this.state.theme} />
+        <Component {...this.props} />
       </TabNavigator.Item>
     );
   }
@@ -137,3 +138,9 @@ export default class HomePage extends BaseComponent {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  theme: state.theme.theme,
+});
+
+export default connect(mapStateToProps)(HomePage);

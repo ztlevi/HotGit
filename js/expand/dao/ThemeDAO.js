@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import ThemeFactory, { ThemeFlags } from '../../../res/styles/ThemeFactory';
+
+import { ThemeFlags } from '../../../res/styles/ThemeFactory';
 
 const THEME_KEY = 'theme_key';
 
@@ -16,7 +16,7 @@ export default class ThemeDAO {
           this.save(ThemeFlags.Default);
           result = ThemeFlags.Default;
         }
-        resolve(ThemeFactory.createTheme(result));
+        resolve(result);
       });
     });
   }

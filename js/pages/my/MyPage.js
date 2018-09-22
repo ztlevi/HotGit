@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Icon } from 'react-native-elements';
 import {
   View,
   TouchableHighlight,
@@ -6,16 +6,17 @@ import {
   ScrollView,
   Text,
 } from 'react-native';
-import ComponentWithNavigationBar from '../../common/NavigatorBar';
-import LanguageDAO, { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
-import FavoriteDAO from '../../expand/dao/FavoriteDAO';
-import UserDAO from '../../expand/dao/UserDAO';
+import React from 'react';
+
+import { FLAG_LANGUAGE } from '../../expand/dao/LanguageDAO';
 import { MORE_MENU } from '../../common/MoreMenu';
-import GlobalStyles from '../../../res/styles/GlobalStyles';
-import ViewUtils from '../../util/ViewUtils';
-import { Icon } from 'react-native-elements';
-import CustomThemePage from './CustomTheme';
 import BaseComponent from '../BaseComponent';
+import ComponentWithNavigationBar from '../../common/NavigatorBar';
+import CustomThemePage from './CustomTheme';
+import FavoriteDAO from '../../expand/dao/FavoriteDAO';
+import GlobalStyles from '../../../res/styles/GlobalStyles';
+import UserDAO from '../../expand/dao/UserDAO';
+import ViewUtils from '../../util/ViewUtils';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +51,6 @@ export default class MyPage extends BaseComponent {
       user: null,
       avatar_url: null,
       customThemeViewVisible: false,
-      theme: this.props.theme,
     };
   }
 
@@ -139,7 +139,7 @@ export default class MyPage extends BaseComponent {
     if (TargetComponent) {
       this.props.navigation.navigate(TargetComponent, {
         ...params,
-        theme: this.state.theme,
+        theme: this.props.theme,
       });
     }
   }
@@ -149,7 +149,7 @@ export default class MyPage extends BaseComponent {
       () => this.onClick(tag),
       icon,
       text,
-      this.state.theme.themeColor,
+      this.props.theme.themeColor,
       null
     );
   }
@@ -163,7 +163,7 @@ export default class MyPage extends BaseComponent {
           title,
           null,
           null,
-          this.state.theme.themeColor
+          this.props.theme.themeColor
         )}
         <ScrollView>
           <TouchableHighlight onPress={() => this.onClick(MORE_MENU.Login)}>
@@ -172,7 +172,7 @@ export default class MyPage extends BaseComponent {
                 <Icon
                   name="account-circle"
                   size={40}
-                  color={this.state.theme.themeColor}
+                  color={this.props.theme.themeColor}
                   containerStyle={{ marginRight: 10 }}
                 />
                 <Text style={{ fontSize: 20 }}>
@@ -183,7 +183,7 @@ export default class MyPage extends BaseComponent {
                 name="keyboard-arrow-right"
                 size={22}
                 containerStyle={{ marginRight: 10 }}
-                color={this.state.theme.themeColor}
+                color={this.props.theme.themeColor}
               />
             </View>
           </TouchableHighlight>
@@ -198,8 +198,8 @@ export default class MyPage extends BaseComponent {
           {this.getItem(MORE_MENU.Sort_Key, 'sort', 'Sort Key')}
           <View style={GlobalStyles.line} />
           {/*Key remove*/}
-          {this.getItem(MORE_MENU.Remove_Key, 'remove', 'Remove Key')}
-          <View style={GlobalStyles.line} />
+          {/* {this.getItem(MORE_MENU.Remove_Key, 'remove', 'Remove Key')} */}
+          {/* <View style={GlobalStyles.line} /> */}
 
           {/*Popular setting*/}
           <Text style={styles.groupTitle}>Trending tab language setting</Text>
@@ -223,112 +223,6 @@ export default class MyPage extends BaseComponent {
           <View style={GlobalStyles.line} />
         </ScrollView>
         {this.renderCustomThemeView()}
-
-        {/*/!*Custom Pages*!/*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*navigate('customKeyPage', {flag: FLAG_LANGUAGE.flag_key})*/}
-        {/*}}>Custom Key</Text>*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*navigate('customKeyPage', {flag: FLAG_LANGUAGE.flag_language})*/}
-        {/*}}>Custom Languages</Text>*/}
-
-        {/*/!*Sort Pages*!/*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*navigate('sortKeyPage', {flag: FLAG_LANGUAGE.flag_language})*/}
-        {/*}}>Sort Key</Text>*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*navigate('sortKeyPage', {flag: FLAG_LANGUAGE.flag_language})*/}
-        {/*}}>Sort Languages</Text>*/}
-
-        {/*/!*Remove Pages*!/*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*navigate('customKeyPage', {isRemoveKey: true, flag: FLAG_LANGUAGE.flag_key})*/}
-        {/*}}>Remove Key</Text>*/}
-
-        {/*/!*Reset*!/*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*let languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key)*/}
-        {/*Alert.alert(*/}
-        {/*'Note',*/}
-        {/*'Do you want to reset keys?',*/}
-        {/*[*/}
-        {/*{text: 'NO', onPress: () => {}},*/}
-        {/*{text: 'YES', onPress: () => languageDAO.resetKeys()},*/}
-        {/*],*/}
-        {/*{cancelable: false}*/}
-        {/*)*/}
-        {/*}}>Reset Default Keys</Text>*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*let languageDAO = new LanguageDAO(FLAG_LANGUAGE.flag_key)*/}
-        {/*Alert.alert(*/}
-        {/*'Note',*/}
-        {/*'Do you want to reset languages?',*/}
-        {/*[*/}
-        {/*{text: 'NO', onPress: () => {}},*/}
-        {/*{text: 'YES', onPress: () => languageDAO.resetLangs()},*/}
-        {/*],*/}
-        {/*{cancelable: false}*/}
-        {/*)*/}
-        {/*}}>Reset Default Languages</Text>*/}
-
-        {/*/!*Star and Unstar*!/*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*userDAO.starRepo('apple/turicreate')*/}
-        {/*.then(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Starred')*/}
-        {/*})*/}
-        {/*.catch(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Please Login...')*/}
-        {/*})*/}
-        {/*}}>Star</Text>*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*userDAO.unstarRepo('apple/turicreate')*/}
-        {/*.then(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Unstarred')*/}
-        {/*})*/}
-        {/*.catch(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Please Login...')*/}
-        {/*})*/}
-        {/*}}>Unstar</Text>*/}
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*userDAO.checkIfRepoStarred('apple/turicreate')*/}
-        {/*.then((result) => {*/}
-        {/*if (result === 1)*/}
-        {/*DeviceEventEmitter.emit('showToast', 'starred')*/}
-        {/*else*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Not starred')*/}
-        {/*})*/}
-        {/*.catch(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Please Login...')*/}
-        {/*})*/}
-        {/*}}>Check if starred</Text>*/}
-
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*userDAO.fetchStarredRepos()*/}
-        {/*.then(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Starred')*/}
-        {/*})*/}
-        {/*.catch(() => {*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Please Login...')*/}
-        {/*})*/}
-        {/*}}>Starred Repos</Text>*/}
-
-        {/*<Text style={styles.tips}*/}
-        {/*onPress={() => {*/}
-        {/*this.favoriteDAO.reloadStarredRepos()*/}
-        {/*DeviceEventEmitter.emit('showToast', 'Reloaded')*/}
-        {/*}}>Reload Repos</Text>*/}
       </View>
     );
   }

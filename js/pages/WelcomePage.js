@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
 import { View, Platform, StyleSheet, Text, Image } from 'react-native';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+
+import { startLoadTheme } from '../actions/theme';
 import ComponentWithNavigationBar from '../common/NavigatorBar';
 import GlobalStyles from '../../res/styles/GlobalStyles';
-import ThemeDAO from '../expand/dao/ThemeDAO';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,14 +15,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class WelcomePage extends Component {
+class WelcomePage extends Component {
   componentDidMount() {
-    new ThemeDAO().getTheme().then(data => {
-      this.theme = data;
-    });
+    // new ThemeDAO().getTheme().then(data => {
+    //   this.theme = data;
+    // });
     const { navigate } = this.props.navigation;
+    this.props.startLoadTheme();
     setTimeout(() => {
-      navigate('homePage', { theme: this.theme });
+      navigate('homePage', { theme: this.props.theme });
     }, 1000);
   }
 
@@ -40,3 +43,15 @@ export default class WelcomePage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  theme: state.theme.theme,
+});
+const mapDispatchToProps = dispatch => ({
+  startLoadTheme: () => dispatch(startLoadTheme()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WelcomePage);

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import {
   View,
   TouchableHighlight,
@@ -6,13 +5,14 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
-  DeviceEventEmitter,
   Text,
 } from 'react-native';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+
+import { ThemeFlags } from '../../../res/styles/ThemeFactory';
+import { onChangeTheme } from '../../actions/theme';
 import GlobalStyles from '../../../res/styles/GlobalStyles';
-import ThemeFactory, { ThemeFlags } from '../../../res/styles/ThemeFactory';
-import ThemeDAO from '../../expand/dao/ThemeDAO';
-import { ACTION_HOME } from '../HomePage';
 
 const styles = StyleSheet.create({
   themeItem: {
@@ -54,20 +54,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class CustomTheme extends Component {
+class CustomTheme extends Component {
   constructor(props) {
     super(props);
-    this.themeDAO = new ThemeDAO();
   }
 
   onSelectTheme(themeKey) {
     this.props.onClose();
-    this.themeDAO.save(ThemeFlags[themeKey]);
-    DeviceEventEmitter.emit(
-      'ACTION_BASE',
-      ACTION_HOME.A_THEME,
-      ThemeFactory.createTheme(ThemeFlags[themeKey])
-    );
+    this.props.onChangeTheme(ThemeFlags[themeKey]);
   }
   /**
    * Create Theme item
@@ -138,3 +132,14 @@ export default class CustomTheme extends Component {
     return view;
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  onChangeTheme: themeFlag => {
+    dispatch(onChangeTheme(themeFlag));
+  },
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(CustomTheme);

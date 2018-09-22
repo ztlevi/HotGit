@@ -79,7 +79,6 @@ export default class TrendingPage extends BaseComponent {
       languages: [],
       timeSpan: timeSpanTextArray[0],
       buttonReact: {},
-      theme: this.props.theme,
     };
   }
 
@@ -198,7 +197,7 @@ export default class TrendingPage extends BaseComponent {
     let content =
       this.state.languages.length > 0 ? (
         <ScrollableTabView
-          tabBarBackgroundColor={this.state.theme.themeColor}
+          tabBarBackgroundColor={this.props.theme.themeColor}
           tabBarInactiveTextColor="mintcream"
           tabBarActiveTextColor="white"
           tabBarUnderlineStyle={{ backgroundColor: '#e7e7e7', height: 2 }}
@@ -239,7 +238,7 @@ export default class TrendingPage extends BaseComponent {
           this.renderTitleView(),
           null,
           rightButton,
-          this.state.theme.themeColor
+          this.props.theme.themeColor
         )}
         {content}
         {this.renderMoreView()}
@@ -288,7 +287,7 @@ class TrendingTab extends Component {
       this.isFavorteChanged = false;
       this.getFavoriteKeys();
       this.loadData(this.props.timeSpan, false);
-    } else if (nextProps.theme !== this.state.theme) {
+    } else if (nextProps.theme !== this.props.theme) {
       this.updateState({ theme: nextProps.theme });
       this.flushFavoriteState();
     }
@@ -411,8 +410,8 @@ class TrendingTab extends Component {
             <RefreshControl
               refreshing={this.state.isLoading}
               onRefresh={() => this.loadData(this.props.timeSpan, true)}
-              color={[this.state.theme.themeColor]}
-              tintColor={this.state.theme.themeColor}
+              color={[this.props.theme.themeColor]}
+              tintColor={this.props.theme.themeColor}
               title={'Loading...'}
             />
           }
