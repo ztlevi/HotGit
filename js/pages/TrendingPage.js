@@ -220,14 +220,7 @@ export default class TrendingPage extends BaseComponent {
       ) : null;
 
     let rightButton = (
-      <View
-        style={{
-          padding: 5,
-          paddingTop: 8,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
+      <View style={GlobalStyles.header_icon}>
         {ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}
       </View>
     );

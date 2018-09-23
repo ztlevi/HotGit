@@ -88,14 +88,7 @@ export default class PopularPage extends BaseComponent {
 
   renderRightButton() {
     return (
-      <View
-        style={{
-          padding: 5,
-          paddingTop: 8,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
+      <View style={GlobalStyles.header_icon}>
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate('searchPage', {

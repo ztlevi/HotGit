@@ -75,7 +75,9 @@ export default class FavoritePage extends BaseComponent {
 
   renderRightButton() {
     return (
-      <View>{ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}</View>
+      <View style={GlobalStyles.header_icon}>
+        {ViewUtils.getMoreButton(() => this.refs.moreMenu.open())}
+      </View>
     );
   }
 
