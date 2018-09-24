@@ -129,8 +129,8 @@ class HomePage extends BaseComponent {
       <View style={styles.container}>
         <TabNavigator>
           {this._renderTab(PopularPage, 'tb_popular', 'Popular', 'whatshot')}
-          {this._renderTab(TrendingPage, 'tb_trending', 'Trending', 'ac-unit')}
-          {this._renderTab(FavoritePage, 'tb_favorite', 'Favorite', 'favorite')}
+          {this._renderTab(TrendingPage, 'tb_trending', 'Trending', 'near-me')}
+          {this._renderTab(FavoritePage, 'tb_favorite', 'Favorite', 'star')}
           {this._renderTab(MyPage, '', 'Account', 'account-circle')}
         </TabNavigator>
         <Toast ref={toast => (this.toast = toast)} />
