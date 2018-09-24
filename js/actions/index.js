@@ -1,3 +1,3 @@
-import themeActions from './theme';
+import * as themeActions from './theme';
 
 export default [...themeActions];

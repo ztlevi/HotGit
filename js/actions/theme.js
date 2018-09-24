@@ -26,12 +26,3 @@ export const changeThemeFlagFailed = e => ({
   type: 'CHANGE_THEME_FAILED',
   e,
 });
-
-export default [
-  onChangeTheme,
-  startLoadTheme,
-  loadThemeSuccess,
-  loadThemeFailed,
-  changeThemeFlagSuccess,
-  changeThemeFlagFailed,
-];
