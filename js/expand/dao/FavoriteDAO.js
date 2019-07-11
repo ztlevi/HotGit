@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
+
 import UserDAO from './UserDAO';
 
-const base64 = require('base-64');
 const url_star = 'https://api.github.com/user/starred/';
 const url_page = 'https://api.github.com/user/starred?page=';
 
@@ -20,7 +19,7 @@ export default class FavoriteDAO {
       .loadCurrentUser()
       .then(() => {
         // fetch data only when data outdated
-        if (this.checkDate()) {
+        if (true) {
           // fetch remote starred repos
           this.userDAO
             .fetchStarredRepos()
@@ -34,32 +33,36 @@ export default class FavoriteDAO {
               }
 
               // set this.favoriteKey in AsyncStorage
-              AsyncStorage.setItem(this.favoriteKey, JSON.stringify(ids), error => {
-                if (!error) {
-                  let zip = ids.map(function(e, i) {
-                    return [e, values[i]];
-                  });
-                  // set zipped ids and values in AsyncStorage
-                  AsyncStorage.multiSet(zip, error => {
-                    if (!error) {
-                      // get all keys stored in AsyncStorage
-                      AsyncStorage.getAllKeys((error, keys) => {
-                        if (!error) {
-                          for (let i = 0; i < keys.length; i++) {
-                            let key = keys[i];
-                            // delete the key if the key represents id number
-                            if (key.substring(0, 3) === 'id_') {
-                              if (!ids.includes(key)) {
-                                AsyncStorage.removeItem(key);
+              AsyncStorage.setItem(
+                this.favoriteKey,
+                JSON.stringify(ids),
+                error => {
+                  if (!error) {
+                    let zip = ids.map(function(e, i) {
+                      return [e, values[i]];
+                    });
+                    // set zipped ids and values in AsyncStorage
+                    AsyncStorage.multiSet(zip, error => {
+                      if (!error) {
+                        // get all keys stored in AsyncStorage
+                        AsyncStorage.getAllKeys((error, keys) => {
+                          if (!error) {
+                            for (let i = 0; i < keys.length; i++) {
+                              let key = keys[i];
+                              // delete the key if the key represents id number
+                              if (key.substring(0, 3) === 'id_') {
+                                if (!ids.includes(key)) {
+                                  AsyncStorage.removeItem(key);
+                                }
                               }
                             }
                           }
-                        }
-                      });
-                    }
-                  });
+                        });
+                      }
+                    });
+                  }
                 }
-              });
+              );
             });
         }
       })

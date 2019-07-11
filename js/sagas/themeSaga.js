@@ -6,7 +6,7 @@ import {
   loadThemeFailed,
   loadThemeSuccess,
 } from '../actions/theme';
-import ThemeDAO from '../expand/dao/themeDAO';
+import ThemeDAO from '../expand/dao/ThemeDAO';
 
 function* loadTheme(action) {
   try {
