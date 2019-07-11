@@ -19,7 +19,7 @@ export default class FavoriteDAO {
       .loadCurrentUser()
       .then(() => {
         // fetch data only when data outdated
-        if (true) {
+        if (this.checkDate()) {
           // fetch remote starred repos
           this.userDAO
             .fetchStarredRepos()
