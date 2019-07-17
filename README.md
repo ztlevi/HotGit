@@ -1,7 +1,13 @@
-# Github Treading App powered by React Native
+# Hotgit powered by React Native
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/ztlevi/react_github?branch=master)](https://bettercodehub.com/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+## Project Scope
+
+Github has an amazing [web page](https://github.com/trending) demenstrating trening repositories. You can filter it by language and daily, weekly or monthly.
+
+But unfortunately, it's not availble on your mobile devices as an application. So this project aims to help developers to track the trending repositories on Github. And it' available on Android and IOS.
 
 ## Intsall
 
@@ -28,4 +34,4 @@ For the favorite page, there is some delay for Github API. That's why I put 2 mi
 4. [x] Redux and Sage
 5. [x] Async and await
 6. [x] Eslint
-7. [ ]Travis
+7. [ ] Travis
