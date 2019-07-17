@@ -20,10 +20,12 @@ For the favorite page, there is some delay for Github API. That's why I put 2 mi
 
 ![screenshots](./screenshots/screenshots.jpg)
 
-## TODO
+## Features
 
-1. Use custom view for repos instead of WebView
-2. Favorite Page add search module
-3. Coverage
-4. Eslint
-5. Travis
+1. [ ] Use custom view for repos instead of WebView
+2. [x] Favorite Page add search module
+3. [x] Code Coverage
+4. [x] Redux and Sage
+5. [x] Async and await
+6. [x] Eslint
+7. [ ]Travis
